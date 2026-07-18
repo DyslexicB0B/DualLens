@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DualLens Content Studio</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+.admin-shell{max-width:1100px;margin:50px auto;padding:0 20px}.admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}.admin-card{background:white;border:1px solid var(--line);border-radius:22px;padding:26px}.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.field input,.field textarea,.field select{border:1px solid var(--line);border-radius:11px;padding:12px;font:inherit}.field textarea{min-height:100px;resize:vertical}.admin-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}.notice{margin-top:18px;padding:14px;border-radius:12px;background:var(--shared-soft);color:#40367c;font-size:13px;line-height:1.5}@media(max-width:700px){.admin-grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<header class="site-header"><a class="brand" href="index.html"><span>DUAL</span>LENS</a><nav><a href="index.html">View site</a></nav></header>
+<main class="admin-shell">
+  <div class="admin-top"><div><span class="eyebrow">Publisher tools</span><h1>Content Studio</h1></div></div>
+  <section class="admin-card">
+    <div class="admin-grid">
+      <div class="field"><label>Category</label><select id="category"><option>Politics</option><option>Economy</option><option>Technology</option><option>World</option><option>Culture</option></select></div>
+      <div class="field"><label>Story ID</label><input id="storyId" placeholder="example-story"></div>
+      <div class="field full"><label>Headline</label><input id="headline" placeholder="Main story headline"></div>
+      <div class="field full"><label>Deck</label><textarea id="dek" placeholder="One-sentence explanation"></textarea></div>
+      <div class="field full"><label>Neutral summary</label><textarea id="summary" placeholder="What happened?"></textarea></div>
+      <div class="field"><label>Left points</label><textarea id="left" placeholder="Title | Explanation&#10;Title | Explanation"></textarea></div>
+      <div class="field"><label>Right points</label><textarea id="right" placeholder="Title | Explanation&#10;Title | Explanation"></textarea></div>
+      <div class="field full"><label>Common ground</label><textarea id="common" placeholder="One fact per line"></textarea></div>
+      <div class="field"><label>Narrative divergence</label><input id="divergence" type="number" min="0" max="100" value="50"></div>
+      <div class="field"><label>Timestamp</label><input id="timestamp" value="Updated today"></div>
+    </div>
+    <div class="admin-actions">
+      <button class="button primary" id="downloadStory">Download story file</button>
+      <button class="button ghost" id="previewJson">Preview JSON</button>
+    </div>
+    <div class="notice">This studio creates a story file you can keep for the next build. The current GitHub Pages prototype still requires replacing <strong>stories.js</strong> to publish globally. A database-backed publisher comes in the next phase.</div>
+    <pre id="output" style="white-space:pre-wrap;display:none;margin-top:20px;background:#15161b;color:white;padding:18px;border-radius:14px;overflow:auto"></pre>
+  </section>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>

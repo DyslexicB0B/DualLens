@@ -1,55 +1,65 @@
-const stories = [
-  {
-    id:1, topic:'Immigration', title:'New immigration order reshapes federal enforcement', summary:'The administration directed federal agencies to change enforcement priorities and expand removal efforts.', date:'Today', sources:34, divergence:60,
-    leftSources:'CNN, MSNBC, NYT, Vox, The Atlantic', rightSources:'Fox News, Daily Wire, National Review, Washington Examiner',
-    left:[['Humanitarian concerns','Critics focus on family separation, vulnerable communities, and the human impact of rapid enforcement.'],['Civil liberties at risk','Opponents argue that expanded federal power could reduce due-process protections.'],['Implementation questions','Coverage highlights uncertainty about how broadly the order will be applied.'],['Likely court challenges','Legal experts expect lawsuits over executive authority and enforcement methods.']],
-    right:[['Stronger border enforcement','Supporters view the order as a direct response to illegal immigration and border-security concerns.'],['Campaign promise fulfilled','Coverage emphasizes that the administration is delivering on a central election pledge.'],['Public safety emphasized','Supporters argue the policy gives law enforcement stronger tools.'],['Federal authority reinforced','The president is portrayed as using legitimate executive power to direct federal agencies.']],
-    common:['The order was signed.','Federal enforcement priorities changed.','Implementation will involve multiple agencies.','Legal challenges are likely.'],
-    headlines:[['CNN','Immigration order sparks civil-rights concerns'],['Reuters','Administration signs broad immigration executive order'],['Fox News','President fulfills border-security promise']]
-  },
-  {
-    id:2, topic:'Economy', title:'Federal Reserve cuts interest rates by 0.25%', summary:'The central bank reduced its benchmark rate as inflation cooled and economic growth showed signs of slowing.', date:'2h ago', sources:28, divergence:47,
-    leftSources:'NYT, CNN, Vox, MSNBC', rightSources:'WSJ Opinion, Fox Business, National Review',
-    left:[['Relief for borrowers','Lower rates may reduce pressure on households, small businesses, and the housing market.'],['Protecting employment','Supporters say the cut can help prevent a sharper slowdown in hiring.'],['Inflation is easing','Coverage points to improving inflation data as justification for action.']],
-    right:[['Inflation risk remains','Critics argue the Fed may be moving before price pressures are fully controlled.'],['Fiscal discipline missing','Some coverage says monetary policy is compensating for excessive government spending.'],['Asset prices may rise','Lower rates could inflate stocks and housing before wages fully catch up.']],
-    common:['Rates were cut by 0.25%.','Markets reacted immediately.','Inflation has eased from its recent peak.','Future rate cuts are uncertain.'],
-    headlines:[['MSNBC','Rate cut offers relief to working families'],['AP','Federal Reserve lowers benchmark rate'],['Fox Business','Fed cut raises new inflation questions']]
-  },
-  {
-    id:3, topic:'Technology', title:'Congress advances new national AI safety rules', summary:'A bipartisan proposal would require disclosure, testing, and incident reporting for advanced AI systems.', date:'5h ago', sources:22, divergence:39,
-    leftSources:'The Verge, Wired, NYT, CNN', rightSources:'National Review, Fox, Washington Examiner',
-    left:[['Consumer protection','Supporters emphasize safeguards against discrimination, misinformation, and unsafe automation.'],['Transparency required','Developers would disclose testing methods and major risks.'],['Workers need protection','Coverage highlights potential labor disruption and the need for transition support.']],
-    right:[['Innovation may slow','Critics warn that heavy regulation could push development overseas.'],['Government overreach','Some argue agencies may gain too much control over private technology.'],['Small firms disadvantaged','Compliance costs may favor the largest technology companies.']],
-    common:['The bill creates new AI reporting requirements.','Advanced systems would face testing rules.','Both parties support some form of oversight.','The final enforcement structure is unresolved.'],
-    headlines:[['The Verge','AI safety bill moves forward with new guardrails'],['Reuters','Lawmakers advance bipartisan AI regulation'],['Washington Examiner','AI rules risk handing advantage to Big Tech']]
-  }
-];
 
-const categories=['All','Immigration','Economy','Technology'];
-let active='All'; let selected=null;
-const grid=document.getElementById('storyGrid');
-const filters=document.getElementById('filters');
-const detail=document.getElementById('detailView');
-const toolbar=document.querySelector('.toolbar');
-const hero=document.querySelector('.hero');
+const stories = window.DUALLENS_STORIES || [];
+const grid = document.getElementById('storyGrid');
+const modal = document.getElementById('storyModal');
+const detail = document.getElementById('storyDetail');
 
-function renderFilters(){filters.innerHTML=categories.map(c=>`<button class="filter ${active===c?'active':''}" data-cat="${c}">${c}</button>`).join('');filters.querySelectorAll('button').forEach(b=>b.onclick=()=>{active=b.dataset.cat;renderFilters();renderStories();});}
-function renderStories(){const q=document.getElementById('searchInput').value.toLowerCase();const list=stories.filter(s=>(active==='All'||s.topic===active)&&(s.title.toLowerCase().includes(q)||s.summary.toLowerCase().includes(q)));grid.innerHTML=list.map(s=>`<article class="story-card" data-id="${s.id}"><div class="story-image"><h3>${s.title}</h3></div><div class="story-body"><div class="topic-pill">${s.topic}</div><p>${s.summary}</p><div class="lens-bars"><i></i><i></i></div><div class="story-footer"><span>${s.date}</span><span>${s.sources} sources</span></div></div></article>`).join('');grid.querySelectorAll('.story-card').forEach(c=>c.onclick=()=>openStory(+c.dataset.id));}
-function pointsHTML(arr){return arr.map(([h,p])=>`<div class="point"><h4>${h}</h4><p>${p}</p></div>`).join('')}
-function openStory(id){selected=stories.find(s=>s.id===id);grid.classList.add('hidden');toolbar.classList.add('hidden');hero.classList.add('hidden');detail.classList.remove('hidden');document.getElementById('detailTopic').textContent=selected.topic;document.getElementById('detailTitle').textContent=selected.title;document.getElementById('detailSummary').textContent=selected.summary;document.getElementById('detailDate').textContent=selected.date;document.getElementById('detailSources').textContent=`${selected.sources} sources analyzed`;document.getElementById('leftSources').textContent=`Sources: ${selected.leftSources}`;document.getElementById('rightSources').textContent=`Sources: ${selected.rightSources}`;document.getElementById('leftPoints').innerHTML=pointsHTML(selected.left);document.getElementById('rightPoints').innerHTML=pointsHTML(selected.right);document.getElementById('commonPoints').innerHTML=selected.common.map(x=>`<div class="common-item"><span class="check">✓</span><span>${x}</span></div>`).join('');document.getElementById('headlines').innerHTML=selected.headlines.map(([src,h])=>`<div class="headline-row"><small>${src}</small><p>${h}</p></div>`).join('');document.getElementById('scoreNumber').textContent=`${selected.divergence}%`;document.getElementById('scoreRing').style.background=`conic-gradient(var(--purple) 0deg, var(--purple) ${selected.divergence*3.6}deg,#eceaf3 ${selected.divergence*3.6}deg)`;window.scrollTo({top:0,behavior:'smooth'});}
-function closeStory(){detail.classList.add('hidden');grid.classList.remove('hidden');toolbar.classList.remove('hidden');hero.classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}
-
-document.getElementById('backBtn').onclick=closeStory;document.getElementById('searchInput').oninput=renderStories;
-const modal=document.getElementById('modal');document.getElementById('createBtn').onclick=()=>modal.classList.remove('hidden');document.getElementById('closeModal').onclick=()=>modal.classList.add('hidden');document.getElementById('aboutBtn').onclick=()=>alert('DualLens separates verified facts from competing interpretations, then shows both sides in a consistent format.');
-
-function wrap(text,max){const words=text.split(' ');const lines=[];let line='';for(const w of words){if((line+' '+w).trim().length>max){lines.push(line.trim());line=w}else line+=' '+w}if(line.trim())lines.push(line.trim());return lines}
-function esc(s){return s.replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-function textBlock(lines,x,y,size,weight,color,lineH,anchor='start'){return lines.map((l,i)=>`<text x="${x}" y="${y+i*lineH}" font-family="Arial, sans-serif" font-size="${size}" font-weight="${weight}" fill="${color}" text-anchor="${anchor}">${esc(l)}</text>`).join('')}
-function downloadSVG({title,summary,left,right,common}){const titleLines=wrap(title,35).slice(0,3);const summaryLines=wrap(summary,58).slice(0,3);const leftLines=wrap(left,32).slice(0,5);const rightLines=wrap(right,32).slice(0,5);const commonLines=common.split('.').map(s=>s.trim()).filter(Boolean).slice(0,4);const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350"><rect width="1080" height="1350" fill="#f8f8f6"/><rect x="28" y="28" width="1024" height="1294" rx="34" fill="#fff" stroke="#dfe2e8"/><text x="540" y="86" font-family="Arial" font-size="42" font-weight="800" text-anchor="middle" fill="#11131a">DUAL<tspan font-weight="400">LENS</tspan></text><text x="540" y="119" font-family="Arial" font-size="15" letter-spacing="3" text-anchor="middle" fill="#7b7f88">EVERY STORY. TWO PERSPECTIVES.</text>${textBlock(titleLines,540,190,54,800,'#11131a',60,'middle')}${textBlock(summaryLines,540,390,22,400,'#626772',31,'middle')}<rect x="60" y="500" width="445" height="455" rx="24" fill="#eef5ff" stroke="#1f63c6" stroke-width="3"/><rect x="575" y="500" width="445" height="455" rx="24" fill="#fff4e8" stroke="#e87916" stroke-width="3"/><text x="92" y="550" font-family="Arial" font-size="22" font-weight="800" fill="#1f63c6">LEFT PERSPECTIVE</text><text x="607" y="550" font-family="Arial" font-size="22" font-weight="800" fill="#e87916">RIGHT PERSPECTIVE</text>${leftLines.map((l,i)=>`<text x="92" y="620" dy="${i*45}" font-family="Arial" font-size="24" fill="#21304a">${i===0?'• ':''}${esc(l)}</text>`).join('')}${rightLines.map((l,i)=>`<text x="607" y="620" dy="${i*45}" font-family="Arial" font-size="24" fill="#4a2d14">${i===0?'• ':''}${esc(l)}</text>`).join('')}<rect x="160" y="1000" width="760" height="220" rx="24" fill="#f3efff" stroke="#6c4bc3" stroke-width="2"/><text x="540" y="1045" font-family="Arial" font-size="22" font-weight="800" text-anchor="middle" fill="#6c4bc3">COMMON GROUND</text>${commonLines.map((l,i)=>`<circle cx="230" cy="1095" r="11" fill="#6c4bc3"/><text x="230" y="1101" font-family="Arial" font-size="15" text-anchor="middle" fill="#fff">✓</text><text x="260" y="1103" font-family="Arial" font-size="22" fill="#282632">${esc(l)}</text>`).join('').replaceAll('cy="1095"','cy="1095"')}<text x="540" y="1280" font-family="Arial" font-size="18" font-weight="700" text-anchor="middle" fill="#11131a">SEE BOTH. UNDERSTAND MORE.</text></svg>`;
-  // fix positions for common lines
-  let fixed=svg; commonLines.forEach((_,i)=>{if(i>0){fixed=fixed.replace('cy="1095"',`cy="${1095+i*38}"`).replace('y="1101"',`y="${1101+i*38}"`).replace('y="1103"',`y="${1103+i*38}"`)}});
-  const blob=new Blob([fixed],{type:'image/svg+xml'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='duallens-perspective-card.svg';a.click();URL.revokeObjectURL(a.href)
+function renderStories(category='All'){
+  const filtered = category === 'All' ? stories : stories.filter(s => s.category === category);
+  grid.innerHTML = filtered.map(s => `
+    <article class="story-card" data-story="${s.id}" tabindex="0">
+      <div class="card-top"><span class="category">${s.category}</span><span class="time">${s.timestamp}</span></div>
+      <h3>${s.headline}</h3>
+      <p class="dek">${s.dek}</p>
+      <div class="lens-preview">
+        <div class="lens left"><strong>LEFT LENS</strong><br>${s.left[0].title}</div>
+        <div class="lens right"><strong>RIGHT LENS</strong><br>${s.right[0].title}</div>
+      </div>
+      <div class="divergence">
+        <div class="divergence-label"><span>Narrative divergence</span><strong>${s.divergence}%</strong></div>
+        <div class="bar"><i style="width:${s.divergence}%"></i></div>
+      </div>
+    </article>`).join('');
+  document.querySelectorAll('.story-card').forEach(card => {
+    card.addEventListener('click', () => openStory(card.dataset.story));
+    card.addEventListener('keydown', e => { if(e.key === 'Enter') openStory(card.dataset.story); });
+  });
 }
-document.getElementById('downloadCardBtn').onclick=()=>downloadSVG({title:selected.title,summary:selected.summary,left:selected.left[0][0]+'. '+selected.left[0][1],right:selected.right[0][0]+'. '+selected.right[0][1],common:selected.common.join('. ')});
-document.getElementById('customDownloadBtn').onclick=()=>downloadSVG({title:document.getElementById('cardTitle').value,summary:document.getElementById('cardSummary').value,left:document.getElementById('cardLeft').value,right:document.getElementById('cardRight').value,common:document.getElementById('cardCommon').value});
-renderFilters();renderStories();
+function points(items){ return items.map(p => `<div class="point"><h3>${p.title}</h3><p>${p.body}</p></div>`).join(''); }
+function openStory(id){
+  const s = stories.find(x => x.id === id);
+  if(!s) return;
+  detail.innerHTML = `
+    <div class="detail">
+      <header class="detail-header">
+        <span class="eyebrow">${s.category} · ${s.timestamp}</span>
+        <h1>${s.headline}</h1>
+        <p>${s.dek}</p>
+      </header>
+      <div class="what-happened"><strong>What happened</strong>${s.summary}</div>
+      <div class="perspective-grid">
+        <section class="perspective-column left"><h2>Left perspective</h2>${points(s.left)}</section>
+        <section class="common-column"><h2>Common ground</h2>${s.common.map(f=>`<div class="fact">✓ ${f}</div>`).join('')}</section>
+        <section class="perspective-column right"><h2>Right perspective</h2>${points(s.right)}</section>
+      </div>
+      <section class="headlines">
+        <h2>Headline comparison</h2>
+        ${s.headlines.map(h=>`<div class="headline-row"><strong>${h.source}</strong><span>${h.text}</span></div>`).join('')}
+      </section>
+    </div>`;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('[data-close-modal]').forEach(el=>el.addEventListener('click',closeModal));
+document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModal()});
+document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); renderStories(btn.dataset.category);
+}));
+renderStories();
