@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DualLens — Every Story. Two Perspectives.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <div class="brand">DUAL<span>LENS</span></div>
+      <div class="tagline">EVERY STORY. TWO PERSPECTIVES.</div>
+    </div>
+    <div class="top-actions">
+      <button class="ghost" id="aboutBtn">How it works</button>
+      <button class="primary" id="createBtn">Create Card</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">NEWS WITHOUT THE ECHO CHAMBER</div>
+        <h1>See the story.<br/>Understand the divide.</h1>
+        <p>DualLens compares how the left and right frame the same event, then separates shared facts from interpretation.</p>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-title">Today’s information diet</div>
+        <div class="diet-row"><span>Left</span><div class="bar"><i style="width:42%"></i></div><b>42%</b></div>
+        <div class="diet-row"><span>Center</span><div class="bar"><i style="width:34%"></i></div><b>34%</b></div>
+        <div class="diet-row"><span>Right</span><div class="bar"><i style="width:24%"></i></div><b>24%</b></div>
+        <div class="diet-note">Balanced coverage score: <strong>78</strong></div>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <div class="search-wrap">
+        <span>⌕</span>
+        <input id="searchInput" placeholder="Search stories, people, or topics" />
+      </div>
+      <div class="filters" id="filters"></div>
+    </section>
+
+    <section class="story-grid" id="storyGrid"></section>
+
+    <section class="detail hidden" id="detailView">
+      <button class="back" id="backBtn">← Back to stories</button>
+      <div class="story-header">
+        <div class="topic-pill" id="detailTopic"></div>
+        <h2 id="detailTitle"></h2>
+        <p id="detailSummary"></p>
+        <div class="meta"><span id="detailDate"></span><span>•</span><span id="detailSources"></span></div>
+      </div>
+
+      <div class="comparison-grid">
+        <article class="perspective left-panel">
+          <div class="panel-head"><span class="dot blue"></span>LEFT PERSPECTIVE</div>
+          <div class="source-line" id="leftSources"></div>
+          <div class="perspective-points" id="leftPoints"></div>
+        </article>
+
+        <article class="common-panel">
+          <div class="panel-head"><span class="dot purple"></span>COMMON GROUND</div>
+          <div class="common-list" id="commonPoints"></div>
+          <div class="quote">Different perspectives.<br/>Same facts.<br/><strong>Better understanding.</strong></div>
+        </article>
+
+        <article class="perspective right-panel">
+          <div class="panel-head"><span class="dot orange"></span>RIGHT PERSPECTIVE</div>
+          <div class="source-line" id="rightSources"></div>
+          <div class="perspective-points" id="rightPoints"></div>
+        </article>
+      </div>
+
+      <div class="lower-grid">
+        <article class="metric-card">
+          <h3>Headline comparison</h3>
+          <div id="headlines"></div>
+        </article>
+        <article class="metric-card">
+          <h3>Perspective score</h3>
+          <div class="score-wrap">
+            <div class="score-ring" id="scoreRing"><span id="scoreNumber"></span></div>
+            <div><b>Narrative divergence</b><p>Higher means the outlets frame the same story more differently.</p></div>
+          </div>
+        </article>
+        <article class="metric-card share-card">
+          <h3>Share this story</h3>
+          <p>Generate a clean DualLens card designed for X.</p>
+          <button class="primary wide" id="downloadCardBtn">Download Perspective Card</button>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal hidden" id="modal">
+    <div class="modal-card">
+      <button class="close" id="closeModal">×</button>
+      <h2>Create a DualLens Card</h2>
+      <p>Add the facts and both interpretations. DualLens will format them into a shareable story card.</p>
+      <label>Story title<input id="cardTitle" value="Federal Reserve cuts interest rates by 0.25%" /></label>
+      <label>What happened<textarea id="cardSummary">The Federal Reserve lowered its benchmark interest rate by a quarter point.</textarea></label>
+      <div class="form-grid">
+        <label>Left perspective<textarea id="cardLeft">Supports growth and reduces pressure on workers and borrowers.</textarea></label>
+        <label>Right perspective<textarea id="cardRight">Could reignite inflation and avoid needed fiscal discipline.</textarea></label>
+      </div>
+      <label>Common ground<textarea id="cardCommon">Rates were lowered by 0.25%. Markets reacted immediately. Future cuts remain uncertain.</textarea></label>
+      <button class="primary wide" id="customDownloadBtn">Create & Download Card</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

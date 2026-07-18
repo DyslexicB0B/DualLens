@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DualLens — Every Story. Two Perspectives.</title>
+<style>
+:root{--ink:#11131a;--muted:#6d7280;--line:#e5e7eb;--blue:#1f63c6;--blue-soft:#eef5ff;--orange:#e87916;--orange-soft:#fff4e8;--purple:#6c4bc3;--purple-soft:#f3efff;--bg:#f7f7f5;--white:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;color:var(--ink);background:var(--bg)}button,input,textarea{font:inherit}.topbar{height:78px;display:flex;justify-content:space-between;align-items:center;padding:0 5vw;border-bottom:1px solid var(--line);background:rgba(255,255,255,.94);position:sticky;top:0;z-index:20;backdrop-filter:blur(12px)}.brand{font-size:25px;font-weight:800;letter-spacing:-1px}.brand span{font-weight:400}.tagline{font-size:10px;color:#8b8f98;letter-spacing:1.6px;margin-top:2px}.top-actions{display:flex;gap:10px}.primary,.ghost{border:0;border-radius:12px;padding:12px 18px;cursor:pointer;font-weight:700}.primary{background:#14161d;color:white}.ghost{background:white;border:1px solid var(--line)}main{max-width:1240px;margin:auto;padding:0 24px 70px}.hero{display:grid;grid-template-columns:1.3fr .7fr;gap:36px;padding:70px 0 45px;align-items:center}.eyebrow{font-size:12px;font-weight:800;letter-spacing:1.8px;color:var(--purple);margin-bottom:16px}.hero h1{font-family:Georgia,'Times New Roman',serif;font-size:62px;line-height:.98;margin:0 0 20px;letter-spacing:-2px}.hero p{font-size:18px;line-height:1.6;max-width:690px;color:#555b66}.hero-card{background:white;border:1px solid var(--line);border-radius:24px;padding:26px;box-shadow:0 18px 50px rgba(20,22,29,.08)}.hero-card-title{font-weight:800;margin-bottom:20px}.diet-row{display:grid;grid-template-columns:55px 1fr 44px;gap:10px;align-items:center;margin:15px 0;font-size:13px}.bar{height:10px;border-radius:20px;background:#eceef2;overflow:hidden}.bar i{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,var(--blue),var(--purple),var(--orange))}.diet-note{margin-top:20px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted)}.toolbar{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:24px}.search-wrap{background:white;border:1px solid var(--line);border-radius:14px;padding:0 14px;display:flex;align-items:center;min-width:340px}.search-wrap input{border:0;outline:0;padding:13px;width:100%;background:transparent}.filters{display:flex;gap:8px;flex-wrap:wrap}.filter{padding:10px 14px;border:1px solid var(--line);background:white;border-radius:999px;cursor:pointer}.filter.active{background:#17191f;color:white}.story-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.story-card{background:white;border:1px solid var(--line);border-radius:22px;overflow:hidden;cursor:pointer;transition:.2s;display:flex;flex-direction:column}.story-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(16,20,28,.09)}.story-image{height:180px;background:linear-gradient(135deg,#dfe7f4,#f5e4d2);position:relative;padding:18px;display:flex;align-items:flex-end}.story-image:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent,rgba(0,0,0,.42))}.story-image h3{position:relative;z-index:2;color:white;font-size:26px;line-height:1.05;margin:0}.story-body{padding:18px;display:flex;flex-direction:column;gap:14px;flex:1}.story-body p{color:var(--muted);line-height:1.5;margin:0;font-size:14px}.story-footer{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:auto}.lens-bars{display:grid;grid-template-columns:1fr 1fr;gap:6px}.lens-bars i{height:5px;border-radius:9px}.lens-bars i:first-child{background:var(--blue)}.lens-bars i:last-child{background:var(--orange)}.hidden{display:none!important}.detail{padding-top:26px}.back{border:0;background:transparent;font-weight:700;cursor:pointer;padding:10px 0}.story-header{text-align:center;max-width:900px;margin:25px auto 38px}.topic-pill{display:inline-block;border-radius:999px;background:var(--purple-soft);color:var(--purple);font-weight:800;font-size:12px;padding:8px 12px}.story-header h2{font-family:Georgia,'Times New Roman',serif;font-size:48px;line-height:1.05;margin:18px 0}.story-header p{font-size:18px;color:var(--muted);line-height:1.6}.meta{display:flex;justify-content:center;gap:10px;font-size:13px;color:#8a8f99}.comparison-grid{display:grid;grid-template-columns:1fr .62fr 1fr;gap:16px;align-items:stretch}.perspective,.common-panel{border-radius:24px;padding:24px;background:white;border:1px solid var(--line)}.left-panel{border-top:5px solid var(--blue);background:linear-gradient(180deg,var(--blue-soft),white 30%)}.right-panel{border-top:5px solid var(--orange);background:linear-gradient(180deg,var(--orange-soft),white 30%)}.common-panel{border-top:5px solid var(--purple);display:flex;flex-direction:column}.panel-head{font-weight:800;font-size:13px;letter-spacing:.4px;display:flex;gap:8px;align-items:center}.dot{width:10px;height:10px;border-radius:50%}.blue{background:var(--blue)}.orange{background:var(--orange)}.purple{background:var(--purple)}.source-line{font-size:12px;color:var(--muted);margin:10px 0 20px}.point{margin:18px 0}.point h4{margin:0 0 7px;font-size:15px}.point p{margin:0;color:#5f6470;line-height:1.45;font-size:14px}.left-panel h4{color:var(--blue)}.right-panel h4{color:var(--orange)}.common-item{display:flex;gap:10px;padding:15px 0;border-bottom:1px dashed var(--line);font-size:14px;line-height:1.4}.check{width:22px;height:22px;border-radius:50%;background:var(--purple);color:white;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}.quote{margin-top:auto;background:var(--purple-soft);border-radius:16px;padding:18px;text-align:center;line-height:1.5}.lower-grid{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:16px;margin-top:16px}.metric-card{background:white;border:1px solid var(--line);border-radius:22px;padding:22px}.metric-card h3{margin-top:0}.headline-row{padding:12px 0;border-bottom:1px solid var(--line)}.headline-row small{font-weight:800;color:var(--muted)}.headline-row p{margin:5px 0 0;line-height:1.35}.score-wrap{display:flex;align-items:center;gap:18px}.score-ring{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--purple) 0deg, var(--purple) 216deg,#eceaf3 216deg);position:relative;flex:0 0 auto}.score-ring:before{content:"";position:absolute;width:68px;height:68px;background:white;border-radius:50%}.score-ring span{position:relative;font-weight:800;font-size:20px}.score-wrap p{font-size:13px;color:var(--muted);line-height:1.4}.share-card p{color:var(--muted);font-size:14px}.wide{width:100%}.modal{position:fixed;inset:0;background:rgba(14,16,22,.55);z-index:40;display:grid;place-items:center;padding:20px}.modal-card{width:min(760px,100%);max-height:90vh;overflow:auto;background:white;border-radius:24px;padding:28px;position:relative}.close{position:absolute;right:18px;top:14px;border:0;background:transparent;font-size:30px;cursor:pointer}.modal-card label{display:block;font-size:13px;font-weight:700;margin:16px 0}.modal-card input,.modal-card textarea{width:100%;margin-top:7px;border:1px solid var(--line);border-radius:12px;padding:12px;outline:0}.modal-card textarea{min-height:90px;resize:vertical}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:900px){.hero{grid-template-columns:1fr}.story-grid{grid-template-columns:1fr 1fr}.comparison-grid,.lower-grid{grid-template-columns:1fr}.toolbar{align-items:stretch;flex-direction:column}.search-wrap{min-width:0}.hero h1{font-size:48px}}@media(max-width:620px){.topbar{padding:0 16px}.tagline{display:none}.ghost{display:none}main{padding:0 14px 50px}.story-grid{grid-template-columns:1fr}.hero{padding-top:45px}.hero h1{font-size:40px}.story-header h2{font-size:36px}.form-grid{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-wrap">
+      <div class="brand">DUAL<span>LENS</span></div>
+      <div class="tagline">EVERY STORY. TWO PERSPECTIVES.</div>
+    </div>
+    <div class="top-actions">
+      <button class="ghost" id="aboutBtn">How it works</button>
+      <button class="primary" id="createBtn">Create Card</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">NEWS WITHOUT THE ECHO CHAMBER</div>
+        <h1>See the story.<br/>Understand the divide.</h1>
+        <p>DualLens compares how the left and right frame the same event, then separates shared facts from interpretation.</p>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-title">Today’s information diet</div>
+        <div class="diet-row"><span>Left</span><div class="bar"><i style="width:42%"></i></div><b>42%</b></div>
+        <div class="diet-row"><span>Center</span><div class="bar"><i style="width:34%"></i></div><b>34%</b></div>
+        <div class="diet-row"><span>Right</span><div class="bar"><i style="width:24%"></i></div><b>24%</b></div>
+        <div class="diet-note">Balanced coverage score: <strong>78</strong></div>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <div class="search-wrap">
+        <span>⌕</span>
+        <input id="searchInput" placeholder="Search stories, people, or topics" />
+      </div>
+      <div class="filters" id="filters"></div>
+    </section>
+
+    <section class="story-grid" id="storyGrid"></section>
+
+    <section class="detail hidden" id="detailView">
+      <button class="back" id="backBtn">← Back to stories</button>
+      <div class="story-header">
+        <div class="topic-pill" id="detailTopic"></div>
+        <h2 id="detailTitle"></h2>
+        <p id="detailSummary"></p>
+        <div class="meta"><span id="detailDate"></span><span>•</span><span id="detailSources"></span></div>
+      </div>
+
+      <div class="comparison-grid">
+        <article class="perspective left-panel">
+          <div class="panel-head"><span class="dot blue"></span>LEFT PERSPECTIVE</div>
+          <div class="source-line" id="leftSources"></div>
+          <div class="perspective-points" id="leftPoints"></div>
+        </article>
+
+        <article class="common-panel">
+          <div class="panel-head"><span class="dot purple"></span>COMMON GROUND</div>
+          <div class="common-list" id="commonPoints"></div>
+          <div class="quote">Different perspectives.<br/>Same facts.<br/><strong>Better understanding.</strong></div>
+        </article>
+
+        <article class="perspective right-panel">
+          <div class="panel-head"><span class="dot orange"></span>RIGHT PERSPECTIVE</div>
+          <div class="source-line" id="rightSources"></div>
+          <div class="perspective-points" id="rightPoints"></div>
+        </article>
+      </div>
+
+      <div class="lower-grid">
+        <article class="metric-card">
+          <h3>Headline comparison</h3>
+          <div id="headlines"></div>
+        </article>
+        <article class="metric-card">
+          <h3>Perspective score</h3>
+          <div class="score-wrap">
+            <div class="score-ring" id="scoreRing"><span id="scoreNumber"></span></div>
+            <div><b>Narrative divergence</b><p>Higher means the outlets frame the same story more differently.</p></div>
+          </div>
+        </article>
+        <article class="metric-card share-card">
+          <h3>Share this story</h3>
+          <p>Generate a clean DualLens card designed for X.</p>
+          <button class="primary wide" id="downloadCardBtn">Download Perspective Card</button>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal hidden" id="modal">
+    <div class="modal-card">
+      <button class="close" id="closeModal">×</button>
+      <h2>Create a DualLens Card</h2>
+      <p>Add the facts and both interpretations. DualLens will format them into a shareable story card.</p>
+      <label>Story title<input id="cardTitle" value="Federal Reserve cuts interest rates by 0.25%" /></label>
+      <label>What happened<textarea id="cardSummary">The Federal Reserve lowered its benchmark interest rate by a quarter point.</textarea></label>
+      <div class="form-grid">
+        <label>Left perspective<textarea id="cardLeft">Supports growth and reduces pressure on workers and borrowers.</textarea></label>
+        <label>Right perspective<textarea id="cardRight">Could reignite inflation and avoid needed fiscal discipline.</textarea></label>
+      </div>
+      <label>Common ground<textarea id="cardCommon">Rates were lowered by 0.25%. Markets reacted immediately. Future cuts remain uncertain.</textarea></label>
+      <button class="primary wide" id="customDownloadBtn">Create & Download Card</button>
+    </div>
+  </div>
+
+  <script>
+const stories = [
+  {
+    id:1, topic:'Immigration', title:'New immigration order reshapes federal enforcement', summary:'The administration directed federal agencies to change enforcement priorities and expand removal efforts.', date:'Today', sources:34, divergence:60,
+    leftSources:'CNN, MSNBC, NYT, Vox, The Atlantic', rightSources:'Fox News, Daily Wire, National Review, Washington Examiner',
+    left:[['Humanitarian concerns','Critics focus on family separation, vulnerable communities, and the human impact of rapid enforcement.'],['Civil liberties at risk','Opponents argue that expanded federal power could reduce due-process protections.'],['Implementation questions','Coverage highlights uncertainty about how broadly the order will be applied.'],['Likely court challenges','Legal experts expect lawsuits over executive authority and enforcement methods.']],
+    right:[['Stronger border enforcement','Supporters view the order as a direct response to illegal immigration and border-security concerns.'],['Campaign promise fulfilled','Coverage emphasizes that the administration is delivering on a central election pledge.'],['Public safety emphasized','Supporters argue the policy gives law enforcement stronger tools.'],['Federal authority reinforced','The president is portrayed as using legitimate executive power to direct federal agencies.']],
+    common:['The order was signed.','Federal enforcement priorities changed.','Implementation will involve multiple agencies.','Legal challenges are likely.'],
+    headlines:[['CNN','Immigration order sparks civil-rights concerns'],['Reuters','Administration signs broad immigration executive order'],['Fox News','President fulfills border-security promise']]
+  },
+  {
+    id:2, topic:'Economy', title:'Federal Reserve cuts interest rates by 0.25%', summary:'The central bank reduced its benchmark rate as inflation cooled and economic growth showed signs of slowing.', date:'2h ago', sources:28, divergence:47,
+    leftSources:'NYT, CNN, Vox, MSNBC', rightSources:'WSJ Opinion, Fox Business, National Review',
+    left:[['Relief for borrowers','Lower rates may reduce pressure on households, small businesses, and the housing market.'],['Protecting employment','Supporters say the cut can help prevent a sharper slowdown in hiring.'],['Inflation is easing','Coverage points to improving inflation data as justification for action.']],
+    right:[['Inflation risk remains','Critics argue the Fed may be moving before price pressures are fully controlled.'],['Fiscal discipline missing','Some coverage says monetary policy is compensating for excessive government spending.'],['Asset prices may rise','Lower rates could inflate stocks and housing before wages fully catch up.']],
+    common:['Rates were cut by 0.25%.','Markets reacted immediately.','Inflation has eased from its recent peak.','Future rate cuts are uncertain.'],
+    headlines:[['MSNBC','Rate cut offers relief to working families'],['AP','Federal Reserve lowers benchmark rate'],['Fox Business','Fed cut raises new inflation questions']]
+  },
+  {
+    id:3, topic:'Technology', title:'Congress advances new national AI safety rules', summary:'A bipartisan proposal would require disclosure, testing, and incident reporting for advanced AI systems.', date:'5h ago', sources:22, divergence:39,
+    leftSources:'The Verge, Wired, NYT, CNN', rightSources:'National Review, Fox, Washington Examiner',
+    left:[['Consumer protection','Supporters emphasize safeguards against discrimination, misinformation, and unsafe automation.'],['Transparency required','Developers would disclose testing methods and major risks.'],['Workers need protection','Coverage highlights potential labor disruption and the need for transition support.']],
+    right:[['Innovation may slow','Critics warn that heavy regulation could push development overseas.'],['Government overreach','Some argue agencies may gain too much control over private technology.'],['Small firms disadvantaged','Compliance costs may favor the largest technology companies.']],
+    common:['The bill creates new AI reporting requirements.','Advanced systems would face testing rules.','Both parties support some form of oversight.','The final enforcement structure is unresolved.'],
+    headlines:[['The Verge','AI safety bill moves forward with new guardrails'],['Reuters','Lawmakers advance bipartisan AI regulation'],['Washington Examiner','AI rules risk handing advantage to Big Tech']]
+  }
+];
+
+const categories=['All','Immigration','Economy','Technology'];
+let active='All'; let selected=null;
+const grid=document.getElementById('storyGrid');
+const filters=document.getElementById('filters');
+const detail=document.getElementById('detailView');
+const toolbar=document.querySelector('.toolbar');
+const hero=document.querySelector('.hero');
+
+function renderFilters(){filters.innerHTML=categories.map(c=>`<button class="filter ${active===c?'active':''}" data-cat="${c}">${c}</button>`).join('');filters.querySelectorAll('button').forEach(b=>b.onclick=()=>{active=b.dataset.cat;renderFilters();renderStories();});}
+function renderStories(){const q=document.getElementById('searchInput').value.toLowerCase();const list=stories.filter(s=>(active==='All'||s.topic===active)&&(s.title.toLowerCase().includes(q)||s.summary.toLowerCase().includes(q)));grid.innerHTML=list.map(s=>`<article class="story-card" data-id="${s.id}"><div class="story-image"><h3>${s.title}</h3></div><div class="story-body"><div class="topic-pill">${s.topic}</div><p>${s.summary}</p><div class="lens-bars"><i></i><i></i></div><div class="story-footer"><span>${s.date}</span><span>${s.sources} sources</span></div></div></article>`).join('');grid.querySelectorAll('.story-card').forEach(c=>c.onclick=()=>openStory(+c.dataset.id));}
+function pointsHTML(arr){return arr.map(([h,p])=>`<div class="point"><h4>${h}</h4><p>${p}</p></div>`).join('')}
+function openStory(id){selected=stories.find(s=>s.id===id);grid.classList.add('hidden');toolbar.classList.add('hidden');hero.classList.add('hidden');detail.classList.remove('hidden');document.getElementById('detailTopic').textContent=selected.topic;document.getElementById('detailTitle').textContent=selected.title;document.getElementById('detailSummary').textContent=selected.summary;document.getElementById('detailDate').textContent=selected.date;document.getElementById('detailSources').textContent=`${selected.sources} sources analyzed`;document.getElementById('leftSources').textContent=`Sources: ${selected.leftSources}`;document.getElementById('rightSources').textContent=`Sources: ${selected.rightSources}`;document.getElementById('leftPoints').innerHTML=pointsHTML(selected.left);document.getElementById('rightPoints').innerHTML=pointsHTML(selected.right);document.getElementById('commonPoints').innerHTML=selected.common.map(x=>`<div class="common-item"><span class="check">✓</span><span>${x}</span></div>`).join('');document.getElementById('headlines').innerHTML=selected.headlines.map(([src,h])=>`<div class="headline-row"><small>${src}</small><p>${h}</p></div>`).join('');document.getElementById('scoreNumber').textContent=`${selected.divergence}%`;document.getElementById('scoreRing').style.background=`conic-gradient(var(--purple) 0deg, var(--purple) ${selected.divergence*3.6}deg,#eceaf3 ${selected.divergence*3.6}deg)`;window.scrollTo({top:0,behavior:'smooth'});}
+function closeStory(){detail.classList.add('hidden');grid.classList.remove('hidden');toolbar.classList.remove('hidden');hero.classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}
+
+document.getElementById('backBtn').onclick=closeStory;document.getElementById('searchInput').oninput=renderStories;
+const modal=document.getElementById('modal');document.getElementById('createBtn').onclick=()=>modal.classList.remove('hidden');document.getElementById('closeModal').onclick=()=>modal.classList.add('hidden');document.getElementById('aboutBtn').onclick=()=>alert('DualLens separates verified facts from competing interpretations, then shows both sides in a consistent format.');
+
+function wrap(text,max){const words=text.split(' ');const lines=[];let line='';for(const w of words){if((line+' '+w).trim().length>max){lines.push(line.trim());line=w}else line+=' '+w}if(line.trim())lines.push(line.trim());return lines}
+function esc(s){return s.replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function textBlock(lines,x,y,size,weight,color,lineH,anchor='start'){return lines.map((l,i)=>`<text x="${x}" y="${y+i*lineH}" font-family="Arial, sans-serif" font-size="${size}" font-weight="${weight}" fill="${color}" text-anchor="${anchor}">${esc(l)}</text>`).join('')}
+function downloadSVG({title,summary,left,right,common}){const titleLines=wrap(title,35).slice(0,3);const summaryLines=wrap(summary,58).slice(0,3);const leftLines=wrap(left,32).slice(0,5);const rightLines=wrap(right,32).slice(0,5);const commonLines=common.split('.').map(s=>s.trim()).filter(Boolean).slice(0,4);const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350"><rect width="1080" height="1350" fill="#f8f8f6"/><rect x="28" y="28" width="1024" height="1294" rx="34" fill="#fff" stroke="#dfe2e8"/><text x="540" y="86" font-family="Arial" font-size="42" font-weight="800" text-anchor="middle" fill="#11131a">DUAL<tspan font-weight="400">LENS</tspan></text><text x="540" y="119" font-family="Arial" font-size="15" letter-spacing="3" text-anchor="middle" fill="#7b7f88">EVERY STORY. TWO PERSPECTIVES.</text>${textBlock(titleLines,540,190,54,800,'#11131a',60,'middle')}${textBlock(summaryLines,540,390,22,400,'#626772',31,'middle')}<rect x="60" y="500" width="445" height="455" rx="24" fill="#eef5ff" stroke="#1f63c6" stroke-width="3"/><rect x="575" y="500" width="445" height="455" rx="24" fill="#fff4e8" stroke="#e87916" stroke-width="3"/><text x="92" y="550" font-family="Arial" font-size="22" font-weight="800" fill="#1f63c6">LEFT PERSPECTIVE</text><text x="607" y="550" font-family="Arial" font-size="22" font-weight="800" fill="#e87916">RIGHT PERSPECTIVE</text>${leftLines.map((l,i)=>`<text x="92" y="620" dy="${i*45}" font-family="Arial" font-size="24" fill="#21304a">${i===0?'• ':''}${esc(l)}</text>`).join('')}${rightLines.map((l,i)=>`<text x="607" y="620" dy="${i*45}" font-family="Arial" font-size="24" fill="#4a2d14">${i===0?'• ':''}${esc(l)}</text>`).join('')}<rect x="160" y="1000" width="760" height="220" rx="24" fill="#f3efff" stroke="#6c4bc3" stroke-width="2"/><text x="540" y="1045" font-family="Arial" font-size="22" font-weight="800" text-anchor="middle" fill="#6c4bc3">COMMON GROUND</text>${commonLines.map((l,i)=>`<circle cx="230" cy="1095" r="11" fill="#6c4bc3"/><text x="230" y="1101" font-family="Arial" font-size="15" text-anchor="middle" fill="#fff">✓</text><text x="260" y="1103" font-family="Arial" font-size="22" fill="#282632">${esc(l)}</text>`).join('').replaceAll('cy="1095"','cy="1095"')}<text x="540" y="1280" font-family="Arial" font-size="18" font-weight="700" text-anchor="middle" fill="#11131a">SEE BOTH. UNDERSTAND MORE.</text></svg>`;
+  // fix positions for common lines
+  let fixed=svg; commonLines.forEach((_,i)=>{if(i>0){fixed=fixed.replace('cy="1095"',`cy="${1095+i*38}"`).replace('y="1101"',`y="${1101+i*38}"`).replace('y="1103"',`y="${1103+i*38}"`)}});
+  const blob=new Blob([fixed],{type:'image/svg+xml'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='duallens-perspective-card.svg';a.click();URL.revokeObjectURL(a.href)
+}
+document.getElementById('downloadCardBtn').onclick=()=>downloadSVG({title:selected.title,summary:selected.summary,left:selected.left[0][0]+'. '+selected.left[0][1],right:selected.right[0][0]+'. '+selected.right[0][1],common:selected.common.join('. ')});
+document.getElementById('customDownloadBtn').onclick=()=>downloadSVG({title:document.getElementById('cardTitle').value,summary:document.getElementById('cardSummary').value,left:document.getElementById('cardLeft').value,right:document.getElementById('cardRight').value,common:document.getElementById('cardCommon').value});
+renderFilters();renderStories();
+
+</script>
+</body>
+</html>

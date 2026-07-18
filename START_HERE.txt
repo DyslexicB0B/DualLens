@@ -1,0 +1,9 @@
+DUALLENS FIXED VERSION
+
+FASTEST OPTION
+1. Double-click DualLens.html
+2. It opens directly in Edge or Chrome
+3. No extraction, installation, or internet connection is required for the app layout
+
+PROJECT FILES
+The remaining index.html, styles.css, and app.js files are included for future development.
