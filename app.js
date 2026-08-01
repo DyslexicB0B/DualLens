@@ -1,344 +1,153 @@
 const $=id=>document.getElementById(id);
-const canvas=$("exportCanvas");
-const ctx=canvas.getContext("2d");
+const canvas=$("exportCanvas"),ctx=canvas.getContext("2d");
+let leftImageData="",rightImageData="";
 
-const defaults={
-  headlineFont:"Arial Black",
-  bodyFont:"Arial",
-  headlineSize:"64",
-  category:"POLITICS",
-  headline:"Trump Announces New Tariffs",
-  leftLabel:"SUPPORTERS",
-  rightLabel:"CRITICS",
-  leftPoints:"Protects U.S. jobs\nBuilds domestic factories\nStrengthens national security",
-  rightPoints:"Raises consumer prices\nHurts small businesses\nRisks trade retaliation",
-  leftSourceNames:"Reuters\nWhite House\n@TradePolicy",
-  rightSourceNames:"AP\nBrookings\n@EconomistJane",
-  leftSourceLinks:"https://reuters.com/\nhttps://whitehouse.gov/\nhttps://x.com/TradePolicy",
-  rightSourceLinks:"https://apnews.com/\nhttps://brookings.edu/\nhttps://x.com/EconomistJane",
-  postCopy:"Same headline. Two completely different ways to see it.\n\nWhich lens makes the stronger case—and what are we missing?",
-  draftName:"Untitled Card"
-};
-
-const fieldIds=Object.keys(defaults);
-
-function lines(id){
-  return $(id).value.split("\n").map(v=>v.trim()).filter(Boolean);
-}
-
+function lines(id){return $(id).value.split("\n").map(v=>v.trim()).filter(Boolean)}
 function sourcePairs(namesId,linksId){
-  const names=lines(namesId);
-  const links=lines(linksId);
+  const names=lines(namesId),links=lines(linksId);
   return names.map((name,i)=>({name,link:links[i]||""}));
 }
-
-function createChips(targetId,pairs){
-  const target=$(targetId);
-  target.innerHTML="";
-  pairs.forEach(source=>{
-    const chip=document.createElement("span");
-    chip.className="source-chip";
-    chip.textContent=source.name;
-    target.append(chip);
+function makePoint(text,side){
+  const row=document.createElement("div");row.className="point";
+  const dot=document.createElement("div");dot.className=`icon-dot ${side==="left"?"left-dot":"right-dot"}`;
+  const span=document.createElement("span");span.textContent=text;
+  row.append(dot,span);return row;
+}
+function makeChips(targetId,pairs,side){
+  const target=$(targetId);target.innerHTML="";
+  pairs.forEach(src=>{
+    const chip=document.createElement("span");chip.className=`source-chip ${side}`;chip.textContent=src.name;target.append(chip);
   });
 }
-
-function renderPreview(){
-  const headlineFont=$("headlineFont").value;
-  const bodyFont=$("bodyFont").value;
-  const headlineSize=Number($("headlineSize").value);
-
-  $("card").style.fontFamily=bodyFont;
-  $("cardHeadline").style.fontFamily=headlineFont;
-  $("cardHeadline").style.fontSize=`clamp(30px, ${headlineSize/16}vw, ${headlineSize}px)`;
-
-  $("cardCategory").textContent=$("category").value.trim().toUpperCase();
-  $("cardHeadline").textContent=$("headline").value.trim();
-  $("cardLeftLabel").textContent=$("leftLabel").value.trim().toUpperCase()||"LENS A";
-  $("cardRightLabel").textContent=$("rightLabel").value.trim().toUpperCase()||"LENS B";
-
-  const left=lines("leftPoints").slice(0,3);
-  const right=lines("rightPoints").slice(0,3);
-  const rows=$("comparisonRows");
-  rows.innerHTML="";
-
-  for(let i=0;i<3;i++){
-    const row=document.createElement("div");
-    row.className="compare-row";
-
-    const leftCell=document.createElement("div");
-    leftCell.className="compare-cell";
-    leftCell.textContent=left[i]||"";
-
-    const divider=document.createElement("div");
-    divider.className="compare-divider";
-
-    const rightCell=document.createElement("div");
-    rightCell.className="compare-cell";
-    rightCell.textContent=right[i]||"";
-
-    row.append(leftCell,divider,rightCell);
-    rows.append(row);
-  }
-
-  createChips("leftSourceFooter",sourcePairs("leftSourceNames","leftSourceLinks"));
-  createChips("rightSourceFooter",sourcePairs("rightSourceNames","rightSourceLinks"));
+function applyMode(side){
+  const pane=$(side+"Pane"),mode=$(side+"Mode").value,img=$(side+"ImagePreview"),text=$(side+"TextContent");
+  pane.classList.toggle("mixed",mode==="mixed");
+  text.classList.toggle("hidden",mode==="image");
+  img.classList.toggle("hidden",mode==="text" || !img.src);
+  img.style.objectFit=$(side+"Fit").value;
 }
+function render(){
+  $("cardCategory").textContent=$("category").value.toUpperCase();
+  $("cardHeadline").textContent=$("headline").value;
+  $("cardLeftLabel").textContent=$("leftLabel").value.toUpperCase();
+  $("cardRightLabel").textContent=$("rightLabel").value.toUpperCase();
 
-function wrapText(text,maxWidth,font){
-  ctx.font=font;
-  const words=String(text||"").trim().split(/\s+/).filter(Boolean);
-  const rows=[];
-  let line="";
+  const left=$("leftTextContent"),right=$("rightTextContent");
+  left.innerHTML="";right.innerHTML="";
+  lines("leftPoints").slice(0,3).forEach(t=>left.append(makePoint(t,"left")));
+  lines("rightPoints").slice(0,3).forEach(t=>right.append(makePoint(t,"right")));
 
-  words.forEach(word=>{
-    const test=line?`${line} ${word}`:word;
-    if(ctx.measureText(test).width>maxWidth&&line){
-      rows.push(line);
-      line=word;
-    }else{
-      line=test;
-    }
+  makeChips("leftSourceFooter",sourcePairs("leftSourceNames","leftSourceLinks"),"left");
+  makeChips("rightSourceFooter",sourcePairs("rightSourceNames","rightSourceLinks"),"right");
+  applyMode("left");applyMode("right");
+  $("saveStatus").textContent="Saved";
+}
+function loadImage(input,side){
+  const file=input.files?.[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    if(side==="left")leftImageData=reader.result;else rightImageData=reader.result;
+    $(side+"ImagePreview").src=reader.result;
+    if($(side+"Mode").value==="text")$(side+"Mode").value="image";
+    render();
+  };
+  reader.readAsDataURL(file);
+}
+function removeImage(side){
+  if(side==="left")leftImageData="";else rightImageData="";
+  $(side+"ImagePreview").removeAttribute("src");
+  $(side+"Mode").value="text";
+  render();
+}
+function wrapText(text,max,font){
+  ctx.font=font;const words=String(text||"").split(/\s+/).filter(Boolean),rows=[];let line="";
+  words.forEach(w=>{const test=line?line+" "+w:w;if(ctx.measureText(test).width>max&&line){rows.push(line);line=w}else line=test});
+  if(line)rows.push(line);return rows;
+}
+function drawWrapped(text,x,y,max,lh,font,color,maxLines=99,align="left"){
+  ctx.font=font;ctx.fillStyle=color;ctx.textAlign=align;
+  const rows=wrapText(text,max,font).slice(0,maxLines);rows.forEach((r,i)=>ctx.fillText(r,x,y+i*lh));
+  ctx.textAlign="left";return rows.length*lh;
+}
+function drawImageFit(img,x,y,w,h,fit){
+  if(!img.complete||!img.naturalWidth)return;
+  const ir=img.naturalWidth/img.naturalHeight,br=w/h;
+  let dw,dh,dx,dy;
+  if((fit==="cover"&&ir>br)||(fit==="contain"&&ir<br)){dh=h;dw=h*ir}
+  else{dw=w;dh=w/ir}
+  dx=x+(w-dw)/2;dy=y+(h-dh)/2;
+  ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();ctx.drawImage(img,dx,dy,dw,dh);ctx.restore();
+}
+function drawPointList(items,x,y,w,h,side){
+  const rowH=h/3,color=side==="left"?"#1769ff":"#ef2f2f";
+  items.slice(0,3).forEach((item,i)=>{
+    const top=y+i*rowH;
+    if(i>0){ctx.fillStyle="#e5e7eb";ctx.fillRect(x,top,w,2)}
+    ctx.fillStyle=color;ctx.beginPath();ctx.arc(x+28,top+rowH/2,22,0,Math.PI*2);ctx.fill();
+    drawWrapped(item,x+65,top+rowH/2-16,w-70,36,"800 30px Arial","#111827",3);
   });
-
-  if(line)rows.push(line);
-  return rows;
 }
-
-function drawWrapped(text,x,y,maxWidth,lineHeight,font,color,maxLines=99){
-  ctx.font=font;
-  ctx.fillStyle=color;
-  const rows=wrapText(text,maxWidth,font).slice(0,maxLines);
-  rows.forEach((row,i)=>ctx.fillText(row,x,y+i*lineHeight));
-  return rows.length*lineHeight;
-}
-
 function renderCanvas(){
-  const W=1080,H=1350,margin=70,innerW=W-margin*2;
-  const headlineFont=$("headlineFont").value;
-  const bodyFont=$("bodyFont").value;
-  const headlineSize=Number($("headlineSize").value);
+  const W=1080,H=1350,margin=62,inner=W-margin*2;
+  ctx.clearRect(0,0,W,H);ctx.fillStyle="#fff";ctx.fillRect(0,0,W,H);
+  ctx.font="900 16px Arial";ctx.fillStyle="#697386";ctx.fillText($("category").value.toUpperCase(),margin,80);
 
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle="#fff";
-  ctx.fillRect(0,0,W,H);
+  ctx.fillStyle="#d9dee6";ctx.fillRect(margin,112,360,2);ctx.fillRect(W-margin-360,112,360,2);
+  ctx.fillStyle="#1769ff";ctx.beginPath();ctx.arc(W/2-10,112,16,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle="#ef2f2f";ctx.beginPath();ctx.arc(W/2+10,112,16,0,Math.PI*2);ctx.fill();
 
-  let y=75;
-  ctx.font=`900 18px ${bodyFont}`;
-  ctx.fillStyle="#6b7280";
-  ctx.fillText($("category").value.trim().toUpperCase(),margin,y);
+  drawWrapped($("headline").value,W/2,170,inner,66,"900 60px Arial","#111827",3,"center");
 
-  y+=55;
-  const headlineHeight=drawWrapped(
-    $("headline").value.trim(),
-    margin,
-    y,
-    innerW,
-    headlineSize*1.08,
-    `900 ${headlineSize}px ${headlineFont}`,
-    "#111827",
-    3
-  );
+  const colGap=52,col=(inner-colGap)/2,leftX=margin,rightX=margin+col+colGap,headY=365;
+  ctx.font="900 27px Arial";ctx.fillStyle="#1769ff";ctx.fillText($("leftLabel").value.toUpperCase(),leftX,headY);
+  ctx.fillStyle="#ef2f2f";ctx.fillText($("rightLabel").value.toUpperCase(),rightX,headY);
+  ctx.fillStyle="#1769ff";ctx.fillRect(leftX,headY+18,col,6);ctx.fillStyle="#ef2f2f";ctx.fillRect(rightX,headY+18,col,6);
+  ctx.fillStyle="#c4cad3";ctx.fillRect(W/2,headY+55,1,650);
 
-  y+=headlineHeight+40;
+  const contentY=headY+60,contentH=630;
+  const leftMode=$("leftMode").value,rightMode=$("rightMode").value;
+  const leftImg=$("leftImagePreview"),rightImg=$("rightImagePreview");
 
-  const gap=48;
-  const col=(innerW-gap)/2;
-  const leftX=margin;
-  const rightX=margin+col+gap;
-
-  ctx.font=`900 28px ${bodyFont}`;
-  ctx.fillStyle="#1769ff";
-  ctx.fillText(($("leftLabel").value||"LENS A").toUpperCase(),leftX,y);
-  ctx.fillStyle="#ef4444";
-  ctx.fillText(($("rightLabel").value||"LENS B").toUpperCase(),rightX,y);
-
-  y+=18;
-  ctx.fillStyle="#1769ff";
-  ctx.fillRect(leftX,y,col,7);
-  ctx.fillStyle="#ef4444";
-  ctx.fillRect(rightX,y,col,7);
-
-  const left=lines("leftPoints").slice(0,3);
-  const right=lines("rightPoints").slice(0,3);
-  const rowTop=y+48;
-  const rowHeight=245;
-
-  for(let i=0;i<3;i++){
-    const top=rowTop+i*rowHeight;
-
-    if(i>0){
-      ctx.fillStyle="#e5e7eb";
-      ctx.fillRect(margin,top-18,innerW,2);
-    }
-
-    ctx.fillStyle="#9ca3af";
-    ctx.fillRect(margin+col+gap/2-1,top+8,1,rowHeight-62);
-
-    drawWrapped(left[i]||"",leftX,top+58,col-20,46,`800 39px ${bodyFont}`,"#111827",3);
-    drawWrapped(right[i]||"",rightX,top+58,col-20,46,`800 39px ${bodyFont}`,"#111827",3);
+  if(leftMode==="text")drawPointList(lines("leftPoints"),leftX,contentY,col,contentH,"left");
+  else if(leftMode==="image")drawImageFit(leftImg,leftX,contentY,col,contentH,$("leftFit").value);
+  else{
+    drawPointList(lines("leftPoints"),leftX,contentY,col,220,"left");
+    drawImageFit(leftImg,leftX,contentY+240,col,390,$("leftFit").value);
   }
 
-  const footerY=1206;
-  ctx.fillStyle="#111827";
-  ctx.fillRect(margin,footerY,innerW,2);
-
-  ctx.font=`900 14px ${bodyFont}`;
-  ctx.fillStyle="#6b7280";
-  ctx.fillText("LENS A SOURCES",leftX,footerY+38);
-  ctx.fillText("LENS B SOURCES",rightX,footerY+38);
-
-  drawWrapped(
-    sourcePairs("leftSourceNames","leftSourceLinks").map(s=>s.name).join(" • "),
-    leftX,
-    footerY+72,
-    col-10,
-    25,
-    `700 18px ${bodyFont}`,
-    "#111827",
-    2
-  );
-
-  drawWrapped(
-    sourcePairs("rightSourceNames","rightSourceLinks").map(s=>s.name).join(" • "),
-    rightX,
-    footerY+72,
-    col-10,
-    25,
-    `700 18px ${bodyFont}`,
-    "#111827",
-    2
-  );
-}
-
-function populateSources(){
-  $("dialogLeftTitle").textContent=$("leftLabel").value||"Lens A";
-  $("dialogRightTitle").textContent=$("rightLabel").value||"Lens B";
-
-  [
-    ["dialogLeftLinks","leftSourceNames","leftSourceLinks"],
-    ["dialogRightLinks","rightSourceNames","rightSourceLinks"]
-  ].forEach(([wrapId,namesId,linksId])=>{
-    const wrap=$(wrapId);
-    wrap.innerHTML="";
-
-    sourcePairs(namesId,linksId).forEach(source=>{
-      const a=document.createElement("a");
-      a.textContent=source.name;
-      a.href=source.link||"#";
-      a.target="_blank";
-      a.rel="noopener noreferrer";
-      wrap.append(a);
-    });
-  });
-}
-
-function values(){
-  const data={};
-  fieldIds.forEach(id=>data[id]=$(id).value);
-  return data;
-}
-
-function apply(data){
-  fieldIds.forEach(id=>{
-    if(data[id]!==undefined)$(id).value=data[id];
-  });
-  renderPreview();
-}
-
-function renderDrafts(){
-  const wrap=$("draftList");
-  const drafts=JSON.parse(localStorage.getItem("duallensV9Drafts")||"[]");
-  wrap.innerHTML="";
-
-  if(!drafts.length){
-    wrap.innerHTML="<span class='message'>No saved drafts yet.</span>";
-    return;
+  if(rightMode==="text")drawPointList(lines("rightPoints"),rightX,contentY,col,contentH,"right");
+  else if(rightMode==="image")drawImageFit(rightImg,rightX,contentY,col,contentH,$("rightFit").value);
+  else{
+    drawPointList(lines("rightPoints"),rightX,contentY,col,220,"right");
+    drawImageFit(rightImg,rightX,contentY+240,col,390,$("rightFit").value);
   }
 
-  drafts.forEach((draft,index)=>{
-    const row=document.createElement("div");
-    row.className="draft-item";
+  ctx.fillStyle="#dce1e8";ctx.fillRect(margin,1100,inner,2);
+  const leftSources=sourcePairs("leftSourceNames","leftSourceLinks").map(s=>s.name).join(" • ");
+  const rightSources=sourcePairs("rightSourceNames","rightSourceLinks").map(s=>s.name).join(" • ");
+  drawWrapped(leftSources,leftX,1140,col,24,"700 17px Arial","#1769ff",3);
+  drawWrapped(rightSources,rightX,1140,col,24,"700 17px Arial","#ef2f2f",3);
 
-    const load=document.createElement("button");
-    load.className="ghost draft-load";
-    load.textContent=draft.draftName||"Untitled";
-    load.addEventListener("click",()=>apply(draft));
-
-    const del=document.createElement("button");
-    del.className="ghost draft-delete";
-    del.textContent="×";
-    del.addEventListener("click",()=>{
-      drafts.splice(index,1);
-      localStorage.setItem("duallensV9Drafts",JSON.stringify(drafts));
-      renderDrafts();
-    });
-
-    row.append(load,del);
-    wrap.append(row);
-  });
+  ctx.fillStyle="#dce1e8";ctx.fillRect(margin,1250,inner,2);
+  ctx.font="900 22px Arial";ctx.fillStyle="#111827";ctx.textAlign="center";ctx.fillText("DUALLENS",W/2,1295);
+  ctx.font="700 13px Arial";ctx.fillStyle="#697386";ctx.fillText("Same story. Different lens.",W/2,1320);ctx.textAlign="left";
 }
-
-function saveDraft(){
-  const drafts=JSON.parse(localStorage.getItem("duallensV9Drafts")||"[]");
-  drafts.unshift({...values(),savedAt:new Date().toISOString()});
-  localStorage.setItem("duallensV9Drafts",JSON.stringify(drafts.slice(0,25)));
-  $("message").textContent="Draft saved on this device.";
-  renderDrafts();
-}
-
-fieldIds
-  .filter(id=>id!=="draftName")
-  .forEach(id=>{
-    $(id).addEventListener("input",renderPreview);
-    $(id).addEventListener("change",renderPreview);
-  });
-
-$("saveBtn").addEventListener("click",saveDraft);
-
-$("resetBtn").addEventListener("click",()=>{
-  apply(defaults);
-  $("message").textContent="Example restored.";
-});
-
-$("sourcesBtn").addEventListener("click",()=>{
-  populateSources();
-  $("sourcesDialog").showModal();
-});
-
-$("closeSourcesBtn").addEventListener("click",()=>$("sourcesDialog").close());
-
-$("copyBtn").addEventListener("click",async()=>{
-  try{
-    await navigator.clipboard.writeText($("postCopy").value);
-  }catch{
-    $("postCopy").select();
-    document.execCommand("copy");
-  }
-  $("message").textContent="Post text copied.";
-});
-
-$("previewBtn").addEventListener("click",()=>{
-  renderCanvas();
-  $("phonePostCopy").textContent=$("postCopy").value;
-  $("phoneImage").src=canvas.toDataURL("image/png");
-  $("phoneModal").classList.remove("hidden");
-});
-
-$("closePhoneBtn").addEventListener("click",()=>$("phoneModal").classList.add("hidden"));
-
-$("phoneModal").addEventListener("click",event=>{
-  if(event.target===$("phoneModal"))$("phoneModal").classList.add("hidden");
-});
-
+["category","headline","leftLabel","rightLabel","leftMode","rightMode","leftPoints","rightPoints","leftSourceNames","rightSourceNames","leftSourceLinks","rightSourceLinks","leftFit","rightFit"]
+.forEach(id=>{$(id).addEventListener("input",render);$(id).addEventListener("change",render)});
+$("leftImageInput").addEventListener("change",e=>loadImage(e.target,"left"));
+$("rightImageInput").addEventListener("change",e=>loadImage(e.target,"right"));
+$("removeLeftImage").addEventListener("click",()=>removeImage("left"));
+$("removeRightImage").addEventListener("click",()=>removeImage("right"));
+$("copyBtn").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("postCopy").value)}catch{$("postCopy").select();document.execCommand("copy")}});
+$("previewBtn").addEventListener("click",()=>{renderCanvas();$("phonePostCopy").textContent=$("postCopy").value;$("phoneImage").src=canvas.toDataURL("image/png");$("phoneDialog").showModal()});
+$("closePhoneBtn").addEventListener("click",()=>$("phoneDialog").close());
 $("exportBtn").addEventListener("click",()=>{
   renderCanvas();
-  const link=document.createElement("a");
-  link.download="duallens-perspective-card.png";
-  link.href=canvas.toDataURL("image/png");
-  link.click();
-  $("message").textContent="PNG sent to your Downloads folder.";
+  canvas.toBlob(blob=>{
+    if(!blob)return alert("Export failed. Please try again.");
+    const url=URL.createObjectURL(blob),a=document.createElement("a");
+    a.href=url;a.download="duallens-card.png";document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  },"image/png");
 });
-
-renderDrafts();
-renderPreview();
+render();
