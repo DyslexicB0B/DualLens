@@ -200,3 +200,5 @@ canvas {
     flex-direction: column;
   }
 }
+
+.header-actions{display:flex;align-items:center;gap:10px}.drafts-box{margin-top:18px;padding-top:16px;border-top:1px solid var(--border)}.drafts-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.draft-list{display:grid;gap:8px}.draft-row{display:flex;gap:8px}.draft-row button:first-child{flex:1;text-align:left}.text-button{background:transparent;color:var(--muted);padding:4px 0}.dark{--bg:#111827;--panel:#182230;--text:#f8fafc;--muted:#aab4c3;--border:#334155;--navy:#f8fafc}.dark input,.dark textarea,.dark select{background:#111827;color:#f8fafc}.dark .canvas-wrap{background:#0b1220}

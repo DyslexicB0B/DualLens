@@ -14,7 +14,7 @@
           <p class="eyebrow">DUALLENS</p>
           <h1>Post Studio</h1>
         </div>
-        <span class="status-pill">GitHub Pages Ready</span>
+        <div class="header-actions"><button id="themeBtn" class="secondary" type="button">Dark mode</button><span class="status-pill">GitHub Pages Ready</span></div>
       </div>
 
       <p class="intro">Build a balanced social post, preview it live, and export it as a PNG.</p>
@@ -77,6 +77,21 @@ Could affect labor markets</textarea>
 
       <div class="two-col">
         <label>
+          Visual template
+          <select id="templateStyle">
+            <option value="newsroom">Newsroom</option>
+            <option value="minimal">Minimal</option>
+            <option value="bold">Bold</option>
+          </select>
+        </label>
+        <label>
+          Draft name
+          <input id="draftName" value="Untitled Story" maxlength="50" />
+        </label>
+      </div>
+
+      <div class="two-col">
+        <label>
           Export format
           <select id="format">
             <option value="portrait">Portrait · 1080 × 1350</option>
@@ -97,10 +112,16 @@ Could affect labor markets</textarea>
 
       <div class="actions">
         <button id="downloadBtn" class="primary">Export PNG</button>
+        <button id="saveBtn" class="secondary">Save Draft</button>
         <button id="resetBtn" class="secondary">Reset Example</button>
       </div>
 
       <p id="message" class="message" aria-live="polite"></p>
+
+      <div class="drafts-box">
+        <div class="drafts-head"><strong>Saved drafts</strong><button id="clearDraftsBtn" class="text-button" type="button">Clear all</button></div>
+        <div id="draftList" class="draft-list"></div>
+      </div>
     </section>
 
     <section class="preview-panel">

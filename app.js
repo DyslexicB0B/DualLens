@@ -32,7 +32,9 @@ const fieldIds = [
   "whyMatters",
   "sources",
   "format",
-  "labelStyle"
+  "labelStyle",
+  "templateStyle",
+  "draftName"
 ];
 
 function setCanvasSize() {
@@ -334,3 +336,69 @@ $("downloadBtn").addEventListener("click", () => {
 });
 
 render();
+
+
+function getDrafts() {
+  try { return JSON.parse(localStorage.getItem("duallensDrafts") || "[]"); }
+  catch { return []; }
+}
+
+function collectDraft() {
+  const draft = {};
+  fieldIds.forEach((id) => { draft[id] = $(id).value; });
+  draft.savedAt = new Date().toISOString();
+  return draft;
+}
+
+function renderDrafts() {
+  const list = $("draftList");
+  const drafts = getDrafts();
+  list.innerHTML = "";
+  if (!drafts.length) {
+    list.innerHTML = "<small>No saved drafts yet.</small>";
+    return;
+  }
+  drafts.forEach((draft, index) => {
+    const row = document.createElement("div");
+    row.className = "draft-row";
+    const load = document.createElement("button");
+    load.className = "secondary";
+    load.textContent = draft.draftName || `Draft ${index + 1}`;
+    load.addEventListener("click", () => {
+      fieldIds.forEach((id) => { if (draft[id] !== undefined) $(id).value = draft[id]; });
+      render();
+      $("message").textContent = "Draft loaded.";
+    });
+    const del = document.createElement("button");
+    del.className = "secondary";
+    del.textContent = "×";
+    del.addEventListener("click", () => {
+      drafts.splice(index, 1);
+      localStorage.setItem("duallensDrafts", JSON.stringify(drafts));
+      renderDrafts();
+    });
+    row.append(load, del);
+    list.append(row);
+  });
+}
+
+$("saveBtn").addEventListener("click", () => {
+  const drafts = getDrafts();
+  drafts.unshift(collectDraft());
+  localStorage.setItem("duallensDrafts", JSON.stringify(drafts.slice(0, 20)));
+  renderDrafts();
+  $("message").textContent = "Draft saved in this browser.";
+});
+
+$("clearDraftsBtn").addEventListener("click", () => {
+  localStorage.removeItem("duallensDrafts");
+  renderDrafts();
+  $("message").textContent = "Saved drafts cleared.";
+});
+
+$("themeBtn").addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  $("themeBtn").textContent = document.body.classList.contains("dark") ? "Light mode" : "Dark mode";
+});
+
+renderDrafts();
