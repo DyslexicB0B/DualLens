@@ -3,26 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DualLens Studio v5</title>
+  <title>DualLens Studio v6</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="topbar">
-    <div class="brand-lockup">
+    <div>
       <div class="brand">DUALLENS</div>
-      <div class="subbrand">Create a better X post in under three minutes.</div>
+      <div class="subbrand">Every story. Two perspectives.</div>
     </div>
+
     <div class="top-actions">
-      <button id="saveBtn" class="ghost" type="button">Save draft</button>
+      <button id="saveBtn" class="ghost" type="button">Save</button>
       <button id="previewBtn" class="ghost" type="button">Preview on X</button>
       <button id="downloadBtn" class="primary" type="button">Export PNG</button>
     </div>
   </header>
 
-  <main class="app-grid">
-    <aside class="left-rail">
-      <section class="panel ai-panel">
-        <p class="eyebrow">START WITH AI</p>
+  <main class="workspace">
+    <aside class="create-panel">
+      <section class="panel">
+        <p class="eyebrow">CREATE</p>
         <h1>What are we covering?</h1>
 
         <div class="mode-tabs">
@@ -31,7 +32,7 @@
           <button class="mode-tab" data-mode="article" type="button">Article</button>
         </div>
 
-        <textarea id="aiInput" rows="6" placeholder="Type a topic, paste a headline, or add an article link."></textarea>
+        <textarea id="aiInput" rows="6" placeholder="Example: Trump tariffs"></textarea>
 
         <label>
           Perspective style
@@ -44,17 +45,12 @@
           </select>
         </label>
 
-        <label>
-          Optional context
-          <textarea id="aiContext" rows="4" placeholder="Names, facts, framing, or anything the AI should consider."></textarea>
-        </label>
-
-        <button id="generateBtn" class="primary full" type="button">Generate first draft</button>
+        <button id="generateBtn" class="primary full" type="button">Generate perspectives</button>
         <p id="aiStatus" class="status" aria-live="polite"></p>
       </section>
 
       <section class="panel compact">
-        <p class="eyebrow">FORMAT</p>
+        <p class="eyebrow">POST FORMAT</p>
         <select id="format">
           <option value="landscape">X Landscape · 1600 × 900</option>
           <option value="square">Square · 1080 × 1080</option>
@@ -69,85 +65,90 @@
     </aside>
 
     <section class="canvas-column">
-      <div class="canvas-toolbar">
+      <div class="canvas-top">
         <div>
-          <p class="eyebrow">LIVE CANVAS</p>
-          <h2>Edit the story directly</h2>
+          <p class="eyebrow">LIVE POST</p>
+          <h2>Click any text to edit</h2>
         </div>
         <span id="sizeBadge" class="pill">1600 × 900</span>
       </div>
 
-      <div class="direct-editor" id="directEditor">
-        <div class="direct-brand">DUALLENS</div>
-
-        <div class="editable headline-edit" contenteditable="true" id="headlineEdit" data-placeholder="Headline">
-          Congress debates a new national immigration proposal
+      <div id="directEditor" class="direct-editor">
+        <div id="headlineEdit" class="editable headline" contenteditable="true">
+          Trump announces new tariffs
         </div>
 
-        <div class="section-label">WHAT WE KNOW</div>
-        <div class="divider black"></div>
+        <div class="section-title">WHAT WE KNOW</div>
+        <div class="rule black"></div>
 
-        <div class="editable facts-edit" contenteditable="true" id="factsEdit" data-placeholder="Shared facts, one per line">The proposal changes asylum processing rules
-It adds funding for border operations
-Congress must approve the final legislation</div>
+        <div id="factsEdit" class="editable facts" contenteditable="true">Tariffs begin September 1
+Chinese imports are affected
+Congress may challenge the order</div>
 
-        <div class="perspective-grid">
-          <div class="perspective-column">
-            <div class="editable perspective-label blue-text" contenteditable="true" id="leftHeadingEdit">LEFT VIEW</div>
-            <div class="divider blue"></div>
-            <div class="editable perspective-points" contenteditable="true" id="leftPointsEdit">Strengthens border enforcement
-Clarifies asylum standards
-Adds resources for processing
-May reduce illegal crossings</div>
+        <div class="split-grid">
+          <div class="side">
+            <div id="leftHeadingEdit" class="editable side-title blue-text" contenteditable="true">SUPPORTERS</div>
+            <div class="rule blue"></div>
+            <div id="leftPointsEdit" class="editable side-points" contenteditable="true">Protects U.S. jobs
+Builds domestic factories
+Strengthens national security</div>
           </div>
 
-          <div class="perspective-column">
-            <div class="editable perspective-label red-text" contenteditable="true" id="rightHeadingEdit">RIGHT VIEW</div>
-            <div class="divider red"></div>
-            <div class="editable perspective-points" contenteditable="true" id="rightPointsEdit">Could limit humanitarian access
-May separate families
-Adds enforcement costs
-Could affect labor markets</div>
+          <div class="center-divider" aria-hidden="true"></div>
+
+          <div class="side">
+            <div id="rightHeadingEdit" class="editable side-title red-text" contenteditable="true">CRITICS</div>
+            <div class="rule red"></div>
+            <div id="rightPointsEdit" class="editable side-points" contenteditable="true">Raises consumer prices
+Hurts small businesses
+Risks trade retaliation</div>
           </div>
         </div>
 
-        <div class="source-divider"></div>
-        <div class="editable source-line" contenteditable="true" id="sourceLineEdit">[1] AP   [2] Reuters   [3] BBC   [4] NPR</div>
+        <div class="common-block">
+          <div class="section-title">COMMON GROUND</div>
+          <div class="rule green"></div>
+          <div id="commonGroundEdit" class="editable common-ground" contenteditable="true">
+            Both sides agree U.S. trade policy toward China needs to change.
+          </div>
+        </div>
+
+        <div class="source-rule"></div>
+        <div id="sourceLineEdit" class="editable source-line" contenteditable="true">
+          Sources: Reuters • AP • WSJ
+        </div>
       </div>
 
-      <div class="canvas-note">Click any headline, label, fact, point, or source line to edit it directly.</div>
-
+      <p class="canvas-note">The exported graphic keeps the same true side-by-side split.</p>
       <canvas id="exportCanvas" width="1600" height="900" hidden></canvas>
     </section>
 
-    <aside class="right-rail">
+    <aside class="settings-panel">
       <section class="panel">
-        <p class="eyebrow">POST SETTINGS</p>
-
-        <label>
-          Engagement question
-          <textarea id="engagementHook" rows="3" maxlength="180">Which side makes the stronger case—and what are we missing?</textarea>
-        </label>
+        <p class="eyebrow">POST DETAILS</p>
 
         <label>
           Source names
-          <textarea id="sourceNames" rows="5">AP
-Reuters
-BBC
-NPR</textarea>
+          <textarea id="sourceNames" rows="5">Reuters
+AP
+WSJ</textarea>
         </label>
 
         <label>
           Source links
-          <textarea id="sourceLinks" rows="6">https://apnews.com/
-https://reuters.com/
-https://bbc.com/
-https://npr.org/</textarea>
+          <textarea id="sourceLinks" rows="6">https://reuters.com/
+https://apnews.com/
+https://wsj.com/</textarea>
+        </label>
+
+        <label>
+          Engagement question
+          <textarea id="engagementHook" rows="4">Which side makes the stronger case—and what are we missing?</textarea>
         </label>
 
         <label>
           Draft name
-          <input id="draftName" value="Untitled Story" maxlength="60">
+          <input id="draftName" value="Untitled Story">
         </label>
       </section>
 
@@ -168,7 +169,7 @@ https://npr.org/</textarea>
           </div>
           <button id="copyTweetBtn" class="ghost small" type="button">Copy</button>
         </div>
-        <textarea id="tweetCopy" rows="9" readonly></textarea>
+        <textarea id="tweetCopy" rows="10" readonly></textarea>
       </section>
 
       <p id="message" class="status" aria-live="polite"></p>
@@ -179,8 +180,8 @@ https://npr.org/</textarea>
     <div class="modal-card">
       <div class="modal-top">
         <div>
-          <p class="eyebrow">X FEED PREVIEW</p>
-          <h2 id="previewTitle">How it reads on a phone</h2>
+          <p class="eyebrow">X PREVIEW</p>
+          <h2 id="previewTitle">Phone feed preview</h2>
         </div>
         <button id="closePreviewBtn" class="ghost" type="button">Close</button>
       </div>
@@ -191,8 +192,8 @@ https://npr.org/</textarea>
           <div class="post-body">
             <div class="post-meta"><strong>DualLens</strong> <span>@DualLens · now</span></div>
             <div id="previewPostText" class="post-text"></div>
-            <img id="previewImage" alt="DualLens post preview">
-            <div class="post-actions">♡ Reply &nbsp;&nbsp; ↻ Repost &nbsp;&nbsp; ♡ Like &nbsp;&nbsp; ↗ Share</div>
+            <img id="previewImage" alt="DualLens graphic preview">
+            <div class="post-actions">Reply &nbsp;&nbsp; Repost &nbsp;&nbsp; Like &nbsp;&nbsp; Share</div>
           </div>
         </div>
       </div>

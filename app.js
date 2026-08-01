@@ -4,16 +4,19 @@ let aiMode="topic";
 
 /*
   Secure AI connection:
-  Replace the empty URL below with your Cloudflare Worker or serverless endpoint.
-  Never place an OpenAI API key in this public GitHub Pages project.
+  Replace the URL below with your Cloudflare Worker or serverless endpoint.
+  Never place an OpenAI API key in this public repository.
 */
 const AI_ENDPOINT="";
 
-const editIds=["headlineEdit","factsEdit","leftHeadingEdit","rightHeadingEdit","leftPointsEdit","rightPointsEdit","sourceLineEdit"];
-const dataIds=["engagementHook","sourceNames","sourceLinks","draftName","format"];
+const editIds=[
+  "headlineEdit","factsEdit","leftHeadingEdit","rightHeadingEdit",
+  "leftPointsEdit","rightPointsEdit","commonGroundEdit","sourceLineEdit"
+];
+const dataIds=["sourceNames","sourceLinks","engagementHook","draftName","format"];
 
 function text(id){return $(id).innerText.trim()}
-function linesFromText(id){return text(id).split("\n").map(v=>v.trim()).filter(Boolean)}
+function editLines(id){return text(id).split("\n").map(v=>v.trim()).filter(Boolean)}
 function inputLines(id){return $(id).value.split("\n").map(v=>v.trim()).filter(Boolean)}
 function sourcePairs(){
   const names=inputLines("sourceNames"),links=inputLines("sourceLinks");
@@ -30,31 +33,31 @@ function apply(data){
   dataIds.forEach(id=>{if(data[id]!==undefined)$(id).value=data[id]});
   renderAll();
 }
-function wrap(textValue,max,font){
+function wrap(value,max,font){
   ctx.font=font;
-  const words=String(textValue||"").trim().split(/\s+/).filter(Boolean),out=[];
-  let line="";
+  const words=String(value||"").trim().split(/\s+/).filter(Boolean);
+  const rows=[];let line="";
   words.forEach(word=>{
     const test=line?`${line} ${word}`:word;
-    if(ctx.measureText(test).width>max&&line){out.push(line);line=word}else line=test;
+    if(ctx.measureText(test).width>max&&line){rows.push(line);line=word}else line=test;
   });
-  if(line)out.push(line);
-  return out;
+  if(line)rows.push(line);
+  return rows;
 }
-function drawWrapped(textValue,x,y,max,lh,font,color,maxLines=99){
+function drawWrapped(value,x,y,max,lh,font,color,maxLines=99){
   ctx.font=font;ctx.fillStyle=color;
-  const rows=wrap(textValue,max,font).slice(0,maxLines);
+  const rows=wrap(value,max,font).slice(0,maxLines);
   rows.forEach((row,i)=>ctx.fillText(row,x,y+i*lh));
   return rows.length*lh;
 }
-function drawLineItems(items,x,y,max,fontSize,lineGap,color,maxItems){
+function drawItems(items,x,y,max,fontSize,lineGap,color,maxItems,symbol){
   let cy=y;
-  const font=`600 ${fontSize}px Arial`;
+  const font=`700 ${fontSize}px Arial`;
   items.slice(0,maxItems).forEach(item=>{
-    const rows=wrap(item,max-30,font).slice(0,2);
-    ctx.fillStyle=color;ctx.fillRect(x,cy-11,7,7);
+    const rows=wrap(item,max-35,font).slice(0,2);
+    ctx.font=`900 ${fontSize}px Arial`;ctx.fillStyle=color;ctx.fillText(symbol,x,cy);
     ctx.fillStyle="#111";ctx.font=font;
-    rows.forEach((row,i)=>ctx.fillText(row,x+20,cy+i*(fontSize+6)));
+    rows.forEach((row,i)=>ctx.fillText(row,x+24,cy+i*(fontSize+6)));
     cy+=rows.length*(fontSize+6)+lineGap;
   });
 }
@@ -66,37 +69,43 @@ function setCanvasSize(){
 }
 function renderCanvas(){
   setCanvasSize();
-  const W=canvas.width,H=canvas.height,land=W>H,s=Math.min(W/1600,H/900);
+  const W=canvas.width,H=canvas.height,land=W>H;
+  const s=Math.min(W/1600,H/900);
   const margin=land?58*s:44*(W/1080),innerW=W-margin*2;
   let y=margin;
 
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle="#fff";ctx.fillRect(0,0,W,H);
 
-  ctx.fillStyle="#111";ctx.font=`900 ${24*s}px Arial`;
-  ctx.fillText("DUALLENS",margin,y+18*s);
-
-  y+=65*s;
-  const headlineSize=land?52*s:38*(W/1080);
-  const headlineH=drawWrapped(text("headlineEdit"),margin,y,innerW,headlineSize*1.08,`900 ${headlineSize}px Arial`,"#111",land?2:3);
-  y+=headlineH+26*s;
+  const headlineSize=land?55*s:40*(W/1080);
+  const headlineH=drawWrapped(text("headlineEdit"),margin,y+headlineSize,innerW,headlineSize*1.08,`900 ${headlineSize}px Arial`,"#111",land?2:3);
+  y+=headlineH+headlineSize*.55;
 
   ctx.font=`900 ${15*s}px Arial`;ctx.fillStyle="#111";ctx.fillText("WHAT WE KNOW",margin,y);
   y+=18*s;ctx.fillRect(margin,y,innerW,4*s);y+=31*s;
 
-  const facts=linesFromText("factsEdit");
-  drawLineItems(facts,margin,y,innerW,18*s,10*s,"#111",land?3:4);
-  y+=Math.min(facts.length,land?3:4)*43*s+20*s;
+  const facts=editLines("factsEdit");
+  drawItems(facts,margin,y,innerW,18*s,10*s,"#111",land?3:4,"✓");
+  y+=Math.min(facts.length,land?3:4)*43*s+18*s;
 
-  const gap=34*s,col=(innerW-gap)/2,leftX=margin,rightX=margin+col+gap;
+  const gap=40*s,col=(innerW-gap)/2,leftX=margin,rightX=margin+col+gap;
   ctx.font=`900 ${21*s}px Arial`;ctx.fillStyle="#1769ff";ctx.fillText(text("leftHeadingEdit").toUpperCase(),leftX,y);
   ctx.fillStyle="#ff3b30";ctx.fillText(text("rightHeadingEdit").toUpperCase(),rightX,y);
 
-  y+=16*s;ctx.fillStyle="#1769ff";ctx.fillRect(leftX,y,col,5*s);ctx.fillStyle="#ff3b30";ctx.fillRect(rightX,y,col,5*s);
-  y+=39*s;
+  y+=17*s;
+  ctx.fillStyle="#1769ff";ctx.fillRect(leftX,y,col,5*s);
+  ctx.fillStyle="#ff3b30";ctx.fillRect(rightX,y,col,5*s);
 
-  drawLineItems(linesFromText("leftPointsEdit"),leftX,y,col,17*s,12*s,"#1769ff",land?4:5);
-  drawLineItems(linesFromText("rightPointsEdit"),rightX,y,col,17*s,12*s,"#ff3b30",land?4:5);
+  ctx.fillStyle="#111";ctx.fillRect(margin+col+gap/2-1,y-17*s,2,245*s);
+
+  y+=38*s;
+  drawItems(editLines("leftPointsEdit"),leftX,y,col,18*s,14*s,"#1769ff",3,"+");
+  drawItems(editLines("rightPointsEdit"),rightX,y,col,18*s,14*s,"#ff3b30",3,"−");
+
+  const commonY=H-150*s;
+  ctx.font=`900 ${15*s}px Arial`;ctx.fillStyle="#1f8a55";ctx.fillText("COMMON GROUND",margin,commonY);
+  ctx.fillStyle="#1f8a55";ctx.fillRect(margin,commonY+12*s,innerW,4*s);
+  drawWrapped(text("commonGroundEdit"),margin,commonY+45*s,innerW,24*s,`700 ${18*s}px Arial`,"#111",2);
 
   const footerY=H-margin;
   ctx.fillStyle="#111";ctx.fillRect(margin,footerY-34*s,innerW,2*s);
@@ -104,58 +113,86 @@ function renderCanvas(){
   ctx.fillText(text("sourceLineEdit"),margin,footerY-10*s);
 }
 function updateSourceLine(){
-  const src=sourcePairs().slice(0,6).map((s,i)=>`[${i+1}] ${s.name}`).join("   ");
-  if(document.activeElement!==$("sourceLineEdit"))$("sourceLineEdit").innerText=src;
+  if(document.activeElement===$("sourceLineEdit"))return;
+  const names=sourcePairs().slice(0,5).map(s=>s.name).join(" • ");
+  $("sourceLineEdit").innerText=`Sources: ${names}`;
 }
 function updateTweet(){
   const src=sourcePairs().map((s,i)=>`[${i+1}] ${s.name}${s.link?": "+s.link:""}`).join("\n");
-  $("tweetCopy").value=`${text("headlineEdit")}\n\n${text("leftHeadingEdit")} and ${text("rightHeadingEdit")} see this differently. Here are both perspectives side by side.\n\n${$("engagementHook").value.trim()}\n\nSources:\n${src}`;
+  $("tweetCopy").value=`${text("headlineEdit")}\n\n${text("leftHeadingEdit")} and ${text("rightHeadingEdit")} see this differently. Here is the clearest side-by-side comparison.\n\n${$("engagementHook").value.trim()}\n\nSources:\n${src}`;
 }
 function updateScores(){
   const h=text("headlineEdit").length;
-  const headline=h>=30&&h<=85?100:h>=20&&h<=105?80:55;
-  const facts=Math.min(100,linesFromText("factsEdit").length*25);
-  const a=linesFromText("leftPointsEdit").length,b=linesFromText("rightPointsEdit").length;
-  const balance=(a&&b)?Math.max(40,100-Math.abs(a-b)*20):20;
-  const sources=Math.min(100,sourcePairs().filter(s=>s.link).length*25);
+  const headline=h>=25&&h<=75?100:h>=15&&h<=95?80:55;
+  const facts=Math.min(100,editLines("factsEdit").length*34);
+  const a=editLines("leftPointsEdit").length,b=editLines("rightPointsEdit").length;
+  const balance=(a&&b)?Math.max(40,100-Math.abs(a-b)*25):20;
+  const sources=Math.min(100,sourcePairs().filter(s=>s.link).length*34);
   const overall=Math.round((headline+facts+balance+sources)/4);
-  $("headlineScore").textContent=headline;$("factsScore").textContent=facts;
-  $("balanceScore").textContent=balance;$("sourceScore").textContent=sources;$("overallScore").textContent=overall;
+
+  $("headlineScore").textContent=headline;
+  $("factsScore").textContent=facts;
+  $("balanceScore").textContent=balance;
+  $("sourceScore").textContent=sources;
+  $("overallScore").textContent=overall;
 }
 function renderAll(){
-  updateSourceLine();renderCanvas();updateTweet();updateScores();
+  updateSourceLine();
+  renderCanvas();
+  updateTweet();
+  updateScores();
 }
 function renderDrafts(){
-  const wrap=$("draftList"),drafts=JSON.parse(localStorage.getItem("duallensV5Drafts")||"[]");
+  const wrap=$("draftList");
+  const drafts=JSON.parse(localStorage.getItem("duallensV6Drafts")||"[]");
   wrap.innerHTML="";
   if(!drafts.length){wrap.innerHTML="<span class='status'>No saved drafts yet.</span>";return}
+
   drafts.forEach((draft,i)=>{
     const row=document.createElement("div");row.className="draft-item";
-    const load=document.createElement("button");load.className="ghost draft-load";load.textContent=draft.draftName||"Untitled";
+
+    const load=document.createElement("button");
+    load.className="ghost draft-load";
+    load.textContent=draft.draftName||"Untitled";
     load.addEventListener("click",()=>apply(draft));
-    const del=document.createElement("button");del.className="ghost draft-delete";del.textContent="×";
+
+    const del=document.createElement("button");
+    del.className="ghost draft-delete";
+    del.textContent="×";
     del.addEventListener("click",()=>{
-      drafts.splice(i,1);localStorage.setItem("duallensV5Drafts",JSON.stringify(drafts));renderDrafts();
+      drafts.splice(i,1);
+      localStorage.setItem("duallensV6Drafts",JSON.stringify(drafts));
+      renderDrafts();
     });
-    row.append(load,del);wrap.append(row);
+
+    row.append(load,del);
+    wrap.append(row);
   });
 }
 function saveDraft(){
-  const drafts=JSON.parse(localStorage.getItem("duallensV5Drafts")||"[]");
+  const drafts=JSON.parse(localStorage.getItem("duallensV6Drafts")||"[]");
   drafts.unshift({...values(),savedAt:new Date().toISOString()});
-  localStorage.setItem("duallensV5Drafts",JSON.stringify(drafts.slice(0,25)));
+  localStorage.setItem("duallensV6Drafts",JSON.stringify(drafts.slice(0,25)));
   $("message").textContent="Draft saved in this browser.";
   renderDrafts();
 }
 async function generateWithAI(){
   const input=$("aiInput").value.trim();
-  if(!input){$("aiStatus").textContent="Enter a topic, headline, or article link.";return}
-  if(!AI_ENDPOINT){
-    $("aiStatus").textContent="The interface is ready. Connect the secure AI endpoint to generate stories.";
+
+  if(!input){
+    $("aiStatus").textContent="Enter a topic, headline, or article link.";
     return;
   }
 
-  $("generateBtn").disabled=true;$("generateBtn").textContent="Generating…";$("aiStatus").textContent="";
+  if(!AI_ENDPOINT){
+    $("aiStatus").textContent="The AI interface is ready. Connect the secure endpoint to generate stories.";
+    return;
+  }
+
+  $("generateBtn").disabled=true;
+  $("generateBtn").textContent="Generating…";
+  $("aiStatus").textContent="Finding facts and building perspectives…";
+
   try{
     const response=await fetch(AI_ENDPOINT,{
       method:"POST",
@@ -163,28 +200,33 @@ async function generateWithAI(){
       body:JSON.stringify({
         mode:aiMode,
         input,
-        context:$("aiContext").value.trim(),
         perspectiveStyle:$("perspectiveStyle").value
       })
     });
+
     if(!response.ok)throw new Error("Generation failed");
+
     const data=await response.json();
+
     apply({
       headlineEdit:data.headline||"",
-      factsEdit:(data.sharedFacts||[]).join("\n"),
+      factsEdit:(data.sharedFacts||[]).slice(0,3).join("\n"),
       leftHeadingEdit:data.leftHeading||"PERSPECTIVE A",
       rightHeadingEdit:data.rightHeading||"PERSPECTIVE B",
-      leftPointsEdit:(data.leftPoints||[]).join("\n"),
-      rightPointsEdit:(data.rightPoints||[]).join("\n"),
+      leftPointsEdit:(data.leftPoints||[]).slice(0,3).join("\n"),
+      rightPointsEdit:(data.rightPoints||[]).slice(0,3).join("\n"),
+      commonGroundEdit:data.commonGround||"",
       sourceNames:(data.sources||[]).map(s=>s.name).join("\n"),
       sourceLinks:(data.sources||[]).map(s=>s.url).join("\n"),
       engagementHook:data.engagementHook||"Which side makes the stronger case—and what are we missing?"
     });
+
     $("aiStatus").textContent="Draft generated. Review every claim and source before publishing.";
   }catch{
     $("aiStatus").textContent="The AI service could not be reached.";
   }finally{
-    $("generateBtn").disabled=false;$("generateBtn").textContent="Generate first draft";
+    $("generateBtn").disabled=false;
+    $("generateBtn").textContent="Generate perspectives";
   }
 }
 function openXPreview(){
@@ -193,17 +235,26 @@ function openXPreview(){
   $("previewPostText").textContent=$("tweetCopy").value.split("\n\nSources:")[0];
   $("xPreviewModal").classList.remove("hidden");
 }
+
 editIds.forEach(id=>$(id).addEventListener("input",renderAll));
-dataIds.forEach(id=>{$(id).addEventListener("input",renderAll);$(id).addEventListener("change",renderAll)});
+dataIds.forEach(id=>{
+  $(id).addEventListener("input",renderAll);
+  $(id).addEventListener("change",renderAll);
+});
+
 document.querySelectorAll(".mode-tab").forEach(btn=>btn.addEventListener("click",()=>{
   document.querySelectorAll(".mode-tab").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");aiMode=btn.dataset.mode;
+  btn.classList.add("active");
+  aiMode=btn.dataset.mode;
 }));
+
 $("generateBtn").addEventListener("click",generateWithAI);
 $("saveBtn").addEventListener("click",saveDraft);
 $("previewBtn").addEventListener("click",openXPreview);
 $("closePreviewBtn").addEventListener("click",()=>$("xPreviewModal").classList.add("hidden"));
-$("xPreviewModal").addEventListener("click",e=>{if(e.target===$("xPreviewModal"))$("xPreviewModal").classList.add("hidden")});
+$("xPreviewModal").addEventListener("click",e=>{
+  if(e.target===$("xPreviewModal"))$("xPreviewModal").classList.add("hidden");
+});
 $("downloadBtn").addEventListener("click",()=>{
   renderCanvas();
   const a=document.createElement("a");
@@ -217,4 +268,6 @@ $("copyTweetBtn").addEventListener("click",async()=>{
   catch{$("tweetCopy").select();document.execCommand("copy")}
   $("message").textContent="X post text copied.";
 });
-renderDrafts();renderAll();
+
+renderDrafts();
+renderAll();
