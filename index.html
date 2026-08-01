@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DualLens Perspective Card</title>
+  <title>DualLens Studio v8</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,41 +12,59 @@
       <div class="brand">DUALLENS</div>
       <div class="subbrand">Same story. Different lens.</div>
     </div>
-    <button id="exportBtn" class="primary" type="button">Export PNG</button>
+    <div class="top-actions">
+      <button id="saveBtn" class="ghost" type="button">Save draft</button>
+      <button id="sourcesBtn" class="ghost" type="button">Open sources</button>
+      <button id="exportBtn" class="primary" type="button">Export PNG</button>
+    </div>
   </header>
 
-  <main class="app">
+  <main class="workspace">
     <section class="editor panel">
-      <p class="eyebrow">CREATE CARD</p>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">EDITOR</p>
+          <h1>Build your perspective card</h1>
+        </div>
+        <button id="resetBtn" class="ghost small" type="button">Reset</button>
+      </div>
+
+      <label>
+        Category
+        <input id="category" value="POLITICS" maxlength="24">
+      </label>
 
       <label>
         Headline
-        <textarea id="headline" rows="3">Trump announces new tariffs</textarea>
+        <textarea id="headline" rows="3" maxlength="110">Trump Announces New Tariffs</textarea>
       </label>
 
       <div class="two-col">
         <label>
-          Lens A
-          <input id="leftLabel" value="SUPPORTERS">
+          Lens A label
+          <input id="leftLabel" value="SUPPORTERS" maxlength="28">
         </label>
         <label>
-          Lens B
-          <input id="rightLabel" value="CRITICS">
+          Lens B label
+          <input id="rightLabel" value="CRITICS" maxlength="28">
         </label>
       </div>
 
       <div class="two-col">
         <label>
           Lens A points
-          <textarea id="leftPoints" rows="6">Protects U.S. jobs
+          <textarea id="leftPoints" rows="7">Protects U.S. jobs
 Builds domestic factories
 Strengthens national security</textarea>
+          <small>Three short points, one per line.</small>
         </label>
+
         <label>
           Lens B points
-          <textarea id="rightPoints" rows="6">Raises consumer prices
+          <textarea id="rightPoints" rows="7">Raises consumer prices
 Hurts small businesses
 Risks trade retaliation</textarea>
+          <small>Three short points, one per line.</small>
         </label>
       </div>
 
@@ -80,64 +98,116 @@ https://x.com/EconomistJane</textarea>
         </label>
       </div>
 
-      <button id="openSourcesBtn" class="secondary full" type="button">Open source links</button>
+      <label>
+        X post copy
+        <textarea id="postCopy" rows="7">Same headline. Two completely different ways to see it.
+
+Which lens makes the stronger case—and what are we missing?</textarea>
+        <small>You can edit this before copying it.</small>
+      </label>
+
+      <div class="editor-actions">
+        <button id="copyBtn" class="ghost" type="button">Copy post text</button>
+        <button id="previewBtn" class="ghost" type="button">Preview on phone</button>
+      </div>
+
+      <label>
+        Draft name
+        <input id="draftName" value="Untitled Card" maxlength="60">
+      </label>
+
+      <div>
+        <p class="eyebrow">SAVED DRAFTS</p>
+        <div id="draftList" class="draft-list"></div>
+      </div>
+
       <p id="message" class="message" aria-live="polite"></p>
     </section>
 
-    <section class="preview-area">
+    <section class="preview-panel">
       <div class="preview-heading">
         <div>
-          <p class="eyebrow">PHONE PREVIEW</p>
-          <h1>Perspective Card</h1>
+          <p class="eyebrow">LIVE PREVIEW</p>
+          <h2>Your X-ready card</h2>
         </div>
         <span class="pill">1080 × 1350</span>
       </div>
 
-      <div id="card" class="perspective-card">
-        <div id="cardHeadline" class="card-headline">Trump announces new tariffs</div>
+      <div class="preview-shell">
+        <div id="card" class="perspective-card">
+          <div id="cardCategory" class="card-category">POLITICS</div>
+          <div id="cardHeadline" class="card-headline">Trump Announces New Tariffs</div>
 
-        <div class="lens-header">
-          <div id="cardLeftLabel" class="lens-title lens-blue">SUPPORTERS</div>
-          <div id="cardRightLabel" class="lens-title lens-red">CRITICS</div>
-        </div>
-
-        <div id="comparisonRows" class="comparison-rows"></div>
-
-        <div class="source-footer">
-          <div>
-            <div class="source-label">LENS A SOURCES</div>
-            <div id="leftSourceFooter" class="source-names"></div>
+          <div class="lens-headings">
+            <div id="cardLeftLabel" class="lens-title lens-a">SUPPORTERS</div>
+            <div id="cardRightLabel" class="lens-title lens-b">CRITICS</div>
           </div>
-          <div>
-            <div class="source-label">LENS B SOURCES</div>
-            <div id="rightSourceFooter" class="source-names"></div>
+
+          <div id="comparisonRows" class="comparison-rows"></div>
+
+          <div class="source-footer">
+            <div>
+              <div class="source-kicker">LENS A SOURCES</div>
+              <div id="leftSourceFooter" class="source-line"></div>
+            </div>
+            <div>
+              <div class="source-kicker">LENS B SOURCES</div>
+              <div id="rightSourceFooter" class="source-line"></div>
+            </div>
           </div>
         </div>
       </div>
+
+      <p class="preview-note">The export matches this layout and is designed to remain readable in an X phone feed.</p>
 
       <canvas id="exportCanvas" width="1080" height="1350" hidden></canvas>
     </section>
   </main>
 
-  <dialog id="sourceDialog">
-    <div class="dialog-top">
+  <dialog id="sourcesDialog">
+    <div class="dialog-heading">
       <div>
-        <p class="eyebrow">SOURCES</p>
-        <h2>Open links</h2>
+        <p class="eyebrow">SOURCE LINKS</p>
+        <h2>Open websites or social profiles</h2>
       </div>
-      <button id="closeDialogBtn" class="secondary" type="button">Close</button>
+      <button id="closeSourcesBtn" class="ghost" type="button">Close</button>
     </div>
+
     <div class="dialog-grid">
       <section>
-        <h3 id="dialogLeftTitle">Lens A</h3>
+        <h3 id="dialogLeftTitle">SUPPORTERS</h3>
         <div id="dialogLeftLinks"></div>
       </section>
       <section>
-        <h3 id="dialogRightTitle">Lens B</h3>
+        <h3 id="dialogRightTitle">CRITICS</h3>
         <div id="dialogRightLinks"></div>
       </section>
     </div>
   </dialog>
+
+  <div id="phoneModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">PHONE PREVIEW</p>
+          <h2>How it appears in the feed</h2>
+        </div>
+        <button id="closePhoneBtn" class="ghost" type="button">Close</button>
+      </div>
+
+      <div class="phone">
+        <div class="x-post">
+          <div class="avatar">D</div>
+          <div class="post-body">
+            <div class="post-meta"><strong>DualLens</strong> <span>@DualLens · now</span></div>
+            <div id="phonePostCopy" class="phone-copy"></div>
+            <img id="phoneImage" alt="DualLens phone preview">
+            <div class="phone-actions">Reply &nbsp;&nbsp; Repost &nbsp;&nbsp; Like &nbsp;&nbsp; Share</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>

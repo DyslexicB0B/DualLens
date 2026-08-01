@@ -1,17 +1,39 @@
 const $=id=>document.getElementById(id);
-const canvas=$("exportCanvas"),ctx=canvas.getContext("2d");
+const canvas=$("exportCanvas");
+const ctx=canvas.getContext("2d");
+
+const defaults={
+  category:"POLITICS",
+  headline:"Trump Announces New Tariffs",
+  leftLabel:"SUPPORTERS",
+  rightLabel:"CRITICS",
+  leftPoints:"Protects U.S. jobs\nBuilds domestic factories\nStrengthens national security",
+  rightPoints:"Raises consumer prices\nHurts small businesses\nRisks trade retaliation",
+  leftSourceNames:"Reuters\nWhite House\n@TradePolicy",
+  rightSourceNames:"AP\nBrookings\n@EconomistJane",
+  leftSourceLinks:"https://reuters.com/\nhttps://whitehouse.gov/\nhttps://x.com/TradePolicy",
+  rightSourceLinks:"https://apnews.com/\nhttps://brookings.edu/\nhttps://x.com/EconomistJane",
+  postCopy:"Same headline. Two completely different ways to see it.\n\nWhich lens makes the stronger case—and what are we missing?",
+  draftName:"Untitled Card"
+};
+
+const fieldIds=Object.keys(defaults);
 
 function lines(id){
   return $(id).value.split("\n").map(v=>v.trim()).filter(Boolean);
 }
-function sourcePairs(nameId,linkId){
-  const names=lines(nameId),links=lines(linkId);
+
+function sourcePairs(namesId,linksId){
+  const names=lines(namesId);
+  const links=lines(linksId);
   return names.map((name,i)=>({name,link:links[i]||""}));
 }
-function renderCard(){
+
+function renderPreview(){
+  $("cardCategory").textContent=$("category").value.trim().toUpperCase();
   $("cardHeadline").textContent=$("headline").value.trim();
-  $("cardLeftLabel").textContent=$("leftLabel").value.trim()||"LENS A";
-  $("cardRightLabel").textContent=$("rightLabel").value.trim()||"LENS B";
+  $("cardLeftLabel").textContent=$("leftLabel").value.trim().toUpperCase()||"LENS A";
+  $("cardRightLabel").textContent=$("rightLabel").value.trim().toUpperCase()||"LENS B";
 
   const left=lines("leftPoints").slice(0,3);
   const right=lines("rightPoints").slice(0,3);
@@ -23,15 +45,15 @@ function renderCard(){
     row.className="compare-row";
 
     const leftCell=document.createElement("div");
-    leftCell.className="compare-cell left";
-    leftCell.innerHTML=`<span class="compare-kicker blue">LENS A</span>${left[i]||""}`;
+    leftCell.className="compare-cell";
+    leftCell.textContent=left[i]||"";
 
     const divider=document.createElement("div");
     divider.className="compare-divider";
 
     const rightCell=document.createElement("div");
-    rightCell.className="compare-cell right";
-    rightCell.innerHTML=`<span class="compare-kicker red">LENS B</span>${right[i]||""}`;
+    rightCell.className="compare-cell";
+    rightCell.textContent=right[i]||"";
 
     row.append(leftCell,divider,rightCell);
     rows.append(row);
@@ -40,74 +62,141 @@ function renderCard(){
   $("leftSourceFooter").textContent=sourcePairs("leftSourceNames","leftSourceLinks").map(s=>s.name).join(" • ");
   $("rightSourceFooter").textContent=sourcePairs("rightSourceNames","rightSourceLinks").map(s=>s.name).join(" • ");
 }
-function wrap(text,max,font){
+
+function wrapText(text,maxWidth,font){
   ctx.font=font;
   const words=String(text||"").trim().split(/\s+/).filter(Boolean);
-  const out=[];let line="";
+  const rows=[];
+  let line="";
+
   words.forEach(word=>{
     const test=line?`${line} ${word}`:word;
-    if(ctx.measureText(test).width>max&&line){out.push(line);line=word}else line=test;
+    if(ctx.measureText(test).width>maxWidth&&line){
+      rows.push(line);
+      line=word;
+    }else{
+      line=test;
+    }
   });
-  if(line)out.push(line);
-  return out;
+
+  if(line)rows.push(line);
+  return rows;
 }
-function drawWrapped(text,x,y,max,lh,font,color,maxLines=99){
-  ctx.font=font;ctx.fillStyle=color;
-  const rows=wrap(text,max,font).slice(0,maxLines);
-  rows.forEach((r,i)=>ctx.fillText(r,x,y+i*lh));
-  return rows.length*lh;
+
+function drawWrapped(text,x,y,maxWidth,lineHeight,font,color,maxLines=99){
+  ctx.font=font;
+  ctx.fillStyle=color;
+  const rows=wrapText(text,maxWidth,font).slice(0,maxLines);
+  rows.forEach((row,i)=>ctx.fillText(row,x,y+i*lineHeight));
+  return rows.length*lineHeight;
 }
+
 function renderCanvas(){
   const W=1080,H=1350,margin=70,innerW=W-margin*2;
   ctx.clearRect(0,0,W,H);
-  ctx.fillStyle="#fff";ctx.fillRect(0,0,W,H);
+  ctx.fillStyle="#fff";
+  ctx.fillRect(0,0,W,H);
 
-  let y=90;
-  const headline=$("headline").value.trim();
-  const h=drawWrapped(headline,margin,y,innerW,68,"900 64px Arial","#111",3);
-  y+=h+45;
+  let y=75;
+  ctx.font="900 18px Arial";
+  ctx.fillStyle="#6b7280";
+  ctx.fillText($("category").value.trim().toUpperCase(),margin,y);
 
-  const gap=48,col=(innerW-gap)/2,leftX=margin,rightX=margin+col+gap;
+  y+=55;
+  const headlineHeight=drawWrapped(
+    $("headline").value.trim(),
+    margin,
+    y,
+    innerW,
+    70,
+    "900 64px Arial",
+    "#111827",
+    3
+  );
+
+  y+=headlineHeight+40;
+
+  const gap=48;
+  const col=(innerW-gap)/2;
+  const leftX=margin;
+  const rightX=margin+col+gap;
+
   ctx.font="900 28px Arial";
-  ctx.fillStyle="#1769ff";ctx.fillText(($("leftLabel").value||"LENS A").toUpperCase(),leftX,y);
-  ctx.fillStyle="#ff3b30";ctx.fillText(($("rightLabel").value||"LENS B").toUpperCase(),rightX,y);
+  ctx.fillStyle="#1769ff";
+  ctx.fillText(($("leftLabel").value||"LENS A").toUpperCase(),leftX,y);
+  ctx.fillStyle="#ff3b30";
+  ctx.fillText(($("rightLabel").value||"LENS B").toUpperCase(),rightX,y);
 
   y+=18;
-  ctx.fillStyle="#1769ff";ctx.fillRect(leftX,y,col,7);
-  ctx.fillStyle="#ff3b30";ctx.fillRect(rightX,y,col,7);
+  ctx.fillStyle="#1769ff";
+  ctx.fillRect(leftX,y,col,7);
+  ctx.fillStyle="#ff3b30";
+  ctx.fillRect(rightX,y,col,7);
 
-  const left=lines("leftPoints").slice(0,3),right=lines("rightPoints").slice(0,3);
-  const rowTop=y+45,rowH=250;
+  const left=lines("leftPoints").slice(0,3);
+  const right=lines("rightPoints").slice(0,3);
+  const rowTop=y+48;
+  const rowHeight=245;
 
   for(let i=0;i<3;i++){
-    const top=rowTop+i*rowH;
-    if(i>0){ctx.fillStyle="#ddd";ctx.fillRect(margin,top-20,innerW,2);}
-    ctx.fillStyle="#111";ctx.fillRect(margin+col+gap/2-1,top-5,2,rowH-35);
+    const top=rowTop+i*rowHeight;
 
-    ctx.font="900 18px Arial";ctx.fillStyle="#1769ff";ctx.fillText("LENS A",leftX,top+15);
-    drawWrapped(left[i]||"",leftX,top+65,col-20,44,"800 38px Arial","#111",3);
+    if(i>0){
+      ctx.fillStyle="#e1e4e8";
+      ctx.fillRect(margin,top-18,innerW,2);
+    }
 
-    ctx.font="900 18px Arial";ctx.fillStyle="#ff3b30";ctx.fillText("LENS B",rightX,top+15);
-    drawWrapped(right[i]||"",rightX,top+65,col-20,44,"800 38px Arial","#111",3);
+    ctx.fillStyle="#111827";
+    ctx.fillRect(margin+col+gap/2-1,top-4,2,rowHeight-38);
+
+    drawWrapped(left[i]||"",leftX,top+58,col-20,46,"800 39px Arial","#111827",3);
+    drawWrapped(right[i]||"",rightX,top+58,col-20,46,"800 39px Arial","#111827",3);
   }
 
-  const footerY=1215;
-  ctx.fillStyle="#111";ctx.fillRect(margin,footerY,innerW,3);
-  ctx.font="900 15px Arial";ctx.fillStyle="#666";
+  const footerY=1210;
+  ctx.fillStyle="#111827";
+  ctx.fillRect(margin,footerY,innerW,3);
+
+  ctx.font="900 14px Arial";
+  ctx.fillStyle="#6b7280";
   ctx.fillText("LENS A SOURCES",leftX,footerY+38);
   ctx.fillText("LENS B SOURCES",rightX,footerY+38);
 
-  ctx.font="700 18px Arial";ctx.fillStyle="#111";
-  drawWrapped(sourcePairs("leftSourceNames","leftSourceLinks").map(s=>s.name).join(" • "),leftX,footerY+70,col-10,24,"700 18px Arial","#111",2);
-  drawWrapped(sourcePairs("rightSourceNames","rightSourceLinks").map(s=>s.name).join(" • "),rightX,footerY+70,col-10,24,"700 18px Arial","#111",2);
+  drawWrapped(
+    sourcePairs("leftSourceNames","leftSourceLinks").map(s=>s.name).join(" • "),
+    leftX,
+    footerY+72,
+    col-10,
+    25,
+    "700 18px Arial",
+    "#111827",
+    2
+  );
+
+  drawWrapped(
+    sourcePairs("rightSourceNames","rightSourceLinks").map(s=>s.name).join(" • "),
+    rightX,
+    footerY+72,
+    col-10,
+    25,
+    "700 18px Arial",
+    "#111827",
+    2
+  );
 }
-function populateDialog(){
+
+function populateSources(){
   $("dialogLeftTitle").textContent=$("leftLabel").value||"Lens A";
   $("dialogRightTitle").textContent=$("rightLabel").value||"Lens B";
 
-  [["dialogLeftLinks","leftSourceNames","leftSourceLinks"],["dialogRightLinks","rightSourceNames","rightSourceLinks"]].forEach(([wrapId,nameId,linkId])=>{
-    const wrap=$(wrapId);wrap.innerHTML="";
-    sourcePairs(nameId,linkId).forEach(source=>{
+  [
+    ["dialogLeftLinks","leftSourceNames","leftSourceLinks"],
+    ["dialogRightLinks","rightSourceNames","rightSourceLinks"]
+  ].forEach(([wrapId,namesId,linksId])=>{
+    const wrap=$(wrapId);
+    wrap.innerHTML="";
+
+    sourcePairs(namesId,linksId).forEach(source=>{
       const a=document.createElement("a");
       a.textContent=source.name;
       a.href=source.link||"#";
@@ -117,21 +206,110 @@ function populateDialog(){
     });
   });
 }
-["headline","leftLabel","rightLabel","leftPoints","rightPoints","leftSourceNames","rightSourceNames","leftSourceLinks","rightSourceLinks"]
-  .forEach(id=>$(id).addEventListener("input",renderCard));
 
-$("openSourcesBtn").addEventListener("click",()=>{
-  populateDialog();
-  $("sourceDialog").showModal();
+function values(){
+  const data={};
+  fieldIds.forEach(id=>data[id]=$(id).value);
+  return data;
+}
+
+function apply(data){
+  fieldIds.forEach(id=>{
+    if(data[id]!==undefined)$(id).value=data[id];
+  });
+  renderPreview();
+}
+
+function renderDrafts(){
+  const wrap=$("draftList");
+  const drafts=JSON.parse(localStorage.getItem("duallensV8Drafts")||"[]");
+  wrap.innerHTML="";
+
+  if(!drafts.length){
+    wrap.innerHTML="<span class='message'>No saved drafts yet.</span>";
+    return;
+  }
+
+  drafts.forEach((draft,index)=>{
+    const row=document.createElement("div");
+    row.className="draft-item";
+
+    const load=document.createElement("button");
+    load.className="ghost draft-load";
+    load.textContent=draft.draftName||"Untitled";
+    load.addEventListener("click",()=>apply(draft));
+
+    const del=document.createElement("button");
+    del.className="ghost draft-delete";
+    del.textContent="×";
+    del.addEventListener("click",()=>{
+      drafts.splice(index,1);
+      localStorage.setItem("duallensV8Drafts",JSON.stringify(drafts));
+      renderDrafts();
+    });
+
+    row.append(load,del);
+    wrap.append(row);
+  });
+}
+
+function saveDraft(){
+  const drafts=JSON.parse(localStorage.getItem("duallensV8Drafts")||"[]");
+  drafts.unshift({...values(),savedAt:new Date().toISOString()});
+  localStorage.setItem("duallensV8Drafts",JSON.stringify(drafts.slice(0,25)));
+  $("message").textContent="Draft saved on this device.";
+  renderDrafts();
+}
+
+fieldIds
+  .filter(id=>id!=="draftName")
+  .forEach(id=>$(id).addEventListener("input",renderPreview));
+
+$("saveBtn").addEventListener("click",saveDraft);
+
+$("resetBtn").addEventListener("click",()=>{
+  apply(defaults);
+  $("message").textContent="Example restored.";
 });
-$("closeDialogBtn").addEventListener("click",()=>$("sourceDialog").close());
+
+$("sourcesBtn").addEventListener("click",()=>{
+  populateSources();
+  $("sourcesDialog").showModal();
+});
+
+$("closeSourcesBtn").addEventListener("click",()=>$("sourcesDialog").close());
+
+$("copyBtn").addEventListener("click",async()=>{
+  try{
+    await navigator.clipboard.writeText($("postCopy").value);
+  }catch{
+    $("postCopy").select();
+    document.execCommand("copy");
+  }
+  $("message").textContent="Post text copied.";
+});
+
+$("previewBtn").addEventListener("click",()=>{
+  renderCanvas();
+  $("phonePostCopy").textContent=$("postCopy").value;
+  $("phoneImage").src=canvas.toDataURL("image/png");
+  $("phoneModal").classList.remove("hidden");
+});
+
+$("closePhoneBtn").addEventListener("click",()=>$("phoneModal").classList.add("hidden"));
+
+$("phoneModal").addEventListener("click",event=>{
+  if(event.target===$("phoneModal"))$("phoneModal").classList.add("hidden");
+});
+
 $("exportBtn").addEventListener("click",()=>{
   renderCanvas();
-  const a=document.createElement("a");
-  a.download="duallens-perspective-card.png";
-  a.href=canvas.toDataURL("image/png");
-  a.click();
+  const link=document.createElement("a");
+  link.download="duallens-perspective-card.png";
+  link.href=canvas.toDataURL("image/png");
+  link.click();
   $("message").textContent="PNG sent to your Downloads folder.";
 });
 
-renderCard();
+renderDrafts();
+renderPreview();
