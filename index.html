@@ -3,202 +3,141 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DualLens Studio v6</title>
+  <title>DualLens Perspective Card</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="topbar">
     <div>
       <div class="brand">DUALLENS</div>
-      <div class="subbrand">Every story. Two perspectives.</div>
+      <div class="subbrand">Same story. Different lens.</div>
     </div>
-
-    <div class="top-actions">
-      <button id="saveBtn" class="ghost" type="button">Save</button>
-      <button id="previewBtn" class="ghost" type="button">Preview on X</button>
-      <button id="downloadBtn" class="primary" type="button">Export PNG</button>
-    </div>
+    <button id="exportBtn" class="primary" type="button">Export PNG</button>
   </header>
 
-  <main class="workspace">
-    <aside class="create-panel">
-      <section class="panel">
-        <p class="eyebrow">CREATE</p>
-        <h1>What are we covering?</h1>
+  <main class="app">
+    <section class="editor panel">
+      <p class="eyebrow">CREATE CARD</p>
 
-        <div class="mode-tabs">
-          <button class="mode-tab active" data-mode="topic" type="button">Topic</button>
-          <button class="mode-tab" data-mode="headline" type="button">Headline</button>
-          <button class="mode-tab" data-mode="article" type="button">Article</button>
-        </div>
+      <label>
+        Headline
+        <textarea id="headline" rows="3">Trump announces new tariffs</textarea>
+      </label>
 
-        <textarea id="aiInput" rows="6" placeholder="Example: Trump tariffs"></textarea>
-
+      <div class="two-col">
         <label>
-          Perspective style
-          <select id="perspectiveStyle">
-            <option value="auto">Auto-detect</option>
-            <option value="left-right">Left vs. Right</option>
-            <option value="for-against">For vs. Against</option>
-            <option value="supporters-critics">Supporters vs. Critics</option>
-            <option value="custom">Custom</option>
-          </select>
+          Lens A
+          <input id="leftLabel" value="SUPPORTERS">
         </label>
-
-        <button id="generateBtn" class="primary full" type="button">Generate perspectives</button>
-        <p id="aiStatus" class="status" aria-live="polite"></p>
-      </section>
-
-      <section class="panel compact">
-        <p class="eyebrow">POST FORMAT</p>
-        <select id="format">
-          <option value="landscape">X Landscape · 1600 × 900</option>
-          <option value="square">Square · 1080 × 1080</option>
-          <option value="portrait">Portrait · 1080 × 1350</option>
-        </select>
-      </section>
-
-      <section class="panel compact">
-        <p class="eyebrow">SAVED DRAFTS</p>
-        <div id="draftList" class="draft-list"></div>
-      </section>
-    </aside>
-
-    <section class="canvas-column">
-      <div class="canvas-top">
-        <div>
-          <p class="eyebrow">LIVE POST</p>
-          <h2>Click any text to edit</h2>
-        </div>
-        <span id="sizeBadge" class="pill">1600 × 900</span>
+        <label>
+          Lens B
+          <input id="rightLabel" value="CRITICS">
+        </label>
       </div>
 
-      <div id="directEditor" class="direct-editor">
-        <div id="headlineEdit" class="editable headline" contenteditable="true">
-          Trump announces new tariffs
-        </div>
-
-        <div class="section-title">WHAT WE KNOW</div>
-        <div class="rule black"></div>
-
-        <div id="factsEdit" class="editable facts" contenteditable="true">Tariffs begin September 1
-Chinese imports are affected
-Congress may challenge the order</div>
-
-        <div class="split-grid">
-          <div class="side">
-            <div id="leftHeadingEdit" class="editable side-title blue-text" contenteditable="true">SUPPORTERS</div>
-            <div class="rule blue"></div>
-            <div id="leftPointsEdit" class="editable side-points" contenteditable="true">Protects U.S. jobs
+      <div class="two-col">
+        <label>
+          Lens A points
+          <textarea id="leftPoints" rows="6">Protects U.S. jobs
 Builds domestic factories
-Strengthens national security</div>
-          </div>
-
-          <div class="center-divider" aria-hidden="true"></div>
-
-          <div class="side">
-            <div id="rightHeadingEdit" class="editable side-title red-text" contenteditable="true">CRITICS</div>
-            <div class="rule red"></div>
-            <div id="rightPointsEdit" class="editable side-points" contenteditable="true">Raises consumer prices
+Strengthens national security</textarea>
+        </label>
+        <label>
+          Lens B points
+          <textarea id="rightPoints" rows="6">Raises consumer prices
 Hurts small businesses
-Risks trade retaliation</div>
-          </div>
-        </div>
-
-        <div class="common-block">
-          <div class="section-title">COMMON GROUND</div>
-          <div class="rule green"></div>
-          <div id="commonGroundEdit" class="editable common-ground" contenteditable="true">
-            Both sides agree U.S. trade policy toward China needs to change.
-          </div>
-        </div>
-
-        <div class="source-rule"></div>
-        <div id="sourceLineEdit" class="editable source-line" contenteditable="true">
-          Sources: Reuters • AP • WSJ
-        </div>
+Risks trade retaliation</textarea>
+        </label>
       </div>
 
-      <p class="canvas-note">The exported graphic keeps the same true side-by-side split.</p>
-      <canvas id="exportCanvas" width="1600" height="900" hidden></canvas>
+      <div class="two-col">
+        <label>
+          Lens A source names
+          <textarea id="leftSourceNames" rows="4">Reuters
+White House
+@TradePolicy</textarea>
+        </label>
+        <label>
+          Lens B source names
+          <textarea id="rightSourceNames" rows="4">AP
+Brookings
+@EconomistJane</textarea>
+        </label>
+      </div>
+
+      <div class="two-col">
+        <label>
+          Lens A links
+          <textarea id="leftSourceLinks" rows="5">https://reuters.com/
+https://whitehouse.gov/
+https://x.com/TradePolicy</textarea>
+        </label>
+        <label>
+          Lens B links
+          <textarea id="rightSourceLinks" rows="5">https://apnews.com/
+https://brookings.edu/
+https://x.com/EconomistJane</textarea>
+        </label>
+      </div>
+
+      <button id="openSourcesBtn" class="secondary full" type="button">Open source links</button>
+      <p id="message" class="message" aria-live="polite"></p>
     </section>
 
-    <aside class="settings-panel">
-      <section class="panel">
-        <p class="eyebrow">POST DETAILS</p>
-
-        <label>
-          Source names
-          <textarea id="sourceNames" rows="5">Reuters
-AP
-WSJ</textarea>
-        </label>
-
-        <label>
-          Source links
-          <textarea id="sourceLinks" rows="6">https://reuters.com/
-https://apnews.com/
-https://wsj.com/</textarea>
-        </label>
-
-        <label>
-          Engagement question
-          <textarea id="engagementHook" rows="4">Which side makes the stronger case—and what are we missing?</textarea>
-        </label>
-
-        <label>
-          Draft name
-          <input id="draftName" value="Untitled Story">
-        </label>
-      </section>
-
-      <section class="panel">
-        <p class="eyebrow">POST CHECK</p>
-        <div class="score-row"><span>Headline</span><strong id="headlineScore">0</strong></div>
-        <div class="score-row"><span>Facts</span><strong id="factsScore">0</strong></div>
-        <div class="score-row"><span>Balance</span><strong id="balanceScore">0</strong></div>
-        <div class="score-row"><span>Sources</span><strong id="sourceScore">0</strong></div>
-        <div class="score-total"><span>Overall</span><strong id="overallScore">0</strong></div>
-      </section>
-
-      <section class="panel">
-        <div class="copy-top">
-          <div>
-            <p class="eyebrow">X POST COPY</p>
-            <h2>Suggested post</h2>
-          </div>
-          <button id="copyTweetBtn" class="ghost small" type="button">Copy</button>
+    <section class="preview-area">
+      <div class="preview-heading">
+        <div>
+          <p class="eyebrow">PHONE PREVIEW</p>
+          <h1>Perspective Card</h1>
         </div>
-        <textarea id="tweetCopy" rows="10" readonly></textarea>
-      </section>
+        <span class="pill">1080 × 1350</span>
+      </div>
 
-      <p id="message" class="status" aria-live="polite"></p>
-    </aside>
+      <div id="card" class="perspective-card">
+        <div id="cardHeadline" class="card-headline">Trump announces new tariffs</div>
+
+        <div class="lens-header">
+          <div id="cardLeftLabel" class="lens-title lens-blue">SUPPORTERS</div>
+          <div id="cardRightLabel" class="lens-title lens-red">CRITICS</div>
+        </div>
+
+        <div id="comparisonRows" class="comparison-rows"></div>
+
+        <div class="source-footer">
+          <div>
+            <div class="source-label">LENS A SOURCES</div>
+            <div id="leftSourceFooter" class="source-names"></div>
+          </div>
+          <div>
+            <div class="source-label">LENS B SOURCES</div>
+            <div id="rightSourceFooter" class="source-names"></div>
+          </div>
+        </div>
+      </div>
+
+      <canvas id="exportCanvas" width="1080" height="1350" hidden></canvas>
+    </section>
   </main>
 
-  <div id="xPreviewModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
-    <div class="modal-card">
-      <div class="modal-top">
-        <div>
-          <p class="eyebrow">X PREVIEW</p>
-          <h2 id="previewTitle">Phone feed preview</h2>
-        </div>
-        <button id="closePreviewBtn" class="ghost" type="button">Close</button>
+  <dialog id="sourceDialog">
+    <div class="dialog-top">
+      <div>
+        <p class="eyebrow">SOURCES</p>
+        <h2>Open links</h2>
       </div>
-
-      <div class="phone">
-        <div class="x-post">
-          <div class="avatar">D</div>
-          <div class="post-body">
-            <div class="post-meta"><strong>DualLens</strong> <span>@DualLens · now</span></div>
-            <div id="previewPostText" class="post-text"></div>
-            <img id="previewImage" alt="DualLens graphic preview">
-            <div class="post-actions">Reply &nbsp;&nbsp; Repost &nbsp;&nbsp; Like &nbsp;&nbsp; Share</div>
-          </div>
-        </div>
-      </div>
+      <button id="closeDialogBtn" class="secondary" type="button">Close</button>
     </div>
-  </div>
+    <div class="dialog-grid">
+      <section>
+        <h3 id="dialogLeftTitle">Lens A</h3>
+        <div id="dialogLeftLinks"></div>
+      </section>
+      <section>
+        <h3 id="dialogRightTitle">Lens B</h3>
+        <div id="dialogRightLinks"></div>
+      </section>
+    </div>
+  </dialog>
 
   <script src="app.js"></script>
 </body>
