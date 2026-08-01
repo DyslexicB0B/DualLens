@@ -3,6 +3,9 @@ const canvas=$("exportCanvas");
 const ctx=canvas.getContext("2d");
 
 const defaults={
+  headlineFont:"Arial Black",
+  bodyFont:"Arial",
+  headlineSize:"64",
   category:"POLITICS",
   headline:"Trump Announces New Tariffs",
   leftLabel:"SUPPORTERS",
@@ -29,7 +32,26 @@ function sourcePairs(namesId,linksId){
   return names.map((name,i)=>({name,link:links[i]||""}));
 }
 
+function createChips(targetId,pairs){
+  const target=$(targetId);
+  target.innerHTML="";
+  pairs.forEach(source=>{
+    const chip=document.createElement("span");
+    chip.className="source-chip";
+    chip.textContent=source.name;
+    target.append(chip);
+  });
+}
+
 function renderPreview(){
+  const headlineFont=$("headlineFont").value;
+  const bodyFont=$("bodyFont").value;
+  const headlineSize=Number($("headlineSize").value);
+
+  $("card").style.fontFamily=bodyFont;
+  $("cardHeadline").style.fontFamily=headlineFont;
+  $("cardHeadline").style.fontSize=`clamp(30px, ${headlineSize/16}vw, ${headlineSize}px)`;
+
   $("cardCategory").textContent=$("category").value.trim().toUpperCase();
   $("cardHeadline").textContent=$("headline").value.trim();
   $("cardLeftLabel").textContent=$("leftLabel").value.trim().toUpperCase()||"LENS A";
@@ -59,8 +81,8 @@ function renderPreview(){
     rows.append(row);
   }
 
-  $("leftSourceFooter").textContent=sourcePairs("leftSourceNames","leftSourceLinks").map(s=>s.name).join(" • ");
-  $("rightSourceFooter").textContent=sourcePairs("rightSourceNames","rightSourceLinks").map(s=>s.name).join(" • ");
+  createChips("leftSourceFooter",sourcePairs("leftSourceNames","leftSourceLinks"));
+  createChips("rightSourceFooter",sourcePairs("rightSourceNames","rightSourceLinks"));
 }
 
 function wrapText(text,maxWidth,font){
@@ -93,12 +115,16 @@ function drawWrapped(text,x,y,maxWidth,lineHeight,font,color,maxLines=99){
 
 function renderCanvas(){
   const W=1080,H=1350,margin=70,innerW=W-margin*2;
+  const headlineFont=$("headlineFont").value;
+  const bodyFont=$("bodyFont").value;
+  const headlineSize=Number($("headlineSize").value);
+
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle="#fff";
   ctx.fillRect(0,0,W,H);
 
   let y=75;
-  ctx.font="900 18px Arial";
+  ctx.font=`900 18px ${bodyFont}`;
   ctx.fillStyle="#6b7280";
   ctx.fillText($("category").value.trim().toUpperCase(),margin,y);
 
@@ -108,8 +134,8 @@ function renderCanvas(){
     margin,
     y,
     innerW,
-    70,
-    "900 64px Arial",
+    headlineSize*1.08,
+    `900 ${headlineSize}px ${headlineFont}`,
     "#111827",
     3
   );
@@ -121,16 +147,16 @@ function renderCanvas(){
   const leftX=margin;
   const rightX=margin+col+gap;
 
-  ctx.font="900 28px Arial";
+  ctx.font=`900 28px ${bodyFont}`;
   ctx.fillStyle="#1769ff";
   ctx.fillText(($("leftLabel").value||"LENS A").toUpperCase(),leftX,y);
-  ctx.fillStyle="#ff3b30";
+  ctx.fillStyle="#ef4444";
   ctx.fillText(($("rightLabel").value||"LENS B").toUpperCase(),rightX,y);
 
   y+=18;
   ctx.fillStyle="#1769ff";
   ctx.fillRect(leftX,y,col,7);
-  ctx.fillStyle="#ff3b30";
+  ctx.fillStyle="#ef4444";
   ctx.fillRect(rightX,y,col,7);
 
   const left=lines("leftPoints").slice(0,3);
@@ -142,22 +168,22 @@ function renderCanvas(){
     const top=rowTop+i*rowHeight;
 
     if(i>0){
-      ctx.fillStyle="#e1e4e8";
+      ctx.fillStyle="#e5e7eb";
       ctx.fillRect(margin,top-18,innerW,2);
     }
 
-    ctx.fillStyle="#111827";
-    ctx.fillRect(margin+col+gap/2-1,top-4,2,rowHeight-38);
+    ctx.fillStyle="#9ca3af";
+    ctx.fillRect(margin+col+gap/2-1,top+8,1,rowHeight-62);
 
-    drawWrapped(left[i]||"",leftX,top+58,col-20,46,"800 39px Arial","#111827",3);
-    drawWrapped(right[i]||"",rightX,top+58,col-20,46,"800 39px Arial","#111827",3);
+    drawWrapped(left[i]||"",leftX,top+58,col-20,46,`800 39px ${bodyFont}`,"#111827",3);
+    drawWrapped(right[i]||"",rightX,top+58,col-20,46,`800 39px ${bodyFont}`,"#111827",3);
   }
 
-  const footerY=1210;
+  const footerY=1206;
   ctx.fillStyle="#111827";
-  ctx.fillRect(margin,footerY,innerW,3);
+  ctx.fillRect(margin,footerY,innerW,2);
 
-  ctx.font="900 14px Arial";
+  ctx.font=`900 14px ${bodyFont}`;
   ctx.fillStyle="#6b7280";
   ctx.fillText("LENS A SOURCES",leftX,footerY+38);
   ctx.fillText("LENS B SOURCES",rightX,footerY+38);
@@ -168,7 +194,7 @@ function renderCanvas(){
     footerY+72,
     col-10,
     25,
-    "700 18px Arial",
+    `700 18px ${bodyFont}`,
     "#111827",
     2
   );
@@ -179,7 +205,7 @@ function renderCanvas(){
     footerY+72,
     col-10,
     25,
-    "700 18px Arial",
+    `700 18px ${bodyFont}`,
     "#111827",
     2
   );
@@ -222,7 +248,7 @@ function apply(data){
 
 function renderDrafts(){
   const wrap=$("draftList");
-  const drafts=JSON.parse(localStorage.getItem("duallensV8Drafts")||"[]");
+  const drafts=JSON.parse(localStorage.getItem("duallensV9Drafts")||"[]");
   wrap.innerHTML="";
 
   if(!drafts.length){
@@ -244,7 +270,7 @@ function renderDrafts(){
     del.textContent="×";
     del.addEventListener("click",()=>{
       drafts.splice(index,1);
-      localStorage.setItem("duallensV8Drafts",JSON.stringify(drafts));
+      localStorage.setItem("duallensV9Drafts",JSON.stringify(drafts));
       renderDrafts();
     });
 
@@ -254,16 +280,19 @@ function renderDrafts(){
 }
 
 function saveDraft(){
-  const drafts=JSON.parse(localStorage.getItem("duallensV8Drafts")||"[]");
+  const drafts=JSON.parse(localStorage.getItem("duallensV9Drafts")||"[]");
   drafts.unshift({...values(),savedAt:new Date().toISOString()});
-  localStorage.setItem("duallensV8Drafts",JSON.stringify(drafts.slice(0,25)));
+  localStorage.setItem("duallensV9Drafts",JSON.stringify(drafts.slice(0,25)));
   $("message").textContent="Draft saved on this device.";
   renderDrafts();
 }
 
 fieldIds
   .filter(id=>id!=="draftName")
-  .forEach(id=>$(id).addEventListener("input",renderPreview));
+  .forEach(id=>{
+    $(id).addEventListener("input",renderPreview);
+    $(id).addEventListener("change",renderPreview);
+  });
 
 $("saveBtn").addEventListener("click",saveDraft);
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DualLens Studio v8</title>
+  <title>DualLens Studio v9</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,6 +29,34 @@
         <button id="resetBtn" class="ghost small" type="button">Reset</button>
       </div>
 
+      <div class="settings-strip">
+        <label>
+          Headline font
+          <select id="headlineFont">
+            <option value="Arial Black">Arial Black</option>
+            <option value="Arial">Arial</option>
+            <option value="Trebuchet MS">Trebuchet MS</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Verdana">Verdana</option>
+          </select>
+        </label>
+
+        <label>
+          Body font
+          <select id="bodyFont">
+            <option value="Arial">Arial</option>
+            <option value="Trebuchet MS">Trebuchet MS</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Georgia">Georgia</option>
+          </select>
+        </label>
+
+        <label>
+          Headline size
+          <input id="headlineSize" type="range" min="50" max="78" value="64">
+        </label>
+      </div>
+
       <label>
         Category
         <input id="category" value="POLITICS" maxlength="24">
@@ -39,63 +67,70 @@
         <textarea id="headline" rows="3" maxlength="110">Trump Announces New Tariffs</textarea>
       </label>
 
-      <div class="two-col">
+      <div class="lens-group lens-a-group">
+        <div class="lens-group-title">Lens A</div>
+
         <label>
-          Lens A label
+          Label
           <input id="leftLabel" value="SUPPORTERS" maxlength="28">
         </label>
-        <label>
-          Lens B label
-          <input id="rightLabel" value="CRITICS" maxlength="28">
-        </label>
-      </div>
 
-      <div class="two-col">
         <label>
-          Lens A points
+          Points
           <textarea id="leftPoints" rows="7">Protects U.S. jobs
 Builds domestic factories
 Strengthens national security</textarea>
           <small>Three short points, one per line.</small>
         </label>
 
+        <details>
+          <summary>Lens A sources</summary>
+          <label>
+            Source names
+            <textarea id="leftSourceNames" rows="4">Reuters
+White House
+@TradePolicy</textarea>
+          </label>
+          <label>
+            Source links
+            <textarea id="leftSourceLinks" rows="5">https://reuters.com/
+https://whitehouse.gov/
+https://x.com/TradePolicy</textarea>
+          </label>
+        </details>
+      </div>
+
+      <div class="lens-group lens-b-group">
+        <div class="lens-group-title">Lens B</div>
+
         <label>
-          Lens B points
+          Label
+          <input id="rightLabel" value="CRITICS" maxlength="28">
+        </label>
+
+        <label>
+          Points
           <textarea id="rightPoints" rows="7">Raises consumer prices
 Hurts small businesses
 Risks trade retaliation</textarea>
           <small>Three short points, one per line.</small>
         </label>
-      </div>
 
-      <div class="two-col">
-        <label>
-          Lens A source names
-          <textarea id="leftSourceNames" rows="4">Reuters
-White House
-@TradePolicy</textarea>
-        </label>
-        <label>
-          Lens B source names
-          <textarea id="rightSourceNames" rows="4">AP
+        <details>
+          <summary>Lens B sources</summary>
+          <label>
+            Source names
+            <textarea id="rightSourceNames" rows="4">AP
 Brookings
 @EconomistJane</textarea>
-        </label>
-      </div>
-
-      <div class="two-col">
-        <label>
-          Lens A links
-          <textarea id="leftSourceLinks" rows="5">https://reuters.com/
-https://whitehouse.gov/
-https://x.com/TradePolicy</textarea>
-        </label>
-        <label>
-          Lens B links
-          <textarea id="rightSourceLinks" rows="5">https://apnews.com/
+          </label>
+          <label>
+            Source links
+            <textarea id="rightSourceLinks" rows="5">https://apnews.com/
 https://brookings.edu/
 https://x.com/EconomistJane</textarea>
-        </label>
+          </label>
+        </details>
       </div>
 
       <label>
@@ -148,17 +183,17 @@ Which lens makes the stronger case—and what are we missing?</textarea>
           <div class="source-footer">
             <div>
               <div class="source-kicker">LENS A SOURCES</div>
-              <div id="leftSourceFooter" class="source-line"></div>
+              <div id="leftSourceFooter" class="source-chip-row"></div>
             </div>
             <div>
               <div class="source-kicker">LENS B SOURCES</div>
-              <div id="rightSourceFooter" class="source-line"></div>
+              <div id="rightSourceFooter" class="source-chip-row"></div>
             </div>
           </div>
         </div>
       </div>
 
-      <p class="preview-note">The export matches this layout and is designed to remain readable in an X phone feed.</p>
+      <p class="preview-note">The preview stays visible while you edit. The exported image uses the same fonts, spacing, and source labels.</p>
 
       <canvas id="exportCanvas" width="1080" height="1350" hidden></canvas>
     </section>
