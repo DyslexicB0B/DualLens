@@ -1,89 +1,123 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="DualLens — Every story. Two perspectives." />
-  <title>DualLens — Every Story. Two Perspectives.</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DualLens Studio</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="#home" aria-label="DualLens home"><span>DUAL</span>LENS</a>
-    <nav>
-      <a href="#stories">Stories</a>
-      <a href="#how">How it works</a>
-      <a href="admin.html">Content Studio</a>
-    </nav>
-    <button class="menu-button" aria-label="Open navigation">☰</button>
-  </header>
-
-  <main>
-    <section class="hero" id="home">
-      <div class="eyebrow">News without the echo chamber</div>
-      <h1>See the story.<br><span>Understand the divide.</span></h1>
-      <p>DualLens compares how credible outlets frame the same event, then separates shared facts from interpretation.</p>
-      <div class="hero-actions">
-        <a class="button primary" href="#stories">Explore today’s stories</a>
-        <a class="button ghost" href="#how">How DualLens works</a>
-      </div>
-      <div class="hero-stats">
-        <div><strong>3</strong><span>perspectives</span></div>
-        <div><strong>1</strong><span>shared reality</span></div>
-        <div><strong>60 sec</strong><span>to understand</span></div>
-      </div>
-    </section>
-
-    <section class="ticker" aria-label="Trending topics">
-      <span>Trending</span>
-      <div>Politics</div><div>Economy</div><div>Technology</div><div>World</div><div>Culture</div>
-    </section>
-
-    <section class="stories-section" id="stories">
-      <div class="section-heading">
+  <main class="app-shell">
+    <section class="editor-panel">
+      <div class="brand-row">
         <div>
-          <span class="eyebrow">Today’s coverage</span>
-          <h2>One event. Different frames.</h2>
+          <p class="eyebrow">DUALLENS</p>
+          <h1>Post Studio</h1>
         </div>
-        <div class="filters">
-          <button class="filter active" data-category="All">All</button>
-          <button class="filter" data-category="Politics">Politics</button>
-          <button class="filter" data-category="Economy">Economy</button>
-          <button class="filter" data-category="Technology">Technology</button>
-        </div>
+        <span class="status-pill">GitHub Pages Ready</span>
       </div>
-      <div class="story-grid" id="storyGrid"></div>
+
+      <p class="intro">Build a balanced social post, preview it live, and export it as a PNG.</p>
+
+      <label>
+        Story label
+        <input id="storyLabel" value="TODAY'S STORY" maxlength="30" />
+      </label>
+
+      <label>
+        Headline
+        <textarea id="headline" rows="3" maxlength="120">Congress debates a new national immigration proposal</textarea>
+      </label>
+
+      <div class="two-col">
+        <label>
+          Left heading
+          <input id="leftHeading" value="SUPPORTERS" maxlength="24" />
+        </label>
+        <label>
+          Right heading
+          <input id="rightHeading" value="CRITICS" maxlength="24" />
+        </label>
+      </div>
+
+      <div class="two-col">
+        <label>
+          Left perspective
+          <textarea id="leftPoints" rows="7">Strengthens border enforcement
+Clarifies asylum standards
+Adds resources for processing
+May reduce illegal crossings</textarea>
+          <small>One point per line</small>
+        </label>
+
+        <label>
+          Right perspective
+          <textarea id="rightPoints" rows="7">Could limit humanitarian access
+May separate families
+Adds enforcement costs
+Could affect labor markets</textarea>
+          <small>One point per line</small>
+        </label>
+      </div>
+
+      <label>
+        Common ground
+        <textarea id="commonGround" rows="3" maxlength="180">Both sides agree the current system is overwhelmed and needs clearer rules, faster processing, and better enforcement.</textarea>
+      </label>
+
+      <label>
+        Why it matters
+        <textarea id="whyMatters" rows="3" maxlength="180">The outcome could affect border operations, employers, asylum seekers, local governments, and federal spending.</textarea>
+      </label>
+
+      <label>
+        Sources
+        <input id="sources" value="AP • Reuters • Congressional summary" maxlength="90" />
+      </label>
+
+      <div class="two-col">
+        <label>
+          Export format
+          <select id="format">
+            <option value="portrait">Portrait · 1080 × 1350</option>
+            <option value="square">Square · 1080 × 1080</option>
+            <option value="landscape">X Landscape · 1600 × 900</option>
+          </select>
+        </label>
+
+        <label>
+          Column labels
+          <select id="labelStyle">
+            <option value="custom">Use my headings</option>
+            <option value="leftRight">Left Lens / Right Lens</option>
+            <option value="forAgainst">Arguments For / Against</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="actions">
+        <button id="downloadBtn" class="primary">Export PNG</button>
+        <button id="resetBtn" class="secondary">Reset Example</button>
+      </div>
+
+      <p id="message" class="message" aria-live="polite"></p>
     </section>
 
-    <section class="how-section" id="how">
-      <div class="section-heading compact">
+    <section class="preview-panel">
+      <div class="preview-header">
         <div>
-          <span class="eyebrow">The DualLens method</span>
-          <h2>Clarity before commentary.</h2>
+          <p class="eyebrow">LIVE PREVIEW</p>
+          <h2>Your post</h2>
         </div>
+        <span id="sizeBadge" class="status-pill">1080 × 1350</span>
       </div>
-      <div class="steps">
-        <article><span>01</span><h3>Collect</h3><p>Compare reporting from multiple credible outlets across the ideological spectrum.</p></article>
-        <article><span>02</span><h3>Separate</h3><p>Distinguish shared facts, framing choices, interpretation and unresolved claims.</p></article>
-        <article><span>03</span><h3>Understand</h3><p>See where narratives align, where they diverge and why the difference matters.</p></article>
+
+      <div class="canvas-wrap">
+        <canvas id="previewCanvas" width="1080" height="1350"></canvas>
       </div>
     </section>
   </main>
 
-  <div class="story-modal" id="storyModal" aria-hidden="true">
-    <div class="modal-backdrop" data-close-modal></div>
-    <article class="modal-panel">
-      <button class="close-button" data-close-modal aria-label="Close story">×</button>
-      <div id="storyDetail"></div>
-    </article>
-  </div>
-
-  <footer>
-    <div class="brand"><span>DUAL</span>LENS</div>
-    <p>Different perspectives. Same facts. Better understanding.</p>
-  </footer>
-
-  <script src="stories.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
