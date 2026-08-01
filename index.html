@@ -3,41 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DualLens Studio v4</title>
+  <title>DualLens Studio v5</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="topbar">
-    <div>
+    <div class="brand-lockup">
       <div class="brand">DUALLENS</div>
-      <div class="subbrand">X Content Studio</div>
+      <div class="subbrand">Create a better X post in under three minutes.</div>
     </div>
     <div class="top-actions">
       <button id="saveBtn" class="ghost" type="button">Save draft</button>
+      <button id="previewBtn" class="ghost" type="button">Preview on X</button>
       <button id="downloadBtn" class="primary" type="button">Export PNG</button>
     </div>
   </header>
 
-  <main class="workspace">
-    <aside class="sidebar">
-      <section class="panel">
-        <p class="eyebrow">CREATE WITH AI</p>
+  <main class="app-grid">
+    <aside class="left-rail">
+      <section class="panel ai-panel">
+        <p class="eyebrow">START WITH AI</p>
+        <h1>What are we covering?</h1>
 
-        <div class="mode-tabs" role="tablist" aria-label="AI input type">
+        <div class="mode-tabs">
           <button class="mode-tab active" data-mode="topic" type="button">Topic</button>
           <button class="mode-tab" data-mode="headline" type="button">Headline</button>
           <button class="mode-tab" data-mode="article" type="button">Article</button>
         </div>
 
-        <label>
-          <span id="aiInputLabel">Topic</span>
-          <textarea id="aiInput" rows="5" placeholder="Example: Should college athletes be paid?"></textarea>
-        </label>
-
-        <label>
-          Optional context
-          <textarea id="aiContext" rows="4" placeholder="Add any facts, angle, names, or framing you want included."></textarea>
-        </label>
+        <textarea id="aiInput" rows="6" placeholder="Type a topic, paste a headline, or add an article link."></textarea>
 
         <label>
           Perspective style
@@ -50,19 +44,110 @@
           </select>
         </label>
 
-        <button id="generateBtn" class="primary full" type="button">Generate story</button>
-        <p id="aiStatus" class="message" aria-live="polite"></p>
+        <label>
+          Optional context
+          <textarea id="aiContext" rows="4" placeholder="Names, facts, framing, or anything the AI should consider."></textarea>
+        </label>
+
+        <button id="generateBtn" class="primary full" type="button">Generate first draft</button>
+        <p id="aiStatus" class="status" aria-live="polite"></p>
       </section>
 
+      <section class="panel compact">
+        <p class="eyebrow">FORMAT</p>
+        <select id="format">
+          <option value="landscape">X Landscape · 1600 × 900</option>
+          <option value="square">Square · 1080 × 1080</option>
+          <option value="portrait">Portrait · 1080 × 1350</option>
+        </select>
+      </section>
+
+      <section class="panel compact">
+        <p class="eyebrow">SAVED DRAFTS</p>
+        <div id="draftList" class="draft-list"></div>
+      </section>
+    </aside>
+
+    <section class="canvas-column">
+      <div class="canvas-toolbar">
+        <div>
+          <p class="eyebrow">LIVE CANVAS</p>
+          <h2>Edit the story directly</h2>
+        </div>
+        <span id="sizeBadge" class="pill">1600 × 900</span>
+      </div>
+
+      <div class="direct-editor" id="directEditor">
+        <div class="direct-brand">DUALLENS</div>
+
+        <div class="editable headline-edit" contenteditable="true" id="headlineEdit" data-placeholder="Headline">
+          Congress debates a new national immigration proposal
+        </div>
+
+        <div class="section-label">WHAT WE KNOW</div>
+        <div class="divider black"></div>
+
+        <div class="editable facts-edit" contenteditable="true" id="factsEdit" data-placeholder="Shared facts, one per line">The proposal changes asylum processing rules
+It adds funding for border operations
+Congress must approve the final legislation</div>
+
+        <div class="perspective-grid">
+          <div class="perspective-column">
+            <div class="editable perspective-label blue-text" contenteditable="true" id="leftHeadingEdit">LEFT VIEW</div>
+            <div class="divider blue"></div>
+            <div class="editable perspective-points" contenteditable="true" id="leftPointsEdit">Strengthens border enforcement
+Clarifies asylum standards
+Adds resources for processing
+May reduce illegal crossings</div>
+          </div>
+
+          <div class="perspective-column">
+            <div class="editable perspective-label red-text" contenteditable="true" id="rightHeadingEdit">RIGHT VIEW</div>
+            <div class="divider red"></div>
+            <div class="editable perspective-points" contenteditable="true" id="rightPointsEdit">Could limit humanitarian access
+May separate families
+Adds enforcement costs
+Could affect labor markets</div>
+          </div>
+        </div>
+
+        <div class="source-divider"></div>
+        <div class="editable source-line" contenteditable="true" id="sourceLineEdit">[1] AP   [2] Reuters   [3] BBC   [4] NPR</div>
+      </div>
+
+      <div class="canvas-note">Click any headline, label, fact, point, or source line to edit it directly.</div>
+
+      <canvas id="exportCanvas" width="1600" height="900" hidden></canvas>
+    </section>
+
+    <aside class="right-rail">
       <section class="panel">
-        <p class="eyebrow">X FORMAT</p>
+        <p class="eyebrow">POST SETTINGS</p>
+
         <label>
-          Image size
-          <select id="format">
-            <option value="landscape">X Landscape · 1600 × 900</option>
-            <option value="square">Square · 1080 × 1080</option>
-            <option value="portrait">Portrait · 1080 × 1350</option>
-          </select>
+          Engagement question
+          <textarea id="engagementHook" rows="3" maxlength="180">Which side makes the stronger case—and what are we missing?</textarea>
+        </label>
+
+        <label>
+          Source names
+          <textarea id="sourceNames" rows="5">AP
+Reuters
+BBC
+NPR</textarea>
+        </label>
+
+        <label>
+          Source links
+          <textarea id="sourceLinks" rows="6">https://apnews.com/
+https://reuters.com/
+https://bbc.com/
+https://npr.org/</textarea>
+        </label>
+
+        <label>
+          Draft name
+          <input id="draftName" value="Untitled Story" maxlength="60">
         </label>
       </section>
 
@@ -76,142 +161,43 @@
       </section>
 
       <section class="panel">
-        <p class="eyebrow">SAVED DRAFTS</p>
-        <div id="draftList" class="draft-list"></div>
-      </section>
-    </aside>
-
-    <section class="editor">
-      <section class="panel">
-        <div class="section-title">
+        <div class="copy-top">
           <div>
-            <p class="eyebrow">EDIT STORY</p>
-            <h1>Review and refine</h1>
+            <p class="eyebrow">X POST COPY</p>
+            <h2>Suggested post</h2>
           </div>
-          <button id="resetBtn" class="ghost" type="button">Reset</button>
+          <button id="copyTweetBtn" class="ghost small" type="button">Copy</button>
         </div>
-
-        <label>
-          Headline
-          <textarea id="headline" rows="3" maxlength="120">Congress debates a new national immigration proposal</textarea>
-          <small id="headlineCount">0/120</small>
-        </label>
-
-        <div class="two-col">
-          <label>
-            Perspective A label
-            <input id="leftHeading" value="LEFT VIEW" maxlength="28">
-          </label>
-          <label>
-            Perspective B label
-            <input id="rightHeading" value="RIGHT VIEW" maxlength="28">
-          </label>
-        </div>
-
-        <label>
-          Shared facts
-          <textarea id="sharedFacts" rows="6">The proposal changes asylum processing rules
-It adds funding for border operations
-Congress must approve the final legislation</textarea>
-          <small>One fact per line.</small>
-        </label>
-
-        <div class="two-col">
-          <div class="perspective-box perspective-a">
-            <h2 id="leftBoxTitle">Perspective A</h2>
-            <label>
-              Points
-              <textarea id="leftPoints" rows="8">Strengthens border enforcement
-Clarifies asylum standards
-Adds resources for processing
-May reduce illegal crossings</textarea>
-            </label>
-            <label>
-              Source names
-              <textarea id="leftSourceNames" rows="4">AP
-Reuters</textarea>
-            </label>
-            <label>
-              Source links
-              <textarea id="leftSourceLinks" rows="4">https://apnews.com/
-https://reuters.com/</textarea>
-            </label>
-          </div>
-
-          <div class="perspective-box perspective-b">
-            <h2 id="rightBoxTitle">Perspective B</h2>
-            <label>
-              Points
-              <textarea id="rightPoints" rows="8">Could limit humanitarian access
-May separate families
-Adds enforcement costs
-Could affect labor markets</textarea>
-            </label>
-            <label>
-              Source names
-              <textarea id="rightSourceNames" rows="4">BBC
-NPR</textarea>
-            </label>
-            <label>
-              Source links
-              <textarea id="rightSourceLinks" rows="4">https://bbc.com/
-https://npr.org/</textarea>
-            </label>
-          </div>
-        </div>
-
-        <label>
-          Engagement question
-          <input id="engagementHook" value="Which side makes the stronger case—and what are we missing?" maxlength="140">
-        </label>
-
-        <label>
-          Draft name
-          <input id="draftName" value="Untitled Story" maxlength="50">
-        </label>
-
-        <div class="copy-box">
-          <div class="copy-top">
-            <div>
-              <p class="eyebrow">X POST COPY</p>
-              <h2>Suggested post</h2>
-            </div>
-            <button id="copyTweetBtn" class="ghost" type="button">Copy text</button>
-          </div>
-          <textarea id="tweetCopy" rows="7" readonly></textarea>
-        </div>
-
-        <p id="message" class="message" aria-live="polite"></p>
+        <textarea id="tweetCopy" rows="9" readonly></textarea>
       </section>
-    </section>
 
-    <section class="preview">
-      <div class="preview-top">
-        <div>
-          <p class="eyebrow">LIVE PREVIEW</p>
-          <h2>Clean X graphic</h2>
-        </div>
-        <span id="sizeBadge" class="pill">1600 × 900</span>
-      </div>
-
-      <div class="canvas-shell">
-        <canvas id="previewCanvas" width="1600" height="900"></canvas>
-      </div>
-
-      <p class="preview-note">The graphic is intentionally plain: white background, bold type, strong contrast, and no watermark or decorative texture.</p>
-
-      <div class="link-lists">
-        <div>
-          <p class="eyebrow">PERSPECTIVE A LINKS</p>
-          <div id="leftLinks"></div>
-        </div>
-        <div>
-          <p class="eyebrow">PERSPECTIVE B LINKS</p>
-          <div id="rightLinks"></div>
-        </div>
-      </div>
-    </section>
+      <p id="message" class="status" aria-live="polite"></p>
+    </aside>
   </main>
+
+  <div id="xPreviewModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div>
+          <p class="eyebrow">X FEED PREVIEW</p>
+          <h2 id="previewTitle">How it reads on a phone</h2>
+        </div>
+        <button id="closePreviewBtn" class="ghost" type="button">Close</button>
+      </div>
+
+      <div class="phone">
+        <div class="x-post">
+          <div class="avatar">D</div>
+          <div class="post-body">
+            <div class="post-meta"><strong>DualLens</strong> <span>@DualLens · now</span></div>
+            <div id="previewPostText" class="post-text"></div>
+            <img id="previewImage" alt="DualLens post preview">
+            <div class="post-actions">♡ Reply &nbsp;&nbsp; ↻ Repost &nbsp;&nbsp; ♡ Like &nbsp;&nbsp; ↗ Share</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>
