@@ -1,0 +1,126 @@
+*{box-sizing:border-box}
+:root{--blue:#185fe6;--red:#ef3038;--ink:#0d1730;--muted:#667085;--line:#d7dee8;--bg:#e9eef5}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+.topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:14px 22px;background:#fff;border-bottom:1px solid var(--line)}
+.brand-lockup,.top-actions{display:flex;align-items:center;gap:10px}.logo-icon{display:block;flex:0 0 auto}.brand-name{font-size:21px;font-weight:900}.tagline{font-size:12px;color:var(--muted)}
+button,input,textarea,select{font:inherit}button{border-radius:10px;padding:10px 14px;font-weight:800;cursor:pointer}.primary{border:0;color:#fff;background:linear-gradient(135deg,#1769ff,#0c50d6)}.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}.small{padding:8px 10px;font-size:12px}
+.workspace{display:grid;grid-template-columns:minmax(360px,470px) minmax(600px,1fr);gap:20px;max-width:1650px;margin:auto;padding:20px}
+.editor-column{display:grid;gap:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 8px 22px rgba(15,23,42,.05)}.left-panel{border-top:5px solid var(--blue)}.right-panel{border-top:5px solid var(--red)}
+.eyebrow{font-size:10px;font-weight:900;letter-spacing:.16em;color:var(--muted);margin:0 0 8px}label{display:block;font-size:12px;font-weight:800;margin-bottom:12px}
+input,textarea,select{width:100%;margin-top:7px;border:1px solid var(--line);border-radius:9px;padding:10px;background:#fff;color:var(--ink)}textarea{resize:vertical}
+.upload-card{display:grid;place-items:center;min-height:120px;border:2px dashed #cbd5e1;border-radius:12px;background:#f8fafc;text-align:center;cursor:pointer}.upload-card input{display:none}.upload-symbol{font-size:26px}.row{display:flex;align-items:flex-end;gap:8px}.row label{flex:1}
+.preview-column{position:sticky;top:84px;align-self:start}.preview-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px}.preview-header h2{margin:0}.size-pill{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12px;font-weight:800}
+.preview-shell{padding:14px;background:#d9e0ea;border-radius:18px}
+.comparison-card{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:14px;background:linear-gradient(90deg,#dfeaff 0%,#faf6ef 48%,#ffe2e2 100%);box-shadow:0 14px 40px rgba(15,23,42,.12)}
+.paper-grain,.blue-glow,.red-glow{position:absolute;inset:0;pointer-events:none}.paper-grain{opacity:.16;background-image:repeating-radial-gradient(circle at 0 0,transparent 0 9px,rgba(15,23,42,.08) 10px 11px)}.blue-glow{background:radial-gradient(circle at 5% 52%,rgba(24,95,230,.28),transparent 36%)}.red-glow{background:radial-gradient(circle at 95% 52%,rgba(239,48,56,.28),transparent 36%)}
+.card-inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;padding:5.2%}.card-logo{display:flex;justify-content:center;align-items:center;gap:10px}.card-brand{font-size:clamp(20px,2.1vw,32px);font-weight:900}.card-tagline{font-size:clamp(7px,.7vw,10px);font-weight:900;letter-spacing:.24em;color:var(--muted)}
+.comparison-card h1{margin:4% auto 4.5%;max-width:92%;text-align:center;font-size:clamp(34px,4.2vw,66px);line-height:.98;text-transform:uppercase}
+.lens-label-grid{display:grid;grid-template-columns:1fr 1fr;gap:7%;margin-bottom:1.5%}.lens-label{text-align:center;font-size:clamp(11px,1.15vw,18px);font-weight:900}.left-label{color:var(--blue)}.right-label{color:var(--red)}
+.compare-grid{display:grid;grid-template-columns:minmax(0,1fr) 58px minmax(0,1fr);gap:2%;flex:1;min-height:0;align-items:center}.screen-card{display:flex;flex-direction:column;height:100%;min-height:0;padding:2%;border-radius:15px;background:rgba(255,255,255,.96);box-shadow:0 14px 28px rgba(15,23,42,.12)}.screen-card-left{border:2px solid rgba(24,95,230,.38)}.screen-card-right{border:2px solid rgba(239,48,56,.38)}
+.screen-image{width:100%;height:calc(100% - 48px);min-height:0;object-fit:contain;border-radius:11px;background:#fff}.placeholder{display:grid;place-items:center;flex:1;border:2px dashed #cbd5e1;border-radius:11px;color:var(--muted)}.hidden{display:none!important}
+.vs-stack{display:flex;flex-direction:column;align-items:center;height:100%}.vs-line{width:1px;flex:1;background:#b6beca}.vs-badge{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;border:2px solid #b6beca;background:#fff;font-size:18px;font-weight:900}
+.source-chip{display:flex;justify-content:center;align-items:center;min-height:38px;margin-top:10px;padding:6px 10px;border-radius:999px;background:#fff;font-size:clamp(9px,.9vw,13px);font-weight:900;text-decoration:none}.left-chip{color:var(--blue);border:1px solid rgba(24,95,230,.45)}.right-chip{color:var(--red);border:1px solid rgba(239,48,56,.45)}
+.card-footer{display:flex;justify-content:center;align-items:center;gap:8px;padding-top:2.2%;margin-top:2.5%;border-top:1px solid rgba(15,23,42,.2)}.footer-brand{font-size:clamp(15px,1.4vw,22px);font-weight:900}
+.message{font-size:12px;color:var(--muted)}dialog{width:min(720px,92vw);border:0;border-radius:16px;padding:18px}dialog::backdrop{background:rgba(0,0,0,.55)}.dialog-header{display:flex;justify-content:space-between;align-items:center}.phone-frame{width:min(420px,100%);margin:18px auto;padding:16px;border:10px solid var(--ink);border-radius:34px}.tweet{display:flex;gap:10px}.avatar{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--ink);color:#fff;font-weight:900}.tweet-content{flex:1;min-width:0}.tweet-meta{font-size:13px}.tweet-meta span{color:var(--muted)}.phone-copy{white-space:pre-wrap;font-size:14px;line-height:1.4}.tweet-content img{width:100%;border:1px solid var(--line);border-radius:13px}
+@media(max-width:950px){.workspace{grid-template-columns:1fr;padding:10px}.preview-column{position:static;order:-1}.compare-grid{grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr)}.vs-badge{width:40px;height:40px;font-size:14px}.comparison-card h1{font-size:clamp(32px,8vw,48px)}}
+
+.screen-card{
+  position:relative;
+}
+.source-overlay{
+  position:absolute;
+  inset:2% 2% 58px;
+  z-index:4;
+  border:0;
+  padding:0;
+  background:transparent;
+  cursor:pointer;
+}
+.source-overlay:focus-visible{
+  outline:4px solid rgba(24,95,230,.30);
+  outline-offset:2px;
+  border-radius:11px;
+}
+.draft-list{
+  display:grid;
+  gap:7px;
+}
+.draft-row{
+  display:flex;
+  gap:6px;
+}
+.draft-load{
+  flex:1;
+  text-align:left;
+}
+.draft-delete{
+  padding:8px 10px;
+}
+
+/* 1.4.2: hard-lock comparison cards side-by-side at every viewport */
+.compare-grid{
+  display:flex !important;
+  flex-direction:row !important;
+  align-items:stretch !important;
+  justify-content:space-between !important;
+  gap:12px !important;
+  width:100% !important;
+  flex:1 1 auto !important;
+  min-height:0 !important;
+}
+.compare-grid > .screen-card{
+  flex:1 1 0 !important;
+  width:0 !important;
+  min-width:0 !important;
+  height:auto !important;
+  align-self:stretch !important;
+}
+.compare-grid > .vs-stack{
+  flex:0 0 52px !important;
+  width:52px !important;
+  min-width:52px !important;
+  height:auto !important;
+  align-self:stretch !important;
+}
+.screen-card-left,
+.screen-card-right{
+  margin:0 !important;
+}
+@media(max-width:950px){
+  .compare-grid{
+    display:flex !important;
+    flex-direction:row !important;
+    gap:8px !important;
+  }
+  .compare-grid > .vs-stack{
+    flex-basis:38px !important;
+    width:38px !important;
+    min-width:38px !important;
+  }
+}
+
+/* 1.4.3: phone-safe label and footer spacing */
+.lens-label-grid{
+  gap:5% !important;
+  padding:0 1.5% !important;
+}
+.lens-label{
+  min-width:0 !important;
+  padding:0 8px !important;
+  line-height:1.08 !important;
+  white-space:normal !important;
+  overflow-wrap:anywhere !important;
+  text-wrap:balance;
+}
+.card-footer{
+  padding-bottom:2.5% !important;
+  margin-top:2% !important;
+}
+.comparison-card h1{
+  max-width:88% !important;
+}
+@media(max-width:950px){
+  .lens-label{
+    font-size:clamp(10px,3vw,15px) !important;
+  }
+}
