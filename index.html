@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DualLens Studio 1.0</title>
-  <link rel="stylesheet" href="style.css">
+  <title>DualLens Studio 1.1</title>
+  <link rel="stylesheet" href="duallens-v1-1.css?v=110">
 </head>
 <body>
 <header class="topbar">
   <div class="brand-lockup">
-    <svg class="logo-icon" viewBox="0 0 72 44" aria-hidden="true">
+    <svg class="logo-icon" width="44" height="30" viewBox="0 0 72 44" aria-hidden="true">
       <circle cx="25" cy="22" r="18" fill="#185fe6"/>
       <circle cx="47" cy="22" r="18" fill="#ef3038"/>
       <path d="M36 7a18 18 0 0 1 0 30a18 18 0 0 1 0-30Z" fill="#172033" opacity=".72"/>
@@ -19,7 +19,6 @@
       <div class="tagline">Same story. Different lens.</div>
     </div>
   </div>
-
   <div class="top-actions">
     <button id="phonePreviewBtn" class="secondary" type="button">Phone preview</button>
     <button id="exportBtn" class="primary" type="button">Export PNG</button>
@@ -30,28 +29,21 @@
   <section class="editor-column">
     <div class="panel">
       <p class="eyebrow">STORY</p>
-      <label>
-        Headline
+      <label>Headline
         <textarea id="headline" rows="3" maxlength="110">Biden Calls for Israel Ceasefire</textarea>
       </label>
     </div>
 
-    <div class="panel lens-panel left-panel">
+    <div class="panel left-panel">
       <p class="eyebrow">LEFT LENS</p>
-      <label>
-        Label
-        <input id="leftLabel" value="LIBERAL PERSPECTIVE" maxlength="34">
-      </label>
-
+      <label>Label<input id="leftLabel" value="LIBERAL PERSPECTIVE" maxlength="34"></label>
       <label class="upload-card" for="leftImageInput">
         <span class="upload-symbol">↑</span>
         <span>Upload left screenshot</span>
         <input id="leftImageInput" type="file" accept="image/*">
       </label>
-
       <div class="row">
-        <label>
-          Image fit
+        <label>Image fit
           <select id="leftFit">
             <option value="contain">Contain</option>
             <option value="cover">Crop to fill</option>
@@ -59,34 +51,20 @@
         </label>
         <button id="removeLeftBtn" class="secondary small" type="button">Remove</button>
       </div>
-
-      <label>
-        Source label
-        <input id="leftSourceLabel" value="@GeorgeTakei">
-      </label>
-
-      <label>
-        Original URL
-        <input id="leftSourceUrl" value="https://x.com/GeorgeTakei">
-      </label>
+      <label>Source label<input id="leftSourceLabel" value="@GeorgeTakei"></label>
+      <label>Original URL<input id="leftSourceUrl" value="https://x.com/GeorgeTakei"></label>
     </div>
 
-    <div class="panel lens-panel right-panel">
+    <div class="panel right-panel">
       <p class="eyebrow">RIGHT LENS</p>
-      <label>
-        Label
-        <input id="rightLabel" value="CONSERVATIVE PERSPECTIVE" maxlength="34">
-      </label>
-
+      <label>Label<input id="rightLabel" value="CONSERVATIVE PERSPECTIVE" maxlength="34"></label>
       <label class="upload-card" for="rightImageInput">
         <span class="upload-symbol">↑</span>
         <span>Upload right screenshot</span>
         <input id="rightImageInput" type="file" accept="image/*">
       </label>
-
       <div class="row">
-        <label>
-          Image fit
+        <label>Image fit
           <select id="rightFit">
             <option value="contain">Contain</option>
             <option value="cover">Crop to fill</option>
@@ -94,29 +72,19 @@
         </label>
         <button id="removeRightBtn" class="secondary small" type="button">Remove</button>
       </div>
-
-      <label>
-        Source label
-        <input id="rightSourceLabel" value="@benshapiro">
-      </label>
-
-      <label>
-        Original URL
-        <input id="rightSourceUrl" value="https://x.com/benshapiro">
-      </label>
+      <label>Source label<input id="rightSourceLabel" value="@benshapiro"></label>
+      <label>Original URL<input id="rightSourceUrl" value="https://x.com/benshapiro"></label>
     </div>
 
     <div class="panel">
       <p class="eyebrow">X POST COPY</p>
-      <label>
-        Post text
+      <label>Post text
         <textarea id="postCopy" rows="6">Same headline. Two completely different reactions.
 
 Which lens do you agree with?</textarea>
       </label>
       <button id="copyBtn" class="secondary" type="button">Copy post text</button>
     </div>
-
     <p id="message" class="message" aria-live="polite"></p>
   </section>
 
@@ -124,20 +92,20 @@ Which lens do you agree with?</textarea>
     <div class="preview-header">
       <div>
         <p class="eyebrow">LIVE PREVIEW</p>
-        <h2>1080 × 1350 comparison card</h2>
+        <h2>Side-by-side comparison</h2>
       </div>
-      <span class="size-pill">Phone optimized</span>
+      <span class="size-pill">1080 × 1350</span>
     </div>
 
     <div class="preview-shell">
-      <div id="previewCard" class="comparison-card">
-        <div class="paper-texture"></div>
-        <div class="blue-wash"></div>
-        <div class="red-wash"></div>
+      <div class="comparison-card">
+        <div class="paper-grain"></div>
+        <div class="blue-glow"></div>
+        <div class="red-glow"></div>
 
         <div class="card-inner">
           <div class="card-logo">
-            <svg class="card-logo-icon" viewBox="0 0 72 44" aria-hidden="true">
+            <svg width="54" height="34" viewBox="0 0 72 44" aria-hidden="true">
               <circle cx="25" cy="22" r="18" fill="#185fe6"/>
               <circle cx="47" cy="22" r="18" fill="#ef3038"/>
               <path d="M36 7a18 18 0 0 1 0 30a18 18 0 0 1 0-30Z" fill="#172033" opacity=".72"/>
@@ -151,8 +119,8 @@ Which lens do you agree with?</textarea>
           <h1 id="cardHeadline">Biden Calls for Israel Ceasefire</h1>
 
           <div class="lens-label-grid">
-            <div id="cardLeftLabel" class="lens-label lens-label-left">LIBERAL PERSPECTIVE</div>
-            <div id="cardRightLabel" class="lens-label lens-label-right">CONSERVATIVE PERSPECTIVE</div>
+            <div id="cardLeftLabel" class="lens-label left-label">LIBERAL PERSPECTIVE</div>
+            <div id="cardRightLabel" class="lens-label right-label">CONSERVATIVE PERSPECTIVE</div>
           </div>
 
           <div class="compare-grid">
@@ -176,7 +144,7 @@ Which lens do you agree with?</textarea>
           </div>
 
           <div class="card-footer">
-            <svg class="footer-logo-icon" viewBox="0 0 72 44" aria-hidden="true">
+            <svg width="36" height="23" viewBox="0 0 72 44" aria-hidden="true">
               <circle cx="25" cy="22" r="18" fill="#185fe6"/>
               <circle cx="47" cy="22" r="18" fill="#ef3038"/>
               <path d="M36 7a18 18 0 0 1 0 30a18 18 0 0 1 0-30Z" fill="#172033" opacity=".72"/>
@@ -186,21 +154,15 @@ Which lens do you agree with?</textarea>
         </div>
       </div>
     </div>
-
-    <p class="preview-note">Upload real screenshots and keep usernames visible for attribution.</p>
     <canvas id="exportCanvas" width="1080" height="1350" hidden></canvas>
   </section>
 </main>
 
 <dialog id="phoneDialog">
   <div class="dialog-header">
-    <div>
-      <p class="eyebrow">PHONE PREVIEW</p>
-      <h2>How it appears in the feed</h2>
-    </div>
+    <h2>Phone preview</h2>
     <button id="closePhoneBtn" class="secondary" type="button">Close</button>
   </div>
-
   <div class="phone-frame">
     <div class="tweet">
       <div class="avatar">D</div>
@@ -213,6 +175,6 @@ Which lens do you agree with?</textarea>
   </div>
 </dialog>
 
-<script src="app.js"></script>
+<script src="duallens-v1-1.js?v=110"></script>
 </body>
 </html>
