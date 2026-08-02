@@ -1,14 +1,19 @@
-# DualLens Studio v3
+# DualLens Studio 1.0
 
-New in this version:
-- X-first 1600 × 900 layout
-- Phone safe-zone overlay
-- Shared facts section
-- Removed Why It Matters
-- Custom perspective labels and story-type presets
-- Source names and hyperlinks for each perspective
-- Numbered source references on the exported image
-- Suggested X post copy
-- Saved drafts and an editorial score
+Approved production-style build.
 
-Replace index.html, style.css, and app.js in the root of the GitHub Pages repository.
+Features:
+- Mixed-case DualLens logo
+- Premium cream background with blue/red glow
+- One centered headline
+- One screenshot per side
+- Custom lens labels
+- Source labels and original URLs
+- Center VS divider
+- Phone preview
+- Reliable 1080 × 1350 PNG export
+
+Upload these files to the GitHub repository root:
+- index.html
+- style.css
+- app.js

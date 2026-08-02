@@ -3,169 +3,210 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DualLens Studio v11</title>
+  <title>DualLens Studio 1.0</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="topbar">
   <div class="brand-lockup">
-    <div class="mark"><span></span><span></span></div>
+    <svg class="logo-icon" viewBox="0 0 72 44" aria-hidden="true">
+      <circle cx="25" cy="22" r="18" fill="#185fe6"/>
+      <circle cx="47" cy="22" r="18" fill="#ef3038"/>
+      <path d="M36 7a18 18 0 0 1 0 30a18 18 0 0 1 0-30Z" fill="#172033" opacity=".72"/>
+    </svg>
     <div>
-      <div class="brand">DUALLENS</div>
+      <div class="brand-name">DualLens</div>
       <div class="tagline">Same story. Different lens.</div>
     </div>
   </div>
-  <div class="actions">
-    <button id="previewBtn" class="secondary">Phone preview</button>
-    <button id="exportBtn" class="primary">Export PNG</button>
+
+  <div class="top-actions">
+    <button id="phonePreviewBtn" class="secondary" type="button">Phone preview</button>
+    <button id="exportBtn" class="primary" type="button">Export PNG</button>
   </div>
 </header>
 
 <main class="workspace">
-  <section class="editor">
+  <section class="editor-column">
     <div class="panel">
       <p class="eyebrow">STORY</p>
-      <label>Category
-        <select id="category">
-          <option>POLITICS</option><option>BUSINESS</option><option>SPORTS</option>
-          <option>TECH</option><option>WORLD</option><option>CULTURE</option>
-        </select>
-      </label>
-      <label>Headline
-        <textarea id="headline" rows="3">Trump Announces New Tariffs</textarea>
+      <label>
+        Headline
+        <textarea id="headline" rows="3" maxlength="110">Biden Calls for Israel Ceasefire</textarea>
       </label>
     </div>
 
-    <div class="panel">
-      <p class="eyebrow">LENSES</p>
-      <div class="two">
-        <div class="lens-edit blue-edit">
-          <h3>Lens A</h3>
-          <label>Label<input id="leftLabel" value="SUPPORTERS"></label>
-          <label>Display
-            <select id="leftMode">
-              <option value="text">Text</option>
-              <option value="image">Screenshot</option>
-              <option value="mixed">Text + Screenshot</option>
-            </select>
-          </label>
-          <label>Points
-            <textarea id="leftPoints" rows="6">Protects U.S. jobs
-Builds domestic factories
-Strengthens national security</textarea>
-          </label>
-          <label>Screenshot<input id="leftImageInput" type="file" accept="image/*"></label>
-          <button id="removeLeftImage" class="secondary small">Remove screenshot</button>
-        </div>
+    <div class="panel lens-panel left-panel">
+      <p class="eyebrow">LEFT LENS</p>
+      <label>
+        Label
+        <input id="leftLabel" value="LIBERAL PERSPECTIVE" maxlength="34">
+      </label>
 
-        <div class="lens-edit red-edit">
-          <h3>Lens B</h3>
-          <label>Label<input id="rightLabel" value="CRITICS"></label>
-          <label>Display
-            <select id="rightMode">
-              <option value="text">Text</option>
-              <option value="image">Screenshot</option>
-              <option value="mixed">Text + Screenshot</option>
-            </select>
-          </label>
-          <label>Points
-            <textarea id="rightPoints" rows="6">Raises consumer prices
-Hurts small businesses
-Risks trade retaliation</textarea>
-          </label>
-          <label>Screenshot<input id="rightImageInput" type="file" accept="image/*"></label>
-          <button id="removeRightImage" class="secondary small">Remove screenshot</button>
-        </div>
+      <label class="upload-card" for="leftImageInput">
+        <span class="upload-symbol">↑</span>
+        <span>Upload left screenshot</span>
+        <input id="leftImageInput" type="file" accept="image/*">
+      </label>
+
+      <div class="row">
+        <label>
+          Image fit
+          <select id="leftFit">
+            <option value="contain">Contain</option>
+            <option value="cover">Crop to fill</option>
+          </select>
+        </label>
+        <button id="removeLeftBtn" class="secondary small" type="button">Remove</button>
       </div>
+
+      <label>
+        Source label
+        <input id="leftSourceLabel" value="@GeorgeTakei">
+      </label>
+
+      <label>
+        Original URL
+        <input id="leftSourceUrl" value="https://x.com/GeorgeTakei">
+      </label>
     </div>
 
-    <div class="panel">
-      <p class="eyebrow">SOURCES</p>
-      <div class="two">
-        <div>
-          <label>Lens A names<textarea id="leftSourceNames" rows="3">Reuters
-White House
-@TradePolicy</textarea></label>
-          <label>Lens A links<textarea id="leftSourceLinks" rows="4">https://reuters.com/
-https://whitehouse.gov/
-https://x.com/TradePolicy</textarea></label>
-        </div>
-        <div>
-          <label>Lens B names<textarea id="rightSourceNames" rows="3">AP
-Brookings
-@EconomistJane</textarea></label>
-          <label>Lens B links<textarea id="rightSourceLinks" rows="4">https://apnews.com/
-https://brookings.edu/
-https://x.com/EconomistJane</textarea></label>
-        </div>
+    <div class="panel lens-panel right-panel">
+      <p class="eyebrow">RIGHT LENS</p>
+      <label>
+        Label
+        <input id="rightLabel" value="CONSERVATIVE PERSPECTIVE" maxlength="34">
+      </label>
+
+      <label class="upload-card" for="rightImageInput">
+        <span class="upload-symbol">↑</span>
+        <span>Upload right screenshot</span>
+        <input id="rightImageInput" type="file" accept="image/*">
+      </label>
+
+      <div class="row">
+        <label>
+          Image fit
+          <select id="rightFit">
+            <option value="contain">Contain</option>
+            <option value="cover">Crop to fill</option>
+          </select>
+        </label>
+        <button id="removeRightBtn" class="secondary small" type="button">Remove</button>
       </div>
+
+      <label>
+        Source label
+        <input id="rightSourceLabel" value="@benshapiro">
+      </label>
+
+      <label>
+        Original URL
+        <input id="rightSourceUrl" value="https://x.com/benshapiro">
+      </label>
     </div>
 
     <div class="panel">
-      <p class="eyebrow">X COPY</p>
-      <textarea id="postCopy" rows="6">Same headline. Two completely different ways to see it.
+      <p class="eyebrow">X POST COPY</p>
+      <label>
+        Post text
+        <textarea id="postCopy" rows="6">Same headline. Two completely different reactions.
 
-Which lens makes the stronger case?</textarea>
-      <button id="copyBtn" class="secondary">Copy text</button>
+Which lens do you agree with?</textarea>
+      </label>
+      <button id="copyBtn" class="secondary" type="button">Copy post text</button>
     </div>
-    <p id="message" class="message"></p>
+
+    <p id="message" class="message" aria-live="polite"></p>
   </section>
 
   <section class="preview-column">
-    <div class="preview-head">
+    <div class="preview-header">
       <div>
         <p class="eyebrow">LIVE PREVIEW</p>
-        <h2>Designed to stop the scroll</h2>
+        <h2>1080 × 1350 comparison card</h2>
       </div>
-      <span>1080 × 1350</span>
+      <span class="size-pill">Phone optimized</span>
     </div>
 
     <div class="preview-shell">
-      <div id="card" class="card">
-        <div class="top-accent"><span></span><span></span></div>
-        <div id="cardCategory" class="category">POLITICS</div>
-        <h1 id="cardHeadline">Trump Announces New Tariffs</h1>
+      <div id="previewCard" class="comparison-card">
+        <div class="paper-texture"></div>
+        <div class="blue-wash"></div>
+        <div class="red-wash"></div>
 
-        <div class="lens-bar">
-          <div id="cardLeftLabel" class="blue-label">SUPPORTERS</div>
-          <div id="cardRightLabel" class="red-label">CRITICS</div>
-        </div>
-
-        <div class="split-content">
-          <div id="leftPane" class="pane left-pane">
-            <div id="leftText" class="point-list"></div>
-            <img id="leftImage" class="shot hidden" alt="Lens A screenshot">
+        <div class="card-inner">
+          <div class="card-logo">
+            <svg class="card-logo-icon" viewBox="0 0 72 44" aria-hidden="true">
+              <circle cx="25" cy="22" r="18" fill="#185fe6"/>
+              <circle cx="47" cy="22" r="18" fill="#ef3038"/>
+              <path d="M36 7a18 18 0 0 1 0 30a18 18 0 0 1 0-30Z" fill="#172033" opacity=".72"/>
+            </svg>
+            <div>
+              <div class="card-brand">DualLens</div>
+              <div class="card-tagline">SAME STORY. DIFFERENT LENS.</div>
+            </div>
           </div>
-          <div class="divider"></div>
-          <div id="rightPane" class="pane right-pane">
-            <div id="rightText" class="point-list"></div>
-            <img id="rightImage" class="shot hidden" alt="Lens B screenshot">
+
+          <h1 id="cardHeadline">Biden Calls for Israel Ceasefire</h1>
+
+          <div class="lens-label-grid">
+            <div id="cardLeftLabel" class="lens-label lens-label-left">LIBERAL PERSPECTIVE</div>
+            <div id="cardRightLabel" class="lens-label lens-label-right">CONSERVATIVE PERSPECTIVE</div>
           </div>
-        </div>
 
-        <div class="sources">
-          <div id="leftSources"></div>
-          <div id="rightSources"></div>
-        </div>
+          <div class="compare-grid">
+            <div class="screen-card screen-card-left">
+              <img id="leftPreviewImage" class="screen-image hidden" alt="Left screenshot">
+              <div id="leftPlaceholder" class="placeholder">Upload left screenshot</div>
+              <a id="leftSourceChip" class="source-chip left-chip" href="#" target="_blank" rel="noopener noreferrer">@GeorgeTakei</a>
+            </div>
 
-        <div class="footer">
-          <div class="mark mini"><span></span><span></span></div>
-          <div><strong>DUALLENS</strong><small>Same story. Different lens.</small></div>
+            <div class="vs-stack">
+              <div class="vs-line"></div>
+              <div class="vs-badge">VS</div>
+              <div class="vs-line"></div>
+            </div>
+
+            <div class="screen-card screen-card-right">
+              <img id="rightPreviewImage" class="screen-image hidden" alt="Right screenshot">
+              <div id="rightPlaceholder" class="placeholder">Upload right screenshot</div>
+              <a id="rightSourceChip" class="source-chip right-chip" href="#" target="_blank" rel="noopener noreferrer">@benshapiro</a>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <svg class="footer-logo-icon" viewBox="0 0 72 44" aria-hidden="true">
+              <circle cx="25" cy="22" r="18" fill="#185fe6"/>
+              <circle cx="47" cy="22" r="18" fill="#ef3038"/>
+              <path d="M36 7a18 18 0 0 1 0 30a18 18 0 0 1 0-30Z" fill="#172033" opacity=".72"/>
+            </svg>
+            <div class="footer-brand">DualLens</div>
+          </div>
         </div>
       </div>
     </div>
+
+    <p class="preview-note">Upload real screenshots and keep usernames visible for attribution.</p>
     <canvas id="exportCanvas" width="1080" height="1350" hidden></canvas>
   </section>
 </main>
 
 <dialog id="phoneDialog">
-  <div class="dialog-head"><h2>Phone preview</h2><button id="closePhoneBtn" class="secondary">Close</button></div>
-  <div class="phone">
+  <div class="dialog-header">
+    <div>
+      <p class="eyebrow">PHONE PREVIEW</p>
+      <h2>How it appears in the feed</h2>
+    </div>
+    <button id="closePhoneBtn" class="secondary" type="button">Close</button>
+  </div>
+
+  <div class="phone-frame">
     <div class="tweet">
       <div class="avatar">D</div>
-      <div class="tweet-body">
-        <strong>DualLens</strong> <span>@DualLens · now</span>
-        <p id="phoneCopy"></p>
+      <div class="tweet-content">
+        <div class="tweet-meta"><strong>DualLens</strong> <span>@DualLens · now</span></div>
+        <div id="phoneCopy" class="phone-copy"></div>
         <img id="phoneImage" alt="Phone preview">
       </div>
     </div>
