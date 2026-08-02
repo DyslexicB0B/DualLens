@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DualLens Studio 1.3</title>
+  <title>DualLens Studio 1.4</title>
   <link rel="stylesheet" href="duallens-v1-1.css?v=120">
 </head>
 <body>
@@ -20,8 +20,10 @@
     </div>
   </div>
   <div class="top-actions">
+    <button id="saveDraftBtn" class="secondary" type="button">Save draft</button>
     <button id="phonePreviewBtn" class="secondary" type="button">Phone preview</button>
     <button id="copyImageBtn" class="secondary" type="button">Copy image</button>
+    <button id="shareBtn" class="secondary" type="button">Share</button>
     <button id="openXBtn" class="secondary" type="button">Open X</button>
     <button id="exportBtn" class="primary" type="button">Download PNG</button>
   </div>
@@ -76,6 +78,16 @@
       </div>
       <label>Source label<input id="rightSourceLabel" value="@benshapiro"></label>
       <label>Original URL<input id="rightSourceUrl" value="https://x.com/benshapiro"></label>
+    </div>
+
+
+    <div class="panel">
+      <p class="eyebrow">DRAFTS</p>
+      <label>
+        Draft name
+        <input id="draftName" value="Untitled comparison" maxlength="60">
+      </label>
+      <div id="draftList" class="draft-list"></div>
     </div>
 
     <div class="panel">
@@ -177,6 +189,6 @@ Which lens do you agree with?</textarea>
   </div>
 </dialog>
 
-<script src="duallens-v1-3.js?v=130"></script>
+<script src="duallens-v1-4.js?v=140"></script>
 </body>
 </html>

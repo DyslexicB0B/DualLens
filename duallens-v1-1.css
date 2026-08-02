@@ -33,3 +33,24 @@ input,textarea,select{width:100%;margin-top:7px;border:1px solid var(--line);bor
   outline:4px solid rgba(24,95,230,.28);
   outline-offset:4px;
 }
+
+.draft-list{
+  display:grid;
+  gap:7px;
+}
+.draft-row{
+  display:flex;
+  gap:6px;
+}
+.draft-load{
+  flex:1;
+  text-align:left;
+}
+.draft-delete{
+  padding:8px 10px;
+}
+@media(max-width:700px){
+  .top-actions{
+    justify-content:flex-end;
+  }
+}
