@@ -3,241 +3,175 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DualLens Studio v10</title>
+  <title>DualLens Studio v11</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand-lockup">
-      <div class="brand-mark"><span class="blue-dot"></span><span class="red-dot"></span></div>
-      <div>
-        <div class="brand">DUALLENS</div>
-        <div class="subbrand">Same story. Different lens.</div>
-      </div>
+<header class="topbar">
+  <div class="brand-lockup">
+    <div class="mark"><span></span><span></span></div>
+    <div>
+      <div class="brand">DUALLENS</div>
+      <div class="tagline">Same story. Different lens.</div>
     </div>
-    <div class="top-actions">
-      <span id="saveStatus" class="saved">Saved</span>
-      <button id="previewBtn" class="ghost" type="button">Preview on phone</button>
-      <button id="exportBtn" class="primary" type="button">Export PNG</button>
+  </div>
+  <div class="actions">
+    <button id="previewBtn" class="secondary">Phone preview</button>
+    <button id="exportBtn" class="primary">Export PNG</button>
+  </div>
+</header>
+
+<main class="workspace">
+  <section class="editor">
+    <div class="panel">
+      <p class="eyebrow">STORY</p>
+      <label>Category
+        <select id="category">
+          <option>POLITICS</option><option>BUSINESS</option><option>SPORTS</option>
+          <option>TECH</option><option>WORLD</option><option>CULTURE</option>
+        </select>
+      </label>
+      <label>Headline
+        <textarea id="headline" rows="3">Trump Announces New Tariffs</textarea>
+      </label>
     </div>
-  </header>
 
-  <main class="workspace">
-    <section class="editor">
-      <div class="panel">
-        <p class="eyebrow">STORY</p>
-        <label>
-          Category
-          <select id="category">
-            <option>POLITICS</option>
-            <option>BUSINESS</option>
-            <option>SPORTS</option>
-            <option>TECH</option>
-            <option>WORLD</option>
-            <option>CULTURE</option>
-            <option>CUSTOM</option>
-          </select>
-        </label>
-        <label>
-          Headline
-          <textarea id="headline" rows="3" maxlength="110">Trump Announces New Tariffs</textarea>
-        </label>
-      </div>
-
-      <div class="panel">
-        <p class="eyebrow">LENSES</p>
-        <div class="two-col">
-          <div class="lens-editor lens-a-editor">
-            <div class="lens-editor-title">Lens A</div>
-            <label>
-              Label
-              <input id="leftLabel" value="SUPPORTERS">
-            </label>
-            <label>
-              Content type
-              <select id="leftMode">
-                <option value="text">Text</option>
-                <option value="image">Screenshot</option>
-                <option value="mixed">Text + Screenshot</option>
-              </select>
-            </label>
-            <label>
-              Points
-              <textarea id="leftPoints" rows="6">Protects U.S. jobs
+    <div class="panel">
+      <p class="eyebrow">LENSES</p>
+      <div class="two">
+        <div class="lens-edit blue-edit">
+          <h3>Lens A</h3>
+          <label>Label<input id="leftLabel" value="SUPPORTERS"></label>
+          <label>Display
+            <select id="leftMode">
+              <option value="text">Text</option>
+              <option value="image">Screenshot</option>
+              <option value="mixed">Text + Screenshot</option>
+            </select>
+          </label>
+          <label>Points
+            <textarea id="leftPoints" rows="6">Protects U.S. jobs
 Builds domestic factories
 Strengthens national security</textarea>
-            </label>
-            <label class="upload-label">
-              Upload screenshot
-              <input id="leftImageInput" type="file" accept="image/*">
-            </label>
-            <div class="image-controls">
-              <label>Image fit
-                <select id="leftFit">
-                  <option value="contain">Contain</option>
-                  <option value="cover">Crop to fit</option>
-                </select>
-              </label>
-              <button id="removeLeftImage" class="ghost small" type="button">Remove image</button>
-            </div>
-          </div>
+          </label>
+          <label>Screenshot<input id="leftImageInput" type="file" accept="image/*"></label>
+          <button id="removeLeftImage" class="secondary small">Remove screenshot</button>
+        </div>
 
-          <div class="lens-editor lens-b-editor">
-            <div class="lens-editor-title">Lens B</div>
-            <label>
-              Label
-              <input id="rightLabel" value="CRITICS">
-            </label>
-            <label>
-              Content type
-              <select id="rightMode">
-                <option value="text">Text</option>
-                <option value="image">Screenshot</option>
-                <option value="mixed">Text + Screenshot</option>
-              </select>
-            </label>
-            <label>
-              Points
-              <textarea id="rightPoints" rows="6">Raises consumer prices
+        <div class="lens-edit red-edit">
+          <h3>Lens B</h3>
+          <label>Label<input id="rightLabel" value="CRITICS"></label>
+          <label>Display
+            <select id="rightMode">
+              <option value="text">Text</option>
+              <option value="image">Screenshot</option>
+              <option value="mixed">Text + Screenshot</option>
+            </select>
+          </label>
+          <label>Points
+            <textarea id="rightPoints" rows="6">Raises consumer prices
 Hurts small businesses
 Risks trade retaliation</textarea>
-            </label>
-            <label class="upload-label">
-              Upload screenshot
-              <input id="rightImageInput" type="file" accept="image/*">
-            </label>
-            <div class="image-controls">
-              <label>Image fit
-                <select id="rightFit">
-                  <option value="contain">Contain</option>
-                  <option value="cover">Crop to fit</option>
-                </select>
-              </label>
-              <button id="removeRightImage" class="ghost small" type="button">Remove image</button>
-            </div>
-          </div>
+          </label>
+          <label>Screenshot<input id="rightImageInput" type="file" accept="image/*"></label>
+          <button id="removeRightImage" class="secondary small">Remove screenshot</button>
         </div>
       </div>
+    </div>
 
-      <div class="panel">
-        <p class="eyebrow">SOURCES</p>
-        <div class="two-col">
-          <div>
-            <div class="source-heading blue-text">Lens A sources</div>
-            <label>Source names
-              <textarea id="leftSourceNames" rows="4">Reuters
-White House
-@TradePolicy</textarea>
-            </label>
-            <label>Source links
-              <textarea id="leftSourceLinks" rows="5">https://reuters.com/
-https://whitehouse.gov/
-https://x.com/TradePolicy</textarea>
-            </label>
-          </div>
-          <div>
-            <div class="source-heading red-text">Lens B sources</div>
-            <label>Source names
-              <textarea id="rightSourceNames" rows="4">AP
-Brookings
-@EconomistJane</textarea>
-            </label>
-            <label>Source links
-              <textarea id="rightSourceLinks" rows="5">https://apnews.com/
-https://brookings.edu/
-https://x.com/EconomistJane</textarea>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <p class="eyebrow">POST COPY</p>
-        <label>
-          Optional post text
-          <textarea id="postCopy" rows="6">New tariffs. Two perspectives.
-
-Same story. Different lens.
-
-Which side makes the stronger case?</textarea>
-        </label>
-        <button id="copyBtn" class="ghost" type="button">Copy post text</button>
-      </div>
-    </section>
-
-    <section class="preview-panel">
-      <div class="preview-heading">
+    <div class="panel">
+      <p class="eyebrow">SOURCES</p>
+      <div class="two">
         <div>
-          <p class="eyebrow">LIVE PREVIEW</p>
-          <h2>1080 × 1350</h2>
+          <label>Lens A names<textarea id="leftSourceNames" rows="3">Reuters
+White House
+@TradePolicy</textarea></label>
+          <label>Lens A links<textarea id="leftSourceLinks" rows="4">https://reuters.com/
+https://whitehouse.gov/
+https://x.com/TradePolicy</textarea></label>
         </div>
-        <span class="pill">Phone optimized</span>
-      </div>
-
-      <div class="preview-shell">
-        <div id="card" class="perspective-card">
-          <div id="cardCategory" class="card-category">POLITICS</div>
-          <div class="title-rule"><div class="mini-mark"><span></span><span></span></div></div>
-          <div id="cardHeadline" class="card-headline">Trump Announces New Tariffs</div>
-
-          <div class="lens-headings">
-            <div id="cardLeftLabel" class="lens-title lens-a">SUPPORTERS</div>
-            <div id="cardRightLabel" class="lens-title lens-b">CRITICS</div>
-          </div>
-
-          <div class="content-split">
-            <div id="leftPane" class="lens-pane">
-              <div id="leftTextContent" class="points-list"></div>
-              <img id="leftImagePreview" class="lens-image hidden" alt="Lens A screenshot">
-            </div>
-            <div class="center-divider"></div>
-            <div id="rightPane" class="lens-pane">
-              <div id="rightTextContent" class="points-list"></div>
-              <img id="rightImagePreview" class="lens-image hidden" alt="Lens B screenshot">
-            </div>
-          </div>
-
-          <div class="source-footer">
-            <div id="leftSourceFooter" class="source-chip-row"></div>
-            <div id="rightSourceFooter" class="source-chip-row"></div>
-          </div>
-
-          <div class="brand-footer">
-            <div class="brand-mark small-mark"><span class="blue-dot"></span><span class="red-dot"></span></div>
-            <div>
-              <strong>DUALLENS</strong>
-              <span>Same story. Different lens.</span>
-            </div>
-          </div>
+        <div>
+          <label>Lens B names<textarea id="rightSourceNames" rows="3">AP
+Brookings
+@EconomistJane</textarea></label>
+          <label>Lens B links<textarea id="rightSourceLinks" rows="4">https://apnews.com/
+https://brookings.edu/
+https://x.com/EconomistJane</textarea></label>
         </div>
       </div>
+    </div>
 
-      <p class="tip">Tip: use screenshots from public posts and keep the handle visible for attribution.</p>
-      <canvas id="exportCanvas" width="1080" height="1350" hidden></canvas>
-    </section>
-  </main>
+    <div class="panel">
+      <p class="eyebrow">X COPY</p>
+      <textarea id="postCopy" rows="6">Same headline. Two completely different ways to see it.
 
-  <dialog id="phoneDialog">
-    <div class="dialog-heading">
+Which lens makes the stronger case?</textarea>
+      <button id="copyBtn" class="secondary">Copy text</button>
+    </div>
+    <p id="message" class="message"></p>
+  </section>
+
+  <section class="preview-column">
+    <div class="preview-head">
       <div>
-        <p class="eyebrow">PHONE PREVIEW</p>
-        <h2>How it appears in the feed</h2>
+        <p class="eyebrow">LIVE PREVIEW</p>
+        <h2>Designed to stop the scroll</h2>
       </div>
-      <button id="closePhoneBtn" class="ghost" type="button">Close</button>
+      <span>1080 × 1350</span>
     </div>
-    <div class="phone">
-      <div class="x-post">
-        <div class="avatar">D</div>
-        <div class="post-body">
-          <div class="post-meta"><strong>DualLens</strong> <span>@DualLens · now</span></div>
-          <div id="phonePostCopy" class="phone-copy"></div>
-          <img id="phoneImage" alt="Phone preview">
-          <div class="phone-actions">Reply &nbsp;&nbsp; Repost &nbsp;&nbsp; Like &nbsp;&nbsp; Share</div>
+
+    <div class="preview-shell">
+      <div id="card" class="card">
+        <div class="top-accent"><span></span><span></span></div>
+        <div id="cardCategory" class="category">POLITICS</div>
+        <h1 id="cardHeadline">Trump Announces New Tariffs</h1>
+
+        <div class="lens-bar">
+          <div id="cardLeftLabel" class="blue-label">SUPPORTERS</div>
+          <div id="cardRightLabel" class="red-label">CRITICS</div>
+        </div>
+
+        <div class="split-content">
+          <div id="leftPane" class="pane left-pane">
+            <div id="leftText" class="point-list"></div>
+            <img id="leftImage" class="shot hidden" alt="Lens A screenshot">
+          </div>
+          <div class="divider"></div>
+          <div id="rightPane" class="pane right-pane">
+            <div id="rightText" class="point-list"></div>
+            <img id="rightImage" class="shot hidden" alt="Lens B screenshot">
+          </div>
+        </div>
+
+        <div class="sources">
+          <div id="leftSources"></div>
+          <div id="rightSources"></div>
+        </div>
+
+        <div class="footer">
+          <div class="mark mini"><span></span><span></span></div>
+          <div><strong>DUALLENS</strong><small>Same story. Different lens.</small></div>
         </div>
       </div>
     </div>
-  </dialog>
+    <canvas id="exportCanvas" width="1080" height="1350" hidden></canvas>
+  </section>
+</main>
 
-  <script src="app.js"></script>
+<dialog id="phoneDialog">
+  <div class="dialog-head"><h2>Phone preview</h2><button id="closePhoneBtn" class="secondary">Close</button></div>
+  <div class="phone">
+    <div class="tweet">
+      <div class="avatar">D</div>
+      <div class="tweet-body">
+        <strong>DualLens</strong> <span>@DualLens · now</span>
+        <p id="phoneCopy"></p>
+        <img id="phoneImage" alt="Phone preview">
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script src="app.js"></script>
 </body>
 </html>
