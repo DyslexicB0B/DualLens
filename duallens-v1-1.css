@@ -24,16 +24,23 @@ input,textarea,select{width:100%;margin-top:7px;border:1px solid var(--line);bor
 .message{font-size:12px;color:var(--muted)}dialog{width:min(720px,92vw);border:0;border-radius:16px;padding:18px}dialog::backdrop{background:rgba(0,0,0,.55)}.dialog-header{display:flex;justify-content:space-between;align-items:center}.phone-frame{width:min(420px,100%);margin:18px auto;padding:16px;border:10px solid var(--ink);border-radius:34px}.tweet{display:flex;gap:10px}.avatar{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--ink);color:#fff;font-weight:900}.tweet-content{flex:1;min-width:0}.tweet-meta{font-size:13px}.tweet-meta span{color:var(--muted)}.phone-copy{white-space:pre-wrap;font-size:14px;line-height:1.4}.tweet-content img{width:100%;border:1px solid var(--line);border-radius:13px}
 @media(max-width:950px){.workspace{grid-template-columns:1fr;padding:10px}.preview-column{position:static;order:-1}.compare-grid{grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr)}.vs-badge{width:40px;height:40px;font-size:14px}.comparison-card h1{font-size:clamp(32px,8vw,48px)}}
 
-.screenshot-link{
-  color:inherit;
-  text-decoration:none;
+.screen-card{
+  position:relative;
+}
+.source-overlay{
+  position:absolute;
+  inset:2% 2% 58px;
+  z-index:4;
+  border:0;
+  padding:0;
+  background:transparent;
   cursor:pointer;
 }
-.screenshot-link:focus-visible{
-  outline:4px solid rgba(24,95,230,.28);
-  outline-offset:4px;
+.source-overlay:focus-visible{
+  outline:4px solid rgba(24,95,230,.30);
+  outline-offset:2px;
+  border-radius:11px;
 }
-
 .draft-list{
   display:grid;
   gap:7px;
@@ -48,9 +55,4 @@ input,textarea,select{width:100%;margin-top:7px;border:1px solid var(--line);bor
 }
 .draft-delete{
   padding:8px 10px;
-}
-@media(max-width:700px){
-  .top-actions{
-    justify-content:flex-end;
-  }
 }

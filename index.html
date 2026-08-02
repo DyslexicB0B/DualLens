@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DualLens Studio 1.4</title>
-  <link rel="stylesheet" href="duallens-v1-1.css?v=120">
+  <title>DualLens Studio 1.4.1</title>
+  <link rel="stylesheet" href="duallens-v1-1.css?v=141">
 </head>
 <body>
 <header class="topbar">
@@ -138,11 +138,12 @@ Which lens do you agree with?</textarea>
           </div>
 
           <div class="compare-grid">
-            <a id="leftScreenshotLink" class="screen-card screen-card-left screenshot-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Open left source">
+            <div class="screen-card screen-card-left">
+              <button id="leftOpenSourceBtn" class="source-overlay" type="button" aria-label="Open left source"></button>
               <img id="leftPreviewImage" class="screen-image hidden" alt="Left screenshot">
               <div id="leftPlaceholder" class="placeholder">Upload left screenshot</div>
               <a id="leftSourceChip" class="source-chip left-chip" href="#" target="_blank" rel="noopener noreferrer">@GeorgeTakei</a>
-            </a>
+            </div>
 
             <div class="vs-stack">
               <div class="vs-line"></div>
@@ -150,11 +151,12 @@ Which lens do you agree with?</textarea>
               <div class="vs-line"></div>
             </div>
 
-            <a id="rightScreenshotLink" class="screen-card screen-card-right screenshot-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Open right source">
+            <div class="screen-card screen-card-right">
+              <button id="rightOpenSourceBtn" class="source-overlay" type="button" aria-label="Open right source"></button>
               <img id="rightPreviewImage" class="screen-image hidden" alt="Right screenshot">
               <div id="rightPlaceholder" class="placeholder">Upload right screenshot</div>
               <a id="rightSourceChip" class="source-chip right-chip" href="#" target="_blank" rel="noopener noreferrer">@benshapiro</a>
-            </a>
+            </div>
           </div>
 
           <div class="card-footer">
@@ -189,6 +191,6 @@ Which lens do you agree with?</textarea>
   </div>
 </dialog>
 
-<script src="duallens-v1-4.js?v=140"></script>
+<script src="duallens-v1-4-1.js?v=141"></script>
 </body>
 </html>
