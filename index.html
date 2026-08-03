@@ -1,14 +1,84 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DualLens Studio 3.4</title><link rel="stylesheet" href="duallens-v3-4.css?v=340"></head><body>
-<header class="topbar"><div class="brand-lockup"><svg class="logo-icon" viewBox="0 0 72 44"><circle cx="25" cy="22" r="18" fill="#185fe6"/><circle cx="47" cy="22" r="18" fill="#ef3038"/><path d="M36 7a18 18 0 0 1 0 30a18 18 0 0 1 0-30Z" fill="#172033" opacity=".72"/></svg><div><div class="brand-name">DualLens</div><div class="tagline">Same story. Different lens.</div></div></div><div class="top-actions"><button id="saveJpegBtn" class="secondary">Save JPEG</button><button id="shareBtn" class="primary">Share</button></div></header>
-<main class="app"><section class="controls panel"><p class="eyebrow">QUICK HIT</p><label>Headline<textarea id="headline" rows="3">Biden Calls for Israel Ceasefire</textarea></label><div class="upload-grid">
-<div class="upload-side left-side"><div class="side-title">Left lens</div><label class="upload-card" for="leftImageInput"><span class="upload-icon">＋</span><span>Choose screenshot</span><input id="leftImageInput" type="file" accept="image/*"></label><label>Source link<input id="leftUrl" value="https://x.com/GeorgeTakei"></label><label>Source name<input id="leftName" value="@GeorgeTakei"></label><div class="fit-row"><button class="fit-btn active" data-side="left" data-fit="smart">Match width</button><button class="fit-btn" data-side="left" data-fit="full">Show full</button></div><div class="crop-hint">Images align at the top · drag to reposition · pinch or scroll to zoom</div></div>
-<div class="upload-side right-side"><div class="side-title">Right lens</div><label class="upload-card" for="rightImageInput"><span class="upload-icon">＋</span><span>Choose screenshot</span><input id="rightImageInput" type="file" accept="image/*"></label><label>Source link<input id="rightUrl" value="https://x.com/benshapiro"></label><label>Source name<input id="rightName" value="@benshapiro"></label><div class="fit-row"><button class="fit-btn active" data-side="right" data-fit="smart">Match width</button><button class="fit-btn" data-side="right" data-fit="full">Show full</button></div><div class="crop-hint">Images align at the top · drag to reposition · pinch or scroll to zoom</div></div></div>
-<label>X post text<textarea id="postCopy" rows="5">Same headline. Two completely different reactions.\n\nWhich lens do you agree with?</textarea></label><div class="action-row"><button id="previewBtn" class="secondary">Preview</button><button id="copyImageBtn" class="secondary">Copy image</button><button id="openXBtn" class="secondary">Post to X</button><button id="jpegActionBtn" class="secondary">Save JPEG</button><button id="downloadBtn" class="primary">Download PNG</button></div><p id="message" class="message"></p></section>
-<section class="preview-wrap"><div class="preview-header"><div><p class="eyebrow">LIVE PREVIEW</p><h2>1080 × 1350</h2></div><span class="pill">Phone optimized</span></div>
-    <div class="format-switch" role="group" aria-label="Card format">
-      <button id="sideBySideBtn" class="format-btn active" type="button">Side-by-side</button>
-      <button id="phoneStackBtn" class="format-btn" type="button">Phone stack</button>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DualLens Studio 4.0</title>
+  <link rel="stylesheet" href="duallens-v4.css?v=400">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand-lockup">
+    <svg class="logo-icon" viewBox="0 0 72 44" aria-hidden="true">
+      <circle cx="25" cy="22" r="18" fill="#185fe6"/>
+      <circle cx="47" cy="22" r="18" fill="#ef3038"/>
+      <path d="M36 7a18 18 0 0 1 0 30a18 18 0 0 1 0-30Z" fill="#172033" opacity=".72"/>
+    </svg>
+    <div><div class="brand-name">DualLens</div><div class="tagline">Same story. Different lens.</div></div>
+  </div>
+  <div class="top-actions">
+    <button id="saveJpegBtn" class="secondary">Save JPEG</button>
+    <button id="shareBtn" class="primary">Share</button>
+  </div>
+</header>
+
+<main class="app">
+  <section class="controls panel">
+    <p class="eyebrow">LENS CARD</p>
+    <label>Headline<textarea id="headline" rows="3" maxlength="110">Biden Calls for Israel Ceasefire</textarea></label>
+
+    <label>Perspective distance
+      <div class="distance-control">
+        <input id="distanceScore" type="range" min="1" max="10" step="0.1" value="8.2">
+        <output id="distanceOutput">8.2 / 10</output>
+      </div>
+    </label>
+
+    <label>Distance caption<input id="distanceCaption" value="Very different perspectives" maxlength="42"></label>
+
+    <div class="upload-grid">
+      <div class="upload-side left-side">
+        <div class="side-title">Left lens</div>
+        <label class="upload-card" for="leftImageInput"><span class="upload-icon">＋</span><span>Choose screenshot</span><input id="leftImageInput" type="file" accept="image/*"></label>
+        <label>Source name<input id="leftName" value="@GeorgeTakei"></label>
+        <label>Source link<input id="leftUrl" value="https://x.com/GeorgeTakei"></label>
+        <label>Left summary<textarea id="leftSummary" rows="3">The left lens highlights community support and positive engagement.</textarea></label>
+      </div>
+
+      <div class="upload-side right-side">
+        <div class="side-title">Right lens</div>
+        <label class="upload-card" for="rightImageInput"><span class="upload-icon">＋</span><span>Choose screenshot</span><input id="rightImageInput" type="file" accept="image/*"></label>
+        <label>Source name<input id="rightName" value="@benshapiro"></label>
+        <label>Source link<input id="rightUrl" value="https://x.com/benshapiro"></label>
+        <label>Right summary<textarea id="rightSummary" rows="3">The right lens focuses on policy criticism and questions consistency.</textarea></label>
+      </div>
     </div>
-<div class="canvas-shell"><canvas id="liveCanvas" width="1080" height="1350"></canvas></div><div class="source-links"><a id="leftLiveLink" target="_blank">Open left source</a><a id="rightLiveLink" target="_blank">Open right source</a></div></section></main>
-<dialog id="previewDialog"><div class="dialog-head"><h2>Phone preview</h2><button id="closePreviewBtn" class="secondary">Close</button></div><div class="phone"><div class="post"><div class="avatar">D</div><div class="post-body"><div class="post-meta"><strong>DualLens</strong> <span>@DualLens · now</span></div><div id="phoneCopy" class="phone-copy"></div><img id="phoneImage"></div></div></div></dialog>
-<script src="duallens-v3-4.js?v=340"></script></body></html>
+
+    <label>X post text<textarea id="postCopy" rows="5">Same story. Different lens.
+
+Compare the original posts and decide for yourself.</textarea></label>
+
+    <div class="action-row">
+      <button id="previewBtn" class="secondary">Phone preview</button>
+      <button id="copyImageBtn" class="secondary">Copy image</button>
+      <button id="openXBtn" class="secondary">Post to X</button>
+      <button id="downloadBtn" class="primary">Download PNG</button>
+    </div>
+    <p id="message" class="message"></p>
+  </section>
+
+  <section class="preview-wrap">
+    <div class="preview-header"><div><p class="eyebrow">LIVE PREVIEW</p><h2>Lens Card</h2></div><span class="pill">1080 × 1350</span></div>
+    <div class="canvas-shell"><canvas id="liveCanvas" width="1080" height="1350"></canvas></div>
+    <div class="source-links"><a id="leftLiveLink" target="_blank">Open left source</a><a id="rightLiveLink" target="_blank">Open right source</a></div>
+  </section>
+</main>
+
+<dialog id="previewDialog">
+  <div class="dialog-head"><h2>Phone preview</h2><button id="closePreviewBtn" class="secondary">Close</button></div>
+  <div class="phone"><div class="post"><div class="avatar">D</div><div class="post-body"><div class="post-meta"><strong>DualLens</strong> <span>@DualLens · now</span></div><div id="phoneCopy" class="phone-copy"></div><img id="phoneImage" alt="DualLens preview"></div></div></div>
+</dialog>
+
+<script src="duallens-v4.js?v=400"></script>
+</body>
+</html>
