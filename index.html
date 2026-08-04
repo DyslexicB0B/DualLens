@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DualLens Studio 4.0</title>
-  <link rel="stylesheet" href="duallens-v4.css?v=400">
+  <title>DualLens Studio 4.1</title>
+  <link rel="stylesheet" href="duallens-v4-1.css?v=410">
 </head>
 <body>
 <header class="topbar">
@@ -35,13 +35,21 @@
     </label>
 
     <label>Distance caption<input id="distanceCaption" value="Very different perspectives" maxlength="42"></label>
+    <label>Match weight
+      <div class="match-weight" role="group" aria-label="Match weight">
+        <button class="match-btn" data-weight="Same" type="button">Same</button>
+        <button class="match-btn" data-weight="Related" type="button">Related</button>
+        <button class="match-btn active" data-weight="Different" type="button">Different</button>
+        <button class="match-btn" data-weight="Opposite" type="button">Opposite</button>
+      </div>
+    </label>
+
 
     <div class="upload-grid">
       <div class="upload-side left-side">
         <div class="side-title">Left lens</div>
         <label class="upload-card" for="leftImageInput"><span class="upload-icon">＋</span><span>Choose screenshot</span><input id="leftImageInput" type="file" accept="image/*"></label>
         <label>Source name<input id="leftName" value="@GeorgeTakei"></label>
-        <label>Source link<input id="leftUrl" value="https://x.com/GeorgeTakei"></label>
         <label>Left summary<textarea id="leftSummary" rows="3">The left lens highlights community support and positive engagement.</textarea></label>
       </div>
 
@@ -49,7 +57,6 @@
         <div class="side-title">Right lens</div>
         <label class="upload-card" for="rightImageInput"><span class="upload-icon">＋</span><span>Choose screenshot</span><input id="rightImageInput" type="file" accept="image/*"></label>
         <label>Source name<input id="rightName" value="@benshapiro"></label>
-        <label>Source link<input id="rightUrl" value="https://x.com/benshapiro"></label>
         <label>Right summary<textarea id="rightSummary" rows="3">The right lens focuses on policy criticism and questions consistency.</textarea></label>
       </div>
     </div>
@@ -64,13 +71,12 @@ Compare the original posts and decide for yourself.</textarea></label>
       <button id="openXBtn" class="secondary">Post to X</button>
       <button id="downloadBtn" class="primary">Download PNG</button>
     </div>
-    <p id="message" class="message"></p>
+    <input id="matchWeightValue" type="hidden" value="Different"><p id="message" class="message"></p>
   </section>
 
   <section class="preview-wrap">
     <div class="preview-header"><div><p class="eyebrow">LIVE PREVIEW</p><h2>Lens Card</h2></div><span class="pill">1080 × 1350</span></div>
     <div class="canvas-shell"><canvas id="liveCanvas" width="1080" height="1350"></canvas></div>
-    <div class="source-links"><a id="leftLiveLink" target="_blank">Open left source</a><a id="rightLiveLink" target="_blank">Open right source</a></div>
   </section>
 </main>
 
@@ -79,6 +85,6 @@ Compare the original posts and decide for yourself.</textarea></label>
   <div class="phone"><div class="post"><div class="avatar">D</div><div class="post-body"><div class="post-meta"><strong>DualLens</strong> <span>@DualLens · now</span></div><div id="phoneCopy" class="phone-copy"></div><img id="phoneImage" alt="DualLens preview"></div></div></div>
 </dialog>
 
-<script src="duallens-v4.js?v=400"></script>
+<script src="duallens-v4-1.js?v=410"></script>
 </body>
 </html>
