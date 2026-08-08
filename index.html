@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DualLens Studio 4.5</title>
-  <link rel="stylesheet" href="duallens-v4-5.css?v=450">
+  <title>DualLens Studio 4.6</title>
+  <link rel="stylesheet" href="duallens-v4-6.css?v=460">
 </head>
 <body>
 <header class="topbar">
@@ -42,12 +42,28 @@
       <div class="upload-side left-side">
         <div class="side-title">Left lens</div>
         <label class="upload-card" for="leftImageInput"><span class="upload-icon">＋</span><span>Choose screenshot</span><input id="leftImageInput" type="file" accept="image/*"></label>
+        <div class="image-mode-row" role="group" aria-label="Left image mode">
+          <button id="leftReadableBtn" class="image-mode-btn active" type="button">Readable</button>
+          <button id="leftFullBtn" class="image-mode-btn" type="button">Full</button>
+        </div>
+        <label class="zoom-label">Zoom
+          <input id="leftZoom" type="range" min="1" max="1.8" step="0.02" value="1.18">
+        </label>
+
         <label>Source name<input id="leftName" value="@GeorgeTakei"></label>
       </div>
 
       <div class="upload-side right-side">
         <div class="side-title">Right lens</div>
         <label class="upload-card" for="rightImageInput"><span class="upload-icon">＋</span><span>Choose screenshot</span><input id="rightImageInput" type="file" accept="image/*"></label>
+        <div class="image-mode-row" role="group" aria-label="Right image mode">
+          <button id="rightReadableBtn" class="image-mode-btn active" type="button">Readable</button>
+          <button id="rightFullBtn" class="image-mode-btn" type="button">Full</button>
+        </div>
+        <label class="zoom-label">Zoom
+          <input id="rightZoom" type="range" min="1" max="1.8" step="0.02" value="1.18">
+        </label>
+
         <label>Source name<input id="rightName" value="@benshapiro"></label>
       </div>
     </div>
@@ -76,6 +92,6 @@ Compare the original posts and decide for yourself.</textarea></label>
   <div class="phone"><div class="post"><div class="avatar">D</div><div class="post-body"><div class="post-meta"><strong>DualLens</strong> <span>@DualLens · now</span></div><div id="phoneCopy" class="phone-copy"></div><img id="phoneImage" alt="DualLens preview"></div></div></div>
 </dialog>
 
-<script src="duallens-v4-5.js?v=450"></script>
+<script src="duallens-v4-6.js?v=460"></script>
 </body>
 </html>
